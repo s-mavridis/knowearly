@@ -1,3 +1,5 @@
+import { Shield } from "lucide-react";
+
 const Footer = () => {
   return (
     <footer className="py-20 px-6 border-t border-border/50">
@@ -10,9 +12,15 @@ const Footer = () => {
             </div>
             <span className="text-lg font-semibold text-primary">ArtemisAI</span>
           </div>
-          <p className="text-sm text-muted-foreground max-w-md">
+          <p className="text-sm text-muted-foreground max-w-md mb-4">
             Empowering individuals with personalized cancer risk insights through AI-driven assessment.
           </p>
+          
+          {/* HIPAA Badge */}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-teal/20 bg-teal/5">
+            <Shield className="w-3.5 h-3.5 text-teal" />
+            <span className="text-xs font-medium text-teal">HIPAA Compliant</span>
+          </div>
         </div>
 
         {/* Links */}
