@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
@@ -75,9 +76,12 @@ const HeroSection = () => {
             variant="cta" 
             size="xl"
             className="group"
+            asChild
           >
-            Check Your Risk
-            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            <Link to="/quiz">
+              Check Your Risk
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            </Link>
           </Button>
 
           {/* Subtle trust indicator */}
