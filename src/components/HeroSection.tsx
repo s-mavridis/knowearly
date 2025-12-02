@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 pt-24 pb-16 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center px-6 pt-32 pb-24 overflow-hidden">
       {/* Abstract Background */}
       <div className="absolute inset-0 -z-10">
         {/* Gradient base */}
@@ -39,7 +39,7 @@ const HeroSection = () => {
       <div className="max-w-4xl mx-auto text-center">
         {/* Glass card for hero content */}
         <div className="glass rounded-3xl p-10 md:p-16 animate-fade-in">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary leading-tight mb-6">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary leading-[1.1] tracking-tight mb-8">
             What's Your Cancer Risk?
           </h1>
           

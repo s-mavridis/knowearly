@@ -6,45 +6,45 @@
 
 @layer base {
   :root {
-    /* ArtemisAI Design System */
-    --background: 60 9% 98%;
-    --foreground: 216 55% 23%;
+    /* ArtemisAI Design System - Muted & Sophisticated */
+    --background: 40 15% 97%;
+    --foreground: 216 50% 18%;
 
     --card: 0 0% 100%;
-    --card-foreground: 216 55% 23%;
+    --card-foreground: 216 50% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 216 55% 23%;
+    --popover-foreground: 216 50% 18%;
 
-    --primary: 216 55% 23%;
-    --primary-foreground: 60 9% 98%;
+    --primary: 216 50% 22%;
+    --primary-foreground: 40 15% 97%;
 
-    --secondary: 189 91% 36%;
+    --secondary: 187 40% 40%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 220 14% 94%;
+    --muted-foreground: 220 10% 45%;
 
-    --accent: 189 91% 36%;
+    --accent: 187 40% 40%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 65% 55%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 189 91% 36%;
+    --border: 220 15% 86%;
+    --input: 220 15% 86%;
+    --ring: 187 40% 40%;
 
     --radius: 0.5rem;
 
-    /* Custom tokens */
-    --navy: 216 55% 23%;
-    --navy-light: 216 40% 35%;
-    --teal: 189 91% 36%;
-    --teal-light: 189 70% 45%;
-    --warm-white: 60 9% 98%;
-    --gray-700: 220 9% 46%;
-    --gray-400: 220 13% 69%;
+    /* Custom tokens - Sophisticated muted */
+    --navy: 216 50% 22%;
+    --navy-light: 216 40% 32%;
+    --teal: 187 40% 40%;
+    --teal-light: 187 35% 48%;
+    --warm-white: 40 15% 97%;
+    --gray-700: 220 10% 45%;
+    --gray-400: 220 12% 62%;
 
     /* Glass effect */
     --glass-bg: 0 0% 100% / 0.7;
