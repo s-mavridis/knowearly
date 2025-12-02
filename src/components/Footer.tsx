@@ -7,7 +7,7 @@ const Footer = () => {
         {/* Logo and description */}
         <div className="flex flex-col items-center text-center mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-teal flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-terracotta flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-xs">A</span>
             </div>
             <span className="text-lg font-semibold text-primary">ArtemisAI</span>
@@ -17,9 +17,9 @@ const Footer = () => {
           </p>
           
           {/* HIPAA Badge */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-teal/20 bg-teal/5">
-            <Shield className="w-3.5 h-3.5 text-teal" />
-            <span className="text-xs font-medium text-teal">HIPAA Compliant</span>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-terracotta/20 bg-terracotta/5">
+            <Shield className="w-3.5 h-3.5 text-terracotta" />
+            <span className="text-xs font-medium text-terracotta">HIPAA Compliant</span>
           </div>
         </div>
 
