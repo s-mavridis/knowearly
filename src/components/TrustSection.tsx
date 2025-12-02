@@ -8,7 +8,7 @@ const TrustSection = () => {
           {/* Main trust indicator */}
           <div className="flex flex-col items-center justify-center gap-2 mb-8">
             <div className="flex items-center gap-2">
-              <GraduationCap className="w-5 h-5 text-terracotta" />
+              <GraduationCap className="w-5 h-5 text-electric-blue" />
               <p className="text-sm md:text-base text-muted-foreground font-medium">
                 Developed with{" "}
                 <span className="text-primary font-semibold">Stanford Medicine</span>
@@ -23,8 +23,8 @@ const TrustSection = () => {
           {/* Trust badges */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex flex-col items-center text-center p-5 rounded-xl border border-border/60 bg-background/50">
-              <div className="w-12 h-12 rounded-xl bg-terracotta/10 flex items-center justify-center mb-3">
-                <Shield className="w-6 h-6 text-terracotta" />
+              <div className="w-12 h-12 rounded-xl bg-electric-blue/10 flex items-center justify-center mb-3">
+                <Shield className="w-6 h-6 text-electric-blue" />
               </div>
               <h3 className="font-semibold text-primary text-sm mb-1">Evidence-Based</h3>
               <p className="text-xs text-muted-foreground">
@@ -33,8 +33,8 @@ const TrustSection = () => {
             </div>
 
             <div className="flex flex-col items-center text-center p-5 rounded-xl border border-border/60 bg-background/50">
-              <div className="w-12 h-12 rounded-xl bg-terracotta/10 flex items-center justify-center mb-3">
-                <Lock className="w-6 h-6 text-terracotta" />
+              <div className="w-12 h-12 rounded-xl bg-electric-blue/10 flex items-center justify-center mb-3">
+                <Lock className="w-6 h-6 text-electric-blue" />
               </div>
               <h3 className="font-semibold text-primary text-sm mb-1">HIPAA Compliant</h3>
               <p className="text-xs text-muted-foreground">

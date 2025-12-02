@@ -11,9 +11,9 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted" />
         
         {/* Abstract shapes */}
-        <div className="absolute top-20 right-10 w-96 h-96 bg-terracotta/5 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 left-10 w-80 h-80 bg-forest/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-terracotta/3 to-forest/3 rounded-full blur-3xl" />
+        <div className="absolute top-20 right-10 w-96 h-96 bg-electric-blue/5 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-20 left-10 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-electric-blue/3 to-primary/3 rounded-full blur-3xl" />
         
         {/* DNA helix pattern - left side */}
         <svg 
@@ -33,7 +33,7 @@ const HeroSection = () => {
             d="M50 0 Q-50 80 50 160 Q-50 240 50 320 Q-50 400 50 480 Q-50 560 50 640 Q-50 720 50 800" 
             stroke="currentColor" 
             strokeWidth="1.5" 
-            className="text-terracotta"
+            className="text-electric-blue"
           />
           {/* Horizontal connectors */}
           {[0, 80, 160, 240, 320, 400, 480, 560, 640, 720].map((y, i) => (
@@ -51,7 +51,7 @@ const HeroSection = () => {
             d="M1250 0 Q1150 80 1250 160 Q1150 240 1250 320 Q1150 400 1250 480 Q1150 560 1250 640 Q1150 720 1250 800" 
             stroke="currentColor" 
             strokeWidth="1.5" 
-            className="text-terracotta"
+            className="text-electric-blue"
           />
           {/* Right connectors */}
           {[0, 80, 160, 240, 320, 400, 480, 560, 640, 720].map((y, i) => (
