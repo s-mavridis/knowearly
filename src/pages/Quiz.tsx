@@ -50,7 +50,7 @@ const Quiz = () => {
           <div className="flex items-center justify-between mb-4">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-electric-blue flex items-center justify-center">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-emerald flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-xs">A</span>
               </div>
               <span className="text-lg font-semibold text-primary">ArtemisAI</span>
