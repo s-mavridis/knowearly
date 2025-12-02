@@ -16,10 +16,10 @@ const QuizOption = ({ label, description, selected, onClick }: QuizOptionProps) 
       className={cn(
         "w-full min-h-[56px] px-5 py-4 rounded-xl border-2 text-left transition-all duration-200",
         "flex items-center justify-between gap-4",
-        "hover:border-terracotta/50 hover:bg-terracotta/5",
-        "focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:ring-offset-2",
+        "hover:border-electric-blue/50 hover:bg-electric-blue/5",
+        "focus:outline-none focus:ring-2 focus:ring-electric-blue/30 focus:ring-offset-2",
         selected
-          ? "border-terracotta bg-terracotta/10 shadow-sm"
+          ? "border-electric-blue bg-electric-blue/10 shadow-sm"
           : "border-border bg-card"
       )}
     >
@@ -39,7 +39,7 @@ const QuizOption = ({ label, description, selected, onClick }: QuizOptionProps) 
       <div className={cn(
         "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 shrink-0",
         selected
-          ? "border-terracotta bg-terracotta"
+          ? "border-electric-blue bg-electric-blue"
           : "border-border bg-background"
       )}>
         {selected && <Check className="w-4 h-4 text-accent-foreground" />}

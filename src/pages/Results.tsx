@@ -103,7 +103,7 @@ const Results = () => {
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border/50 px-4 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-terracotta flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-electric-blue flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-xs">A</span>
             </div>
             <span className="text-lg font-semibold text-primary">ArtemisAI</span>
@@ -137,8 +137,8 @@ const Results = () => {
           {/* Risk Factors Card */}
           <div className="bg-muted/50 rounded-2xl border border-border p-6 md:p-8 mb-6 shadow-sm">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-terracotta/10 flex items-center justify-center">
-                <AlertCircle className="w-5 h-5 text-terracotta" />
+              <div className="w-10 h-10 rounded-xl bg-electric-blue/10 flex items-center justify-center">
+                <AlertCircle className="w-5 h-5 text-electric-blue" />
               </div>
               <div>
                 <h2 className="text-xl font-semibold text-primary">Your Risk Factor Profile</h2>
@@ -156,11 +156,11 @@ const Results = () => {
                 >
                   <div className={cn(
                     "w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5",
-                    hasElevatedRisk ? "bg-terracotta/10" : "bg-forest/10"
+                    hasElevatedRisk ? "bg-electric-blue/10" : "bg-success/10"
                   )}>
                     <Check className={cn(
                       "w-3 h-3",
-                      hasElevatedRisk ? "text-terracotta" : "text-forest"
+                      hasElevatedRisk ? "text-electric-blue" : "text-success"
                     )} />
                   </div>
                   <span className="text-foreground">{factor}</span>
@@ -226,13 +226,13 @@ const Results = () => {
                   className={cn(
                     "relative rounded-2xl border-2 p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg",
                     tier.popular 
-                      ? "border-terracotta bg-terracotta/5 shadow-md" 
-                      : "border-border bg-card hover:border-terracotta/30"
+                      ? "border-electric-blue bg-electric-blue/5 shadow-md" 
+                      : "border-border bg-card hover:border-electric-blue/30"
                   )}
                 >
                   {tier.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <span className="bg-terracotta text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
+                      <span className="bg-electric-blue text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
                         Recommended
                       </span>
                     </div>
@@ -252,7 +252,7 @@ const Results = () => {
                   <ul className="space-y-3 mb-6">
                     {tier.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-start gap-2">
-                        <CheckCircle className="w-4 h-4 text-forest shrink-0 mt-0.5" />
+                        <CheckCircle className="w-4 h-4 text-success shrink-0 mt-0.5" />
                         <span className="text-sm text-muted-foreground">{feature}</span>
                       </li>
                     ))}
@@ -273,11 +273,11 @@ const Results = () => {
           {/* Trust indicators */}
           <div className="flex flex-wrap items-center justify-center gap-6 mb-10">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Shield className="w-4 h-4 text-terracotta" />
+              <Shield className="w-4 h-4 text-electric-blue" />
               <span>HIPAA Compliant</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Users className="w-4 h-4 text-terracotta" />
+              <Users className="w-4 h-4 text-electric-blue" />
               <span>Stanford Medicine Collaboration</span>
             </div>
           </div>
@@ -291,9 +291,9 @@ const Results = () => {
             </p>
             <p className="text-xs text-muted-foreground">
               By using this service, you agree to our{" "}
-              <a href="#" className="text-terracotta hover:underline">Privacy Policy</a>
+              <a href="#" className="text-electric-blue hover:underline">Privacy Policy</a>
               {" "}and{" "}
-              <a href="#" className="text-terracotta hover:underline">Terms of Service</a>.
+              <a href="#" className="text-electric-blue hover:underline">Terms of Service</a>.
             </p>
           </div>
         </div>
