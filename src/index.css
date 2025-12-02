@@ -6,26 +6,26 @@
 
 @layer base {
   :root {
-    /* ArtemisAI Design System - Muted & Sophisticated */
+    /* ArtemisAI Design System - Sophisticated */
     --background: 40 15% 97%;
-    --foreground: 216 50% 18%;
+    --foreground: 216 55% 18%;
 
     --card: 0 0% 100%;
-    --card-foreground: 216 50% 18%;
+    --card-foreground: 216 55% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 216 50% 18%;
+    --popover-foreground: 216 55% 18%;
 
-    --primary: 216 50% 22%;
+    --primary: 216 55% 20%;
     --primary-foreground: 40 15% 97%;
 
-    --secondary: 187 40% 40%;
+    --secondary: 185 35% 42%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 220 14% 94%;
-    --muted-foreground: 220 10% 45%;
+    --muted-foreground: 220 10% 42%;
 
-    --accent: 187 40% 40%;
+    --accent: 185 35% 42%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 65% 55%;
@@ -33,17 +33,17 @@
 
     --border: 220 15% 86%;
     --input: 220 15% 86%;
-    --ring: 187 40% 40%;
+    --ring: 185 35% 42%;
 
     --radius: 0.5rem;
 
-    /* Custom tokens - Sophisticated muted */
-    --navy: 216 50% 22%;
-    --navy-light: 216 40% 32%;
-    --teal: 187 40% 40%;
-    --teal-light: 187 35% 48%;
+    /* Custom tokens */
+    --navy: 216 55% 20%;
+    --navy-light: 216 45% 30%;
+    --teal: 185 35% 42%;
+    --teal-light: 185 30% 50%;
     --warm-white: 40 15% 97%;
-    --gray-700: 220 10% 45%;
+    --gray-700: 220 10% 42%;
     --gray-400: 220 12% 62%;
 
     /* Glass effect */

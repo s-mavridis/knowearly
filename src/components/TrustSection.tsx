@@ -6,11 +6,17 @@ const TrustSection = () => {
       <div className="max-w-4xl mx-auto">
         <div className="glass rounded-2xl p-8 md:p-10">
           {/* Main trust indicator */}
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <GraduationCap className="w-6 h-6 text-teal" />
-            <p className="text-sm md:text-base text-muted-foreground font-medium">
-              Developed in collaboration with{" "}
-              <span className="text-primary font-semibold">Stanford Medicine</span>
+          <div className="flex flex-col items-center justify-center gap-2 mb-8">
+            <div className="flex items-center gap-2">
+              <GraduationCap className="w-5 h-5 text-teal" />
+              <p className="text-sm md:text-base text-muted-foreground font-medium">
+                Developed with{" "}
+                <span className="text-primary font-semibold">Stanford Medicine</span>
+                {" "}physicians
+              </p>
+            </div>
+            <p className="text-xs text-muted-foreground/60">
+              Evidence-based risk assessment methodology
             </p>
           </div>
 

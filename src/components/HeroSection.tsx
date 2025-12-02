@@ -14,24 +14,48 @@ const HeroSection = () => {
         <div className="absolute bottom-20 left-10 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-teal/3 to-primary/3 rounded-full blur-3xl" />
         
-        {/* DNA helix abstract representation */}
+        {/* DNA helix pattern - left side */}
         <svg 
-          className="absolute right-0 top-1/4 w-1/3 h-1/2 opacity-[0.03]" 
-          viewBox="0 0 200 400" 
+          className="absolute left-0 top-0 w-full h-full opacity-[0.04] pointer-events-none" 
+          viewBox="0 0 1200 800" 
           fill="none"
+          preserveAspectRatio="xMidYMid slice"
         >
+          {/* Left DNA strand */}
           <path 
-            d="M50 0 Q100 50 150 0 Q100 100 50 100 Q100 150 150 100 Q100 200 50 200 Q100 250 150 200 Q100 300 50 300 Q100 350 150 300 Q100 400 50 400" 
+            d="M-50 0 Q50 80 -50 160 Q50 240 -50 320 Q50 400 -50 480 Q50 560 -50 640 Q50 720 -50 800" 
             stroke="currentColor" 
-            strokeWidth="2" 
+            strokeWidth="1.5" 
             className="text-primary"
           />
           <path 
-            d="M150 0 Q100 50 50 0 Q100 100 150 100 Q100 150 50 100 Q100 200 150 200 Q100 250 50 200 Q100 300 150 300 Q100 350 50 300 Q100 400 150 400" 
+            d="M50 0 Q-50 80 50 160 Q-50 240 50 320 Q-50 400 50 480 Q-50 560 50 640 Q-50 720 50 800" 
             stroke="currentColor" 
-            strokeWidth="2" 
+            strokeWidth="1.5" 
             className="text-teal"
           />
+          {/* Horizontal connectors */}
+          {[0, 80, 160, 240, 320, 400, 480, 560, 640, 720].map((y, i) => (
+            <line key={i} x1="-50" y1={y} x2="50" y2={y} stroke="currentColor" strokeWidth="0.5" className="text-muted-foreground" />
+          ))}
+          
+          {/* Right DNA strand */}
+          <path 
+            d="M1150 0 Q1250 80 1150 160 Q1250 240 1150 320 Q1250 400 1150 480 Q1250 560 1150 640 Q1250 720 1150 800" 
+            stroke="currentColor" 
+            strokeWidth="1.5" 
+            className="text-primary"
+          />
+          <path 
+            d="M1250 0 Q1150 80 1250 160 Q1150 240 1250 320 Q1150 400 1250 480 Q1150 560 1250 640 Q1150 720 1250 800" 
+            stroke="currentColor" 
+            strokeWidth="1.5" 
+            className="text-teal"
+          />
+          {/* Right connectors */}
+          {[0, 80, 160, 240, 320, 400, 480, 560, 640, 720].map((y, i) => (
+            <line key={`r-${i}`} x1="1150" y1={y} x2="1250" y2={y} stroke="currentColor" strokeWidth="0.5" className="text-muted-foreground" />
+          ))}
         </svg>
       </div>
 
