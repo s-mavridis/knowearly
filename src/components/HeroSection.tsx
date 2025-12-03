@@ -4,18 +4,19 @@ import { ArrowRight } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-earth">
-      {/* Background image */}
+    <section className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Background layers */}
       <div 
-        className="absolute inset-0"
+        className="absolute inset-0 bg-earth"
         style={{
           backgroundImage: `url('/images/dna-bg.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
       />
       {/* Warm overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-earth/90 via-earth/85 to-earth/90" />
+      <div className="absolute inset-0 bg-gradient-to-r from-earth/95 via-earth/70 to-earth/50" />
       
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto w-full px-6 pt-32 pb-24">
