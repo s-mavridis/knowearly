@@ -61,13 +61,13 @@ const Results = () => {
   
   // Determine risk level
   const getRiskLevel = () => {
-    if (highPriority.length >= 2) return "HIGH PRIORITY";
-    if (highPriority.length >= 1 || additional.length >= 2) return "ELEVATED NEED";
-    return "STANDARD";
+    if (highPriority.length >= 2) return "High Priority";
+    if (highPriority.length >= 1 || additional.length >= 2) return "Elevated Need";
+    return "Standard";
   };
   
   const riskLevel = getRiskLevel();
-  const hasElevatedRisk = riskLevel !== "STANDARD";
+  const hasElevatedRisk = riskLevel !== "Standard";
 
   const pricingTiers = [
     {
@@ -180,7 +180,7 @@ const Results = () => {
           <div className="bg-earth/40 backdrop-blur-xl border border-white/20 rounded-3xl p-8 md:p-12 max-w-[500px] mx-auto shadow-2xl">
             {/* Top badge */}
             <div className="inline-block mb-6">
-              <span className="text-xs uppercase tracking-[0.2em] text-white/80 font-medium">
+              <span className="text-xs tracking-[0.15em] text-white/80 font-medium">
                 Your Risk Assessment
               </span>
             </div>
@@ -192,14 +192,14 @@ const Results = () => {
                   "w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center",
                 )}
                 style={{ 
-                  boxShadow: riskLevel === "STANDARD" 
+                  boxShadow: riskLevel === "Standard" 
                     ? '0 0 40px rgba(107, 142, 107, 0.4)' 
                     : '0 0 40px rgba(207, 92, 54, 0.3)' 
                 }}
               >
-                {riskLevel === "STANDARD" ? (
+                {riskLevel === "Standard" ? (
                   <Check className="w-10 h-10 text-sage" />
-                ) : riskLevel === "HIGH PRIORITY" ? (
+                ) : riskLevel === "High Priority" ? (
                   <AlertCircle className="w-10 h-10 text-terracotta" />
                 ) : (
                   <Activity className="w-10 h-10 text-terracotta" />
@@ -215,7 +215,7 @@ const Results = () => {
               <span 
                 className={cn(
                   "inline-block text-2xl md:text-3xl font-bold px-6 py-3 rounded-full text-white",
-                  riskLevel === "STANDARD" ? "bg-sage" : "bg-terracotta"
+                  riskLevel === "Standard" ? "bg-sage" : "bg-terracotta"
                 )}
               >
                 {riskLevel}
@@ -263,7 +263,7 @@ const Results = () => {
             {/* High Priority Factors */}
             {highPriority.length > 0 && (
               <div className="mb-10">
-                <h3 className="text-xs uppercase tracking-[0.15em] text-terracotta font-semibold mb-5">
+                <h3 className="text-sm tracking-wide text-terracotta font-semibold mb-5">
                   High Priority
                 </h3>
                 <div className="space-y-5">
@@ -287,7 +287,7 @@ const Results = () => {
             {/* Additional Factors */}
             {additional.length > 0 && (
               <div className="mb-10">
-                <h3 className="text-xs uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-5">
+                <h3 className="text-sm tracking-wide text-muted-foreground font-semibold mb-5">
                   Additional Factors
                 </h3>
                 <div className="space-y-4">
@@ -483,7 +483,7 @@ const Results = () => {
                 {tier.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <span className="bg-terracotta text-white text-xs font-semibold px-4 py-1.5 rounded-full whitespace-nowrap">
-                      MOST POPULAR
+                      Most Popular
                     </span>
                   </div>
                 )}
@@ -582,7 +582,7 @@ const Results = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Important Information */}
             <div>
-              <h4 className="text-xs uppercase tracking-[0.1em] text-white/50 font-semibold mb-3">
+              <h4 className="text-sm tracking-wide text-white/50 font-semibold mb-3">
                 Important Information
               </h4>
               <p className="text-sm text-white/40 leading-relaxed">
@@ -592,7 +592,7 @@ const Results = () => {
 
             {/* Privacy & Data */}
             <div>
-              <h4 className="text-xs uppercase tracking-[0.1em] text-white/50 font-semibold mb-3">
+              <h4 className="text-sm tracking-wide text-white/50 font-semibold mb-3">
                 Privacy & Data
               </h4>
               <p className="text-sm text-white/40 leading-relaxed">
