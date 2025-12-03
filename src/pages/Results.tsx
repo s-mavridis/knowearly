@@ -138,7 +138,7 @@ const Results = () => {
   return (
     <div className="min-h-screen">
       {/* SECTION 1: Hero / Status (Dark) */}
-      <section className="bg-[#1a1f2e] py-16 md:py-24 px-6 md:px-10 relative overflow-hidden">
+      <section className="bg-[#1c1917] py-16 md:py-24 px-6 md:px-10 relative overflow-hidden">
         <AnimatedBackground />
         
         <div className="max-w-[900px] mx-auto text-center relative z-10">
@@ -322,7 +322,7 @@ const Results = () => {
 
       {/* SECTION 3: Recommended Screenings (Dark) */}
       {hasElevatedRisk && (
-        <section className="bg-[#1a1f2e] py-16 md:py-20 px-6 relative overflow-hidden">
+        <section className="bg-[#1c1917] py-16 md:py-20 px-6 relative overflow-hidden">
           <AnimatedBackground />
           
           <div className="max-w-[900px] mx-auto relative z-10">
@@ -473,7 +473,7 @@ const Results = () => {
       </section>
 
       {/* SECTION 5: Trust & Disclaimers (Dark) */}
-      <section className="bg-[#1a1f2e] py-12 md:py-16 px-6 relative overflow-hidden">
+      <section className="bg-[#1c1917] py-12 md:py-16 px-6 relative overflow-hidden">
         <AnimatedBackground />
         <div className="max-w-[1000px] mx-auto relative z-10">
           {/* Trust badges */}
