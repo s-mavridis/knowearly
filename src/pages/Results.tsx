@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import resultsBanner1 from "@/assets/results-banner-1.png";
-import resultsHeroBgWarm from "@/assets/results-hero-bg-warm.png";
+import resultsHeroSilhouette from "@/assets/results-hero-silhouette.png";
 
 const Results = () => {
   const location = useLocation();
@@ -143,13 +143,13 @@ const Results = () => {
         {/* Premium background image with dark center for text contrast */}
         <div className="absolute inset-0">
           <img
-            src={resultsHeroBgWarm}
+            src={resultsHeroSilhouette}
             alt=""
             className="w-full h-full object-cover animate-slow-zoom"
           />
-          {/* Stronger center darkening for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/50" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.5)_0%,transparent_60%)]" />
+          {/* Stronger overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/70 to-black/60" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.6)_0%,transparent_70%)]" />
         </div>
         
         {/* Decorative elements */}
