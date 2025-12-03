@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import resultsBanner1 from "@/assets/results-banner-1.png";
-import resultsHeroSilhouette from "@/assets/results-hero-silhouette.png";
+import heroBg from "@/assets/hero-bg.png";
 
 const Results = () => {
   const location = useLocation();
@@ -143,13 +143,12 @@ const Results = () => {
         {/* Premium background image with dark center for text contrast */}
         <div className="absolute inset-0">
           <img
-            src={resultsHeroSilhouette}
+            src={heroBg}
             alt=""
             className="w-full h-full object-cover animate-slow-zoom"
           />
-          {/* Stronger overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/70 to-black/60" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.6)_0%,transparent_70%)]" />
+          {/* Overlay for text readability - similar to main page */}
+          <div className="absolute inset-0 bg-gradient-to-r from-earth/70 via-earth/50 to-earth/30" />
         </div>
         
         {/* Decorative elements */}
