@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-3rem)] max-w-7xl px-6">
-      <div className="flex items-center justify-between px-4 md:px-6 py-2.5 md:py-3 rounded-full bg-earth/60 backdrop-blur-md border border-white/10">
+    <nav className="fixed top-4 left-0 right-0 z-50 max-w-7xl mx-auto px-6">
+      <div className="flex items-center justify-between px-6 py-2.5 md:py-3 rounded-full bg-earth/60 backdrop-blur-md border border-white/10">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-terracotta flex items-center justify-center shrink-0">
