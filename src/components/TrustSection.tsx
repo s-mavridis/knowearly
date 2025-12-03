@@ -1,60 +1,68 @@
-import { Shield, Lock, GraduationCap } from "lucide-react";
+import { Shield, Brain, Award } from "lucide-react";
 
 const TrustSection = () => {
   return (
-    <section className="py-24 px-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="glass rounded-2xl p-8 md:p-10">
-          {/* Main trust indicator */}
-          <div className="flex flex-col items-center justify-center gap-2 mb-8">
-            <div className="flex items-center gap-2">
-              <GraduationCap className="w-5 h-5 text-teal" />
-              <p className="text-sm md:text-base text-muted-foreground font-medium">
-                Developed with{" "}
-                <span className="text-primary font-semibold">Stanford Medicine</span>
-                {" "}physicians
-              </p>
+    <section className="py-24 px-6 bg-background">
+      <div className="max-w-6xl mx-auto">
+        {/* Section header */}
+        <div className="text-center mb-16">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground mb-4">
+            <span className="italic">Testing is</span> easy
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Developed with Stanford Medicine physicians using evidence-based screening guidelines.
+          </p>
+        </div>
+
+        {/* Steps */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="text-center p-8">
+            <div className="text-terracotta text-sm font-semibold mb-4">01</div>
+            <div className="w-16 h-16 rounded-full bg-sand flex items-center justify-center mx-auto mb-6">
+              <Brain className="w-7 h-7 text-earth" />
             </div>
-            <p className="text-xs text-muted-foreground/60">
-              Evidence-based risk assessment methodology
+            <h3 className="text-xl font-semibold text-foreground mb-3">Answer questions</h3>
+            <p className="text-muted-foreground">
+              Complete a brief assessment about your family health history
             </p>
           </div>
 
-          {/* Trust badges */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex flex-col items-center text-center p-5 rounded-xl border border-border/60 bg-warm-neutral-light/30">
-              <div className="w-12 h-12 rounded-xl bg-teal/10 flex items-center justify-center mb-3">
-                <Shield className="w-6 h-6 text-teal" />
-              </div>
-              <h3 className="font-semibold text-primary text-sm mb-1">Evidence-Based</h3>
-              <p className="text-xs text-muted-foreground">
-                Built on peer-reviewed clinical guidelines
-              </p>
+          <div className="text-center p-8">
+            <div className="text-terracotta text-sm font-semibold mb-4">02</div>
+            <div className="w-16 h-16 rounded-full bg-sand flex items-center justify-center mx-auto mb-6">
+              <Shield className="w-7 h-7 text-earth" />
             </div>
+            <h3 className="text-xl font-semibold text-foreground mb-3">Get your results</h3>
+            <p className="text-muted-foreground">
+              Receive personalized insights based on established medical criteria
+            </p>
+          </div>
 
-            <div className="flex flex-col items-center text-center p-5 rounded-xl border border-border/60 bg-warm-neutral-light/30">
-              <div className="w-12 h-12 rounded-xl bg-teal/10 flex items-center justify-center mb-3">
-                <Lock className="w-6 h-6 text-teal" />
-              </div>
-              <h3 className="font-semibold text-primary text-sm mb-1">HIPAA Compliant</h3>
-              <p className="text-xs text-muted-foreground">
-                Your health information stays private
-              </p>
+          <div className="text-center p-8">
+            <div className="text-terracotta text-sm font-semibold mb-4">03</div>
+            <div className="w-16 h-16 rounded-full bg-sand flex items-center justify-center mx-auto mb-6">
+              <Award className="w-7 h-7 text-earth" />
             </div>
+            <h3 className="text-xl font-semibold text-foreground mb-3">Take action</h3>
+            <p className="text-muted-foreground">
+              Share findings with your healthcare provider for next steps
+            </p>
+          </div>
+        </div>
 
-            <div className="flex flex-col items-center text-center p-5 rounded-xl border border-border/60 bg-warm-neutral-light/30">
-              <div className="w-12 h-12 rounded-xl bg-lavender/30 flex items-center justify-center mb-3">
-                <svg className="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                  <path d="M2 17l10 5 10-5" />
-                  <path d="M2 12l10 5 10-5" />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-primary text-sm mb-1">AI-Powered</h3>
-              <p className="text-xs text-muted-foreground">
-                Personalized risk analysis in minutes
-              </p>
-            </div>
+        {/* Trust badges */}
+        <div className="flex flex-wrap items-center justify-center gap-8 pt-8 border-t border-border">
+          <div className="flex items-center gap-3 text-muted-foreground">
+            <Shield className="w-5 h-5" />
+            <span className="text-sm font-medium">HIPAA Compliant</span>
+          </div>
+          <div className="flex items-center gap-3 text-muted-foreground">
+            <Award className="w-5 h-5" />
+            <span className="text-sm font-medium">Evidence-Based</span>
+          </div>
+          <div className="flex items-center gap-3 text-muted-foreground">
+            <Brain className="w-5 h-5" />
+            <span className="text-sm font-medium">AI-Powered Analysis</span>
           </div>
         </div>
       </div>

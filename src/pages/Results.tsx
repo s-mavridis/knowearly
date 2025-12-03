@@ -102,11 +102,13 @@ const Results = () => {
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border/50 px-4 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-deep-teal to-teal flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xs">A</span>
+          <Link to="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-terracotta flex items-center justify-center">
+              <svg viewBox="0 0 24 24" className="w-4 h-4 text-white" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+              </svg>
             </div>
-            <span className="text-lg font-semibold text-primary">ArtemisAI</span>
+            <span className="text-lg font-semibold text-foreground">ArtemisAI</span>
           </Link>
           
           <Button
@@ -126,8 +128,8 @@ const Results = () => {
         <div className="max-w-5xl mx-auto">
           {/* Page header */}
           <div className="text-center mb-10">
-            <h1 className="text-3xl md:text-4xl font-bold text-primary mb-3">
-              Your Risk Assessment Results
+            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground mb-3">
+              <span className="italic">Your</span> Risk Assessment Results
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Based on your family history and screening information, here's what we found.
@@ -135,19 +137,19 @@ const Results = () => {
           </div>
 
           {/* Risk Factors Card */}
-          <div className="bg-warm-neutral-light/50 rounded-2xl border border-border p-6 md:p-8 mb-6 shadow-sm">
+          <div className="bg-sand-light rounded-2xl border border-border p-6 md:p-8 mb-6 shadow-sm">
             <div className="flex items-center gap-3 mb-6">
               <div className={cn(
                 "w-10 h-10 rounded-xl flex items-center justify-center",
-                hasElevatedRisk ? "bg-warning/10" : "bg-teal/10"
+                hasElevatedRisk ? "bg-terracotta/10" : "bg-sage/10"
               )}>
                 <AlertCircle className={cn(
                   "w-5 h-5",
-                  hasElevatedRisk ? "text-warning" : "text-teal"
+                  hasElevatedRisk ? "text-terracotta" : "text-sage"
                 )} />
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-primary">Your Risk Factor Profile</h2>
+                <h2 className="text-xl font-semibold text-foreground">Your Risk Factor Profile</h2>
                 <p className="text-sm text-muted-foreground">
                   {hasElevatedRisk ? "Factors that may affect your screening needs" : "Your current risk assessment"}
                 </p>
@@ -162,11 +164,11 @@ const Results = () => {
                 >
                   <div className={cn(
                     "w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5",
-                    hasElevatedRisk ? "bg-warning/10" : "bg-teal/10"
+                    hasElevatedRisk ? "bg-terracotta/10" : "bg-sage/10"
                   )}>
                     <Check className={cn(
                       "w-3 h-3",
-                      hasElevatedRisk ? "text-warning" : "text-teal"
+                      hasElevatedRisk ? "text-terracotta" : "text-sage"
                     )} />
                   </div>
                   <span className="text-foreground">{factor}</span>
@@ -178,10 +180,10 @@ const Results = () => {
           {/* What This Means Card */}
           <div className="bg-card rounded-2xl border border-border p-6 md:p-8 mb-12 shadow-sm">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                <FileText className="w-5 h-5 text-primary" />
+              <div className="w-10 h-10 rounded-xl bg-earth/10 flex items-center justify-center">
+                <FileText className="w-5 h-5 text-earth" />
               </div>
-              <h2 className="text-xl font-semibold text-primary">What This Means</h2>
+              <h2 className="text-xl font-semibold text-foreground">What This Means</h2>
             </div>
 
             <div className="space-y-4 text-muted-foreground">
@@ -217,8 +219,8 @@ const Results = () => {
           {/* Pricing Section */}
           <div className="mb-12">
             <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
-                Take the Next Step
+              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
+                <span className="italic">Take the</span> Next Step
               </h2>
               <p className="text-muted-foreground">
                 Get personalized guidance based on your risk profile
@@ -232,23 +234,23 @@ const Results = () => {
                   className={cn(
                     "relative rounded-2xl border-2 p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg",
                     tier.popular 
-                      ? "border-teal bg-teal/5 shadow-md" 
-                      : "border-border bg-card hover:border-teal/30"
+                      ? "border-terracotta bg-terracotta/5 shadow-md" 
+                      : "border-border bg-card hover:border-terracotta/30"
                   )}
                 >
                   {tier.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <span className="bg-teal text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
+                      <span className="bg-terracotta text-white text-xs font-semibold px-3 py-1 rounded-full">
                         Recommended
                       </span>
                     </div>
                   )}
 
                   <div className="text-center mb-6">
-                    <h3 className="text-lg font-semibold text-primary mb-1">{tier.name}</h3>
+                    <h3 className="text-lg font-semibold text-foreground mb-1">{tier.name}</h3>
                     <p className="text-sm text-muted-foreground mb-4">{tier.description}</p>
                     <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-4xl font-bold text-primary">{tier.price}</span>
+                      <span className="text-4xl font-bold text-foreground">{tier.price}</span>
                       {tier.price !== "Free" && (
                         <span className="text-muted-foreground text-sm">one-time</span>
                       )}
@@ -258,7 +260,7 @@ const Results = () => {
                   <ul className="space-y-3 mb-6">
                     {tier.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-start gap-2">
-                        <CheckCircle className="w-4 h-4 text-teal shrink-0 mt-0.5" />
+                        <CheckCircle className="w-4 h-4 text-terracotta shrink-0 mt-0.5" />
                         <span className="text-sm text-muted-foreground">{feature}</span>
                       </li>
                     ))}
@@ -266,7 +268,7 @@ const Results = () => {
 
                   <Button
                     variant={tier.popular ? "cta" : "outline"}
-                    className="w-full"
+                    className={cn("w-full", tier.popular && "bg-terracotta hover:bg-terracotta-light")}
                   >
                     {tier.cta}
                     <ArrowRight className="w-4 h-4 ml-1" />
@@ -279,17 +281,17 @@ const Results = () => {
           {/* Trust indicators */}
           <div className="flex flex-wrap items-center justify-center gap-6 mb-10">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Shield className="w-4 h-4 text-teal" />
+              <Shield className="w-4 h-4 text-terracotta" />
               <span>HIPAA Compliant</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Users className="w-4 h-4 text-teal" />
+              <Users className="w-4 h-4 text-terracotta" />
               <span>Stanford Medicine Collaboration</span>
             </div>
           </div>
 
           {/* Disclaimers */}
-          <div className="glass rounded-xl p-6 text-center">
+          <div className="bg-sand-light rounded-xl p-6 text-center">
             <p className="text-xs text-muted-foreground leading-relaxed mb-3">
               <strong className="text-muted-foreground/80">Medical Disclaimer:</strong> This assessment provides 
               educational information only and is not a substitute for professional medical advice, diagnosis, or treatment. 
@@ -297,9 +299,9 @@ const Results = () => {
             </p>
             <p className="text-xs text-muted-foreground">
               By using this service, you agree to our{" "}
-              <a href="#" className="text-teal hover:underline">Privacy Policy</a>
+              <a href="#" className="text-terracotta hover:underline">Privacy Policy</a>
               {" "}and{" "}
-              <a href="#" className="text-teal hover:underline">Terms of Service</a>.
+              <a href="#" className="text-terracotta hover:underline">Terms of Service</a>.
             </p>
           </div>
         </div>
