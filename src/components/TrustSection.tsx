@@ -8,7 +8,7 @@ const TrustSection = () => {
           {/* Main trust indicator */}
           <div className="flex flex-col items-center justify-center gap-2 mb-8">
             <div className="flex items-center gap-2">
-              <GraduationCap className="w-5 h-5 text-emerald" />
+              <GraduationCap className="w-5 h-5 text-teal" />
               <p className="text-sm md:text-base text-muted-foreground font-medium">
                 Developed with{" "}
                 <span className="text-primary font-semibold">Stanford Medicine</span>
@@ -22,9 +22,9 @@ const TrustSection = () => {
 
           {/* Trust badges */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex flex-col items-center text-center p-5 rounded-xl border border-border/60 bg-background/50">
-              <div className="w-12 h-12 rounded-xl bg-emerald/10 flex items-center justify-center mb-3">
-                <Shield className="w-6 h-6 text-emerald" />
+            <div className="flex flex-col items-center text-center p-5 rounded-xl border border-border/60 bg-warm-neutral-light/30">
+              <div className="w-12 h-12 rounded-xl bg-teal/10 flex items-center justify-center mb-3">
+                <Shield className="w-6 h-6 text-teal" />
               </div>
               <h3 className="font-semibold text-primary text-sm mb-1">Evidence-Based</h3>
               <p className="text-xs text-muted-foreground">
@@ -32,9 +32,9 @@ const TrustSection = () => {
               </p>
             </div>
 
-            <div className="flex flex-col items-center text-center p-5 rounded-xl border border-border/60 bg-background/50">
-              <div className="w-12 h-12 rounded-xl bg-emerald/10 flex items-center justify-center mb-3">
-                <Lock className="w-6 h-6 text-emerald" />
+            <div className="flex flex-col items-center text-center p-5 rounded-xl border border-border/60 bg-warm-neutral-light/30">
+              <div className="w-12 h-12 rounded-xl bg-teal/10 flex items-center justify-center mb-3">
+                <Lock className="w-6 h-6 text-teal" />
               </div>
               <h3 className="font-semibold text-primary text-sm mb-1">HIPAA Compliant</h3>
               <p className="text-xs text-muted-foreground">
@@ -42,8 +42,8 @@ const TrustSection = () => {
               </p>
             </div>
 
-            <div className="flex flex-col items-center text-center p-5 rounded-xl border border-border/60 bg-background/50">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+            <div className="flex flex-col items-center text-center p-5 rounded-xl border border-border/60 bg-warm-neutral-light/30">
+              <div className="w-12 h-12 rounded-xl bg-lavender/30 flex items-center justify-center mb-3">
                 <svg className="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 2L2 7l10 5 10-5-10-5z" />
                   <path d="M2 17l10 5 10-5" />

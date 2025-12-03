@@ -7,7 +7,7 @@ const Navbar = () => {
         <div className="glass-strong rounded-2xl px-6 py-3 flex items-center justify-between">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-emerald flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-deep-teal to-teal flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-sm">A</span>
             </div>
             <span className="text-xl font-semibold text-primary">ArtemisAI</span>

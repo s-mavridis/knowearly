@@ -16,7 +16,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         // ArtemisAI custom variants
-        cta: "bg-emerald text-accent-foreground shadow-lg shadow-emerald/25 hover:shadow-xl hover:shadow-emerald/30 transform transition-all duration-200 hover:scale-[1.02]",
+        cta: "bg-teal text-accent-foreground shadow-lg shadow-teal/25 hover:shadow-xl hover:shadow-teal/30 transform transition-all duration-200 hover:scale-[1.02]",
         nav: "text-muted-foreground hover:text-primary font-medium",
       },
       size: {
