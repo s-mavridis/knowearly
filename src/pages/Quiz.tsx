@@ -4,9 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import QuizProgress from "@/components/quiz/QuizProgress";
 import QuizQuestion from "@/components/quiz/QuizQuestion";
 import QuizNavigation from "@/components/quiz/QuizNavigation";
-import AnimatedBackground from "@/components/AnimatedBackground";
 import { quizQuestions } from "@/data/quizQuestions";
-import { cn } from "@/lib/utils";
 
 const Quiz = () => {
   const navigate = useNavigate();
@@ -16,10 +14,6 @@ const Quiz = () => {
   const currentQuestion = quizQuestions[currentIndex];
   const selectedAnswer = answers[currentQuestion.id] || null;
   const isLastQuestion = currentIndex === quizQuestions.length - 1;
-  
-  // Determine if current question should have dark or light background
-  // Odd indices (0, 2, 4) = dark, Even indices (1, 3) = light
-  const isDarkBackground = currentIndex % 2 === 0;
 
   const handleSelectAnswer = useCallback((answerId: string) => {
     setAnswers((prev) => ({
@@ -43,43 +37,27 @@ const Quiz = () => {
   }, [currentIndex]);
 
   return (
-    <div 
-      className={cn(
-        "min-h-screen flex flex-col transition-colors duration-500 relative overflow-hidden",
-        isDarkBackground ? "bg-[#1c1917]" : "bg-background"
-      )}
-    >
-      {/* Animated background for dark sections */}
-      {isDarkBackground && <AnimatedBackground />}
-
+    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
       {/* Fixed Progress Bar at very top */}
       <QuizProgress
         currentQuestion={currentIndex + 1}
         totalQuestions={quizQuestions.length}
-        isDark={isDarkBackground}
+        isDark={false}
       />
 
       {/* Header with question counter and back button */}
       <header className="relative z-10 px-6 pt-8 pb-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          {/* Question counter - top left */}
-          <span className={cn(
-            "text-sm uppercase tracking-widest font-medium",
-            isDarkBackground ? "text-white/60" : "text-muted-foreground"
-          )}>
-            Question {currentIndex + 1} of {quizQuestions.length}
+          {/* Question counter - top left - terracotta color like reference */}
+          <span className="text-sm uppercase tracking-widest font-semibold text-primary">
+            Question {currentIndex + 1} · of {quizQuestions.length}
           </span>
           
           {/* Back button - top right */}
           {currentIndex > 0 && (
             <button
               onClick={handleBack}
-              className={cn(
-                "flex items-center gap-1 text-base font-medium transition-colors duration-200",
-                isDarkBackground 
-                  ? "text-white/60 hover:text-white" 
-                  : "text-muted-foreground hover:text-foreground"
-              )}
+              className="flex items-center gap-1 text-base font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
             >
               <ArrowLeft className="w-4 h-4" />
               Back
@@ -98,7 +76,7 @@ const Quiz = () => {
               selectedAnswer={answers[question.id] || null}
               onSelectAnswer={handleSelectAnswer}
               isVisible={index === currentIndex}
-              isDark={index % 2 === 0}
+              isDark={false}
             />
           ))}
         </div>
@@ -109,7 +87,7 @@ const Quiz = () => {
         onNext={handleNext}
         canGoNext={!!selectedAnswer}
         isLastQuestion={isLastQuestion}
-        isDark={isDarkBackground}
+        isDark={false}
       />
     </div>
   );
