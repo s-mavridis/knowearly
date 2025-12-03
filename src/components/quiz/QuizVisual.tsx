@@ -1,9 +1,35 @@
 import { cn } from "@/lib/utils";
-import quizVisual1 from "@/assets/quiz-visual-1.png";
-import quizVisual2 from "@/assets/quiz-visual-2.png";
-import quizVisual3 from "@/assets/quiz-visual-3.png";
+import quizVisual1 from "@/assets/quiz-visual-1.jpg";
+import quizVisual2 from "@/assets/quiz-visual-2.jpg";
+import quizVisual3 from "@/assets/quiz-visual-3.jpg";
+import quizVisual4 from "@/assets/quiz-visual-4.jpg";
+import quizVisual5 from "@/assets/quiz-visual-5.jpg";
 
-const visuals = [quizVisual1, quizVisual2, quizVisual3];
+const visuals = [quizVisual1, quizVisual2, quizVisual3, quizVisual4, quizVisual5];
+
+// Explanations for why we ask each question
+const questionExplanations = [
+  {
+    title: "Family History Matters",
+    description: "Hereditary factors account for 5-10% of all cancers. Understanding your family history helps identify inherited genetic mutations that may increase your risk."
+  },
+  {
+    title: "Age at Diagnosis",
+    description: "Cancer diagnosed before age 50 often indicates a stronger genetic component. Earlier onset in family members may suggest inherited cancer syndromes."
+  },
+  {
+    title: "Cancer Type Patterns",
+    description: "Certain cancers cluster in families due to shared genetic mutations. BRCA genes affect breast and ovarian cancer, while Lynch syndrome affects colorectal cancer."
+  },
+  {
+    title: "Genetic Testing Insights",
+    description: "Known genetic mutations in your family can directly inform your screening plan. If a mutation has been identified, targeted testing becomes more precise."
+  },
+  {
+    title: "Your Screening History",
+    description: "Regular screenings can detect cancer early when it's most treatable. Your current screening habits help us recommend an appropriate prevention strategy."
+  }
+];
 
 interface QuizVisualProps {
   questionIndex: number;
@@ -11,8 +37,8 @@ interface QuizVisualProps {
 }
 
 const QuizVisual = ({ questionIndex, isVisible }: QuizVisualProps) => {
-  const visualIndex = questionIndex % visuals.length;
-  const visual = visuals[visualIndex];
+  const visual = visuals[questionIndex] || visuals[0];
+  const explanation = questionExplanations[questionIndex] || questionExplanations[0];
 
   return (
     <div
@@ -21,18 +47,18 @@ const QuizVisual = ({ questionIndex, isVisible }: QuizVisualProps) => {
         isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
       )}
     >
-      {/* Premium image with animation */}
+      {/* Premium image with slow zoom animation */}
       <div className="absolute inset-0">
         <img
           src={visual}
           alt=""
           className="w-full h-full object-cover animate-slow-zoom"
         />
-        {/* Gradient overlay for premium feel */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
+        {/* Gradient overlay for depth and text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/30" />
       </div>
 
-      {/* Moving particles - same as Results page */}
+      {/* Moving particles for premium feel */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-1.5 h-1.5 rounded-full bg-white/40 animate-drift-1" />
         <div className="absolute top-1/3 left-1/2 w-1 h-1 rounded-full bg-white/30 animate-drift-2" style={{ animationDelay: '2s' }} />
@@ -52,57 +78,49 @@ const QuizVisual = ({ questionIndex, isVisible }: QuizVisualProps) => {
         <div className="w-3 h-3 rounded-full bg-white/80 border-2 border-white/40 shadow-lg animate-pulse" />
       </div>
 
-      {/* Decorative curved line with dots */}
-      <svg
-        className={cn(
-          "absolute inset-0 w-full h-full pointer-events-none transition-all duration-1000 delay-700",
-          isVisible ? "opacity-100" : "opacity-0"
-        )}
-        viewBox="0 0 400 300"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M50,200 Q150,100 250,180 T380,120"
-          fill="none"
-          stroke="rgba(255,255,255,0.3)"
-          strokeWidth="2"
-          className="animate-draw-line"
-        />
-        <circle cx="50" cy="200" r="6" fill="white" fillOpacity="0.6" className="animate-pulse" />
-        <circle cx="380" cy="120" r="6" fill="white" fillOpacity="0.6" className="animate-pulse delay-200" />
-      </svg>
-
-      {/* Bottom floating element */}
+      {/* Glass card with explanation */}
       <div 
         className={cn(
-          "absolute bottom-6 left-1/2 -translate-x-1/2 transition-all duration-1000 delay-700",
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          "absolute bottom-8 left-6 right-6 transition-all duration-700 delay-200",
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         )}
       >
-        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
-          <div className="w-2 h-2 rounded-full bg-sage animate-pulse" />
-          <span className="text-white/70 text-xs font-medium">Personalized Assessment</span>
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-5 shadow-2xl">
+          {/* Accent dot */}
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-2 h-2 rounded-full bg-sage animate-pulse" />
+            <span className="text-white/60 text-xs font-medium tracking-wide">Why we ask</span>
+          </div>
+          
+          {/* Title */}
+          <h3 className="text-white font-semibold text-lg mb-2 leading-tight">
+            {explanation.title}
+          </h3>
+          
+          {/* Description */}
+          <p className="text-white/70 text-sm leading-relaxed">
+            {explanation.description}
+          </p>
         </div>
       </div>
 
-      {/* Timeline markers at bottom */}
-      <div 
+      {/* Subtle curved line decoration */}
+      <svg
         className={cn(
-          "absolute bottom-0 left-0 right-0 flex justify-center gap-1.5 pb-16 transition-all duration-1000 delay-500",
+          "absolute top-0 left-0 w-full h-32 pointer-events-none transition-all duration-1000 delay-500",
           isVisible ? "opacity-100" : "opacity-0"
         )}
+        viewBox="0 0 400 100"
+        preserveAspectRatio="none"
       >
-        {[...Array(10)].map((_, i) => (
-          <div
-            key={i}
-            className={cn(
-              "w-0.5 transition-all duration-300",
-              i < (questionIndex + 1) * 2 ? "h-4 bg-white/60" : "h-2 bg-white/30"
-            )}
-            style={{ animationDelay: `${i * 50}ms` }}
-          />
-        ))}
-      </div>
+        <path
+          d="M0,80 Q100,20 200,60 T400,40"
+          fill="none"
+          stroke="rgba(255,255,255,0.15)"
+          strokeWidth="1"
+          className="animate-draw-line"
+        />
+      </svg>
     </div>
   );
 };
