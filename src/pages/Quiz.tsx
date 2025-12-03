@@ -50,8 +50,8 @@ const Quiz = () => {
       <header className="relative z-10 px-6 pt-8 pb-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Question counter - top left - terracotta color like reference */}
-          <span className="text-sm uppercase tracking-widest font-semibold text-primary">
-            Question {currentIndex + 1} · of {quizQuestions.length}
+          <span className="text-sm tracking-wide font-semibold text-primary">
+            Question {currentIndex + 1} of {quizQuestions.length}
           </span>
           
           {/* Back button - top right */}
