@@ -6,13 +6,14 @@ import heroBg from "@/assets/hero-bg.png";
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background image */}
+      {/* Background image - flipped horizontally */}
       <div 
         className="absolute inset-0"
         style={{
           backgroundImage: `url(${heroBg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          transform: 'scaleX(-1)',
         }}
       />
       {/* Warm overlay for text readability */}
