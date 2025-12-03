@@ -364,7 +364,7 @@ const Results = () => {
         <section className="relative py-16 md:py-20 px-6 overflow-hidden">
           {/* Premium background image */}
           <div className="absolute inset-0">
-            <img src={resultsBanner1} alt="" className="w-full h-full object-cover animate-slow-zoom" />
+            <img src={resultsBanner1} alt="" className="w-full h-full object-cover animate-slow-pan" />
             <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
           </div>
           
