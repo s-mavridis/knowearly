@@ -6,6 +6,7 @@ import QuizQuestion from "@/components/quiz/QuizQuestion";
 import QuizNavigation from "@/components/quiz/QuizNavigation";
 import { quizQuestions } from "@/data/quizQuestions";
 import { cn } from "@/lib/utils";
+import heroBg from "@/assets/hero-bg.png";
 
 const Quiz = () => {
   const navigate = useNavigate();
@@ -48,17 +49,21 @@ const Quiz = () => {
         isDarkBackground ? "bg-earth" : "bg-background"
       )}
     >
-      {/* Subtle DNA pattern background */}
-      <div 
-        className={cn(
-          "absolute inset-0 pointer-events-none transition-opacity duration-500",
-          isDarkBackground ? "opacity-[0.03]" : "opacity-[0.02]"
-        )}
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0c0 10-10 20-10 30s10 20 10 30M30 0c0 10 10 20 10 30s-10 20-10 30' fill='none' stroke='${isDarkBackground ? '%23ffffff' : '%23000000'}' stroke-width='1'/%3E%3C/svg%3E")`,
-          backgroundSize: '60px 60px',
-        }}
-      />
+      {/* Background image for dark sections - matching landing page */}
+      {isDarkBackground && (
+        <>
+          <div 
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{
+              backgroundImage: `url(${heroBg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              transform: 'scaleX(-1)',
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-earth/80 via-earth/70 to-earth/80" />
+        </>
+      )}
 
       {/* Fixed Progress Bar at very top */}
       <QuizProgress

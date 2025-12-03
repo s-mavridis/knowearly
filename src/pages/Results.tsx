@@ -12,6 +12,7 @@ import {
   RotateCcw
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import heroBg from "@/assets/hero-bg.png";
 
 const Results = () => {
   const location = useLocation();
@@ -136,16 +137,19 @@ const Results = () => {
 
   return (
     <div className="min-h-screen">
-      {/* SECTION 1: Hero / Status (Dark - Earth tone) */}
-      <section className="bg-earth py-16 md:py-24 px-6 md:px-10 relative overflow-hidden">
-        {/* Subtle DNA pattern */}
+      {/* SECTION 1: Hero / Status (Dark - matching landing page) */}
+      <section className="py-16 md:py-24 px-6 md:px-10 relative overflow-hidden">
+        {/* Background image matching landing page */}
         <div 
-          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          className="absolute inset-0"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0c0 10-10 20-10 30s10 20 10 30M30 0c0 10 10 20 10 30s-10 20-10 30' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3C/svg%3E")`,
-            backgroundSize: '60px 60px',
+            backgroundImage: `url(${heroBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            transform: 'scaleX(-1)',
           }}
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-earth/80 via-earth/70 to-earth/80" />
         
         <div className="max-w-[900px] mx-auto text-center relative z-10">
           {/* Top badge */}
@@ -326,17 +330,20 @@ const Results = () => {
         </div>
       </section>
 
-      {/* SECTION 3: Recommended Screenings (Dark - Earth tone) */}
+      {/* SECTION 3: Recommended Screenings (Dark - matching landing page) */}
       {hasElevatedRisk && (
-        <section className="bg-earth py-16 md:py-20 px-6 relative overflow-hidden">
-          {/* DNA pattern */}
+        <section className="py-16 md:py-20 px-6 relative overflow-hidden">
+          {/* Background image matching landing page */}
           <div 
-            className="absolute inset-0 pointer-events-none opacity-[0.03]"
+            className="absolute inset-0"
             style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0c0 10-10 20-10 30s10 20 10 30M30 0c0 10 10 20 10 30s-10 20-10 30' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3C/svg%3E")`,
-              backgroundSize: '60px 60px',
+              backgroundImage: `url(${heroBg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              transform: 'scaleX(-1)',
             }}
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-earth/80 via-earth/70 to-earth/80" />
           
           <div className="max-w-[900px] mx-auto relative z-10">
             {/* Header */}
@@ -485,9 +492,20 @@ const Results = () => {
         </div>
       </section>
 
-      {/* SECTION 5: Trust & Disclaimers (Dark - Earth tone) */}
-      <section className="bg-earth py-12 md:py-16 px-6">
-        <div className="max-w-[1000px] mx-auto">
+      {/* SECTION 5: Trust & Disclaimers (Dark - matching landing page) */}
+      <section className="py-12 md:py-16 px-6 relative overflow-hidden">
+        {/* Background image matching landing page */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${heroBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            transform: 'scaleX(-1)',
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-earth/85 via-earth/75 to-earth/85" />
+        <div className="max-w-[1000px] mx-auto relative z-10">
           {/* Trust badges */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 mb-8">
             <div className="flex items-center gap-2 text-white/60">
