@@ -2,20 +2,15 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import heroBg from "@/assets/hero-bg.png";
-
 const HeroSection = () => {
-  return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+  return <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background image - flipped horizontally */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url(${heroBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          transform: 'scaleX(-1)',
-        }}
-      />
+      <div className="absolute inset-0" style={{
+      backgroundImage: `url(${heroBg})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      transform: 'scaleX(-1)'
+    }} />
       {/* Warm overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-earth/70 via-earth/40 to-earth/20" />
       
@@ -28,8 +23,8 @@ const HeroSection = () => {
           </div>
 
           {/* Headline with serif font */}
-          <h1 className="font-display text-5xl md:text-6xl lg:text-7xl text-white leading-[1.1] tracking-tight mb-6">
-            <span className="italic">Your advanced</span>
+          <h1 className="font-display text-5xl md:text-6xl lg:text-7xl text-white leading-[1.1] tracking-tight mb-6">Know your
+Cancer Risk<span className="italic">Know your</span>
             <br />
             cancer risk check
           </h1>
@@ -38,12 +33,7 @@ const HeroSection = () => {
             If cancer runs in your family, you might need screening that standard guidelines don't cover. Find out in 2 minutes.
           </p>
 
-          <Button 
-            variant="cta" 
-            size="lg"
-            className="group bg-terracotta hover:bg-terracotta-light"
-            asChild
-          >
+          <Button variant="cta" size="lg" className="group bg-terracotta hover:bg-terracotta-light" asChild>
             <Link to="/quiz">
               Start assessment
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -72,8 +62,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
