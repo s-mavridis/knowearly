@@ -148,8 +148,8 @@ const Results = () => {
             className="w-full h-full object-cover animate-slow-zoom"
           />
           {/* Stronger center darkening for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/40" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.4)_0%,transparent_70%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/50" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.5)_0%,transparent_60%)]" />
         </div>
         
         {/* Decorative elements */}
