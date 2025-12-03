@@ -20,7 +20,7 @@ const QuizNavigation = ({
         className={cn(
           "absolute inset-0 bg-gradient-to-t pointer-events-none",
           isDark 
-            ? "from-[#1a1f2e] via-[#1a1f2e]/90 to-transparent" 
+            ? "from-[#1c1917] via-[#1c1917]/90 to-transparent" 
             : "from-background via-background/90 to-transparent"
         )}
       />
