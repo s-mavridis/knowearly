@@ -1,15 +1,16 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { 
   AlertCircle, 
-  CheckCircle, 
-  Check, 
-  ArrowRight, 
-  RotateCcw,
+  Check,
   Shield,
-  FileText,
-  Users
+  Award,
+  Brain,
+  Stethoscope,
+  ClipboardCheck,
+  Activity,
+  HeartPulse,
+  RotateCcw
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const Results = () => {
@@ -19,293 +20,532 @@ const Results = () => {
 
   // Determine risk factors based on answers
   const getRiskFactors = () => {
-    const factors: string[] = [];
+    const highPriority: string[] = [];
+    const additional: string[] = [];
     
     if (answers["family-cancer"] === "yes-multiple") {
-      factors.push("Multiple family members with cancer history");
+      highPriority.push("2+ immediate family members with cancer history");
     } else if (answers["family-cancer"] === "yes-one") {
-      factors.push("Family member with cancer history");
+      additional.push("Family member with cancer history");
     }
     
     if (answers["cancer-age"] === "under-50") {
-      factors.push("Family diagnosis before age 50");
+      highPriority.push("Family diagnosis before age 50 (early-onset indicator)");
+    } else if (answers["cancer-age"] === "50-60") {
+      additional.push("Family diagnosis between ages 50-60");
     }
     
     if (answers["cancer-type"] === "breast-ovarian") {
-      factors.push("Family history of breast or ovarian cancer");
+      highPriority.push("Family history of breast or ovarian cancer (BRCA-associated)");
     } else if (answers["cancer-type"] === "colorectal") {
-      factors.push("Family history of colorectal cancer");
+      additional.push("Family history of colorectal cancer");
     } else if (answers["cancer-type"] === "multiple") {
-      factors.push("Multiple cancer types in family");
+      highPriority.push("Multiple cancer types in family (hereditary syndrome indicator)");
     }
     
     if (answers["genetic-testing"] === "yes-positive") {
-      factors.push("Known genetic mutation in family");
+      highPriority.push("Known genetic mutation identified in family");
     }
     
     if (answers["personal-history"] === "no") {
-      factors.push("No prior cancer screenings");
+      additional.push("No prior cancer screenings completed");
     }
 
-    return factors.length > 0 ? factors : ["No elevated risk factors identified"];
+    return { highPriority, additional };
   };
 
-  const riskFactors = getRiskFactors();
-  const hasElevatedRisk = riskFactors.length > 1 || 
-    (riskFactors.length === 1 && riskFactors[0] !== "No elevated risk factors identified");
+  const { highPriority, additional } = getRiskFactors();
+  const totalFactors = highPriority.length + additional.length;
+  
+  // Determine risk level
+  const getRiskLevel = () => {
+    if (highPriority.length >= 2) return "HIGH PRIORITY";
+    if (highPriority.length >= 1 || additional.length >= 2) return "ELEVATED NEED";
+    return "STANDARD";
+  };
+  
+  const riskLevel = getRiskLevel();
+  const hasElevatedRisk = riskLevel !== "STANDARD";
 
   const pricingTiers = [
     {
       name: "Basic Report",
-      price: "Free",
+      price: 0,
       description: "General risk overview",
       features: [
-        "Risk factor summary",
-        "General screening guidelines",
-        "Educational resources",
+        { text: "Personalized risk summary", bold: true },
+        { text: "General screening guidelines", bold: true },
+        { text: "Educational resources", bold: false },
+        { text: "Shareable PDF report", bold: false },
       ],
-      cta: "Download Report",
+      cta: "Download Free",
       popular: false,
     },
     {
-      name: "Comprehensive Analysis",
-      price: "$49",
-      description: "Personalized recommendations",
+      name: "Guided Analysis",
+      price: 49,
+      description: "Personalized action plan",
       features: [
-        "Everything in Basic",
-        "Personalized screening timeline",
-        "Genetic counseling guide",
-        "Doctor discussion checklist",
-        "Email support",
+        { text: "Everything in Basic", bold: true },
+        { text: "Personalized screening timeline", bold: true },
+        { text: "Genetic counseling guide", bold: true },
+        { text: "Doctor discussion checklist", bold: false },
+        { text: "Priority email support", bold: false },
+        { text: "Risk updates for 1 year", bold: false },
       ],
-      cta: "Get Full Analysis",
+      cta: "Join Waitlist",
       popular: true,
     },
     {
       name: "Expert Consultation",
-      price: "$149",
+      price: 149,
       description: "1-on-1 genetic counselor call",
       features: [
-        "Everything in Comprehensive",
-        "30-min video consultation",
-        "Family history review",
-        "Personalized action plan",
-        "Follow-up support",
+        { text: "Everything in Guided", bold: true },
+        { text: "30-min video consultation", bold: true },
+        { text: "Family history deep-dive", bold: true },
+        { text: "Personalized action plan", bold: false },
+        { text: "Follow-up support (90 days)", bold: false },
+        { text: "Direct counselor access", bold: false },
       ],
-      cta: "Book Consultation",
+      cta: "Join Waitlist",
       popular: false,
     },
   ];
 
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border/50 px-4 py-4">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-terracotta flex items-center justify-center">
-              <svg viewBox="0 0 24 24" className="w-4 h-4 text-white" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-              </svg>
-            </div>
-            <span className="text-lg font-semibold text-foreground">ArtemisAI</span>
-          </Link>
-          
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate("/quiz")}
-            className="text-muted-foreground"
-          >
-            <RotateCcw className="w-4 h-4 mr-1" />
-            Retake
-          </Button>
-        </div>
-      </header>
+  const screenings = [
+    {
+      icon: Activity,
+      name: "Low-dose CT screening",
+      type: "Lung cancer",
+      description: "Most never-smokers with family history don't qualify under current USPSTF guidelines but may benefit based on emerging research on hereditary lung cancer risk."
+    },
+    {
+      icon: HeartPulse,
+      name: "Enhanced breast MRI",
+      type: "Breast cancer",
+      description: "Standard mammograms may miss early cancers in high-risk individuals. MRI screening catches up to 30% more early-stage cancers."
+    },
+    {
+      icon: Stethoscope,
+      name: "Early colonoscopy",
+      type: "Colorectal cancer",
+      description: "Guidelines recommend starting at 45, but family history may warrant beginning 10 years before your relative's diagnosis age."
+    }
+  ];
 
-      {/* Main content */}
-      <main className="px-4 py-10">
-        <div className="max-w-5xl mx-auto">
-          {/* Page header */}
-          <div className="text-center mb-10">
-            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground mb-3">
-              <span className="italic">Your</span> Risk Assessment Results
-            </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Based on your family history and screening information, here's what we found.
-            </p>
+  return (
+    <div className="min-h-screen">
+      {/* SECTION 1: Hero / Status (Dark) */}
+      <section className="bg-quiz-dark py-16 md:py-24 px-6 md:px-10 relative overflow-hidden">
+        {/* Subtle DNA pattern */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0c0 10-10 20-10 30s10 20 10 30M30 0c0 10 10 20 10 30s-10 20-10 30' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3C/svg%3E")`,
+            backgroundSize: '60px 60px',
+          }}
+        />
+        
+        <div className="max-w-[900px] mx-auto text-center relative z-10">
+          {/* Top badge */}
+          <div className="inline-block mb-8">
+            <span className="text-xs uppercase tracking-[0.2em] text-gray-400 font-medium px-4 py-2 border border-gray-600 rounded-full">
+              Your Risk Assessment
+            </span>
           </div>
 
-          {/* Risk Factors Card */}
-          <div className="bg-sand-light rounded-2xl border border-border p-6 md:p-8 mb-6 shadow-sm">
-            <div className="flex items-center gap-3 mb-6">
-              <div className={cn(
-                "w-10 h-10 rounded-xl flex items-center justify-center",
-                hasElevatedRisk ? "bg-terracotta/10" : "bg-sage/10"
-              )}>
-                <AlertCircle className={cn(
-                  "w-5 h-5",
-                  hasElevatedRisk ? "text-terracotta" : "text-sage"
-                )} />
-              </div>
-              <div>
-                <h2 className="text-xl font-semibold text-foreground">Your Risk Factor Profile</h2>
-                <p className="text-sm text-muted-foreground">
-                  {hasElevatedRisk ? "Factors that may affect your screening needs" : "Your current risk assessment"}
-                </p>
-              </div>
+          {/* Icon */}
+          <div className="flex justify-center mb-6">
+            <div 
+              className="w-20 h-20 rounded-full bg-terracotta/20 flex items-center justify-center"
+              style={{ boxShadow: '0 0 40px rgba(255, 107, 53, 0.3)' }}
+            >
+              <AlertCircle className="w-10 h-10 text-terracotta" />
             </div>
+          </div>
 
-            <div className="space-y-3">
-              {riskFactors.map((factor, index) => (
-                <div 
-                  key={index}
-                  className="flex items-start gap-3 p-3 bg-background rounded-lg"
-                >
-                  <div className={cn(
-                    "w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5",
-                    hasElevatedRisk ? "bg-terracotta/10" : "bg-sage/10"
-                  )}>
-                    <Check className={cn(
-                      "w-3 h-3",
-                      hasElevatedRisk ? "text-terracotta" : "text-sage"
-                    )} />
-                  </div>
-                  <span className="text-foreground">{factor}</span>
+          {/* Main headline */}
+          <h1 className="mb-6">
+            <span className="block text-2xl md:text-[28px] text-white font-normal mb-2">
+              Your Risk Factor Profile:
+            </span>
+            <span 
+              className={cn(
+                "block text-4xl md:text-[48px] font-bold",
+                riskLevel === "STANDARD" ? "text-green-400" : "text-terracotta"
+              )}
+              style={{ 
+                textShadow: riskLevel !== "STANDARD" 
+                  ? '0 0 30px rgba(255, 107, 53, 0.5), 0 0 60px rgba(255, 107, 53, 0.3)' 
+                  : '0 0 30px rgba(74, 222, 128, 0.5)'
+              }}
+            >
+              {riskLevel}
+            </span>
+          </h1>
+
+          {/* Summary text */}
+          <p className="text-lg md:text-xl text-gray-300 max-w-[600px] mx-auto leading-relaxed">
+            {hasElevatedRisk 
+              ? `Based on your responses, you have ${totalFactors} risk factor${totalFactors > 1 ? 's' : ''} that may require enhanced screening beyond standard guidelines.`
+              : "Based on your responses, your risk profile aligns with general population guidelines."
+            }
+          </p>
+
+          {/* Retake link */}
+          <button 
+            onClick={() => navigate("/quiz")}
+            className="mt-8 inline-flex items-center gap-2 text-gray-400 hover:text-gray-200 transition-colors text-sm"
+          >
+            <RotateCcw className="w-4 h-4" />
+            Retake Assessment
+          </button>
+        </div>
+      </section>
+
+      {/* SECTION 2: Risk Factors Card (Light) */}
+      <section className="bg-quiz-light py-16 md:py-20 px-6">
+        <div className="max-w-[800px] mx-auto">
+          {/* Main Risk Factors Card */}
+          <div className="bg-white rounded-[20px] shadow-xl p-8 md:p-12 mb-10">
+            {/* Card header */}
+            <h2 className="text-2xl md:text-[30px] font-semibold text-quiz-navy mb-4">
+              Identified Risk Factors
+            </h2>
+            <div className="w-20 h-1 bg-terracotta rounded-full mb-8" />
+
+            {/* High Priority Factors */}
+            {highPriority.length > 0 && (
+              <div className="mb-10">
+                <h3 className="text-xs uppercase tracking-[0.15em] text-terracotta font-semibold mb-5">
+                  High Priority
+                </h3>
+                <div className="space-y-5">
+                  {highPriority.map((factor, index) => (
+                    <div key={index} className="flex items-start gap-4">
+                      <div 
+                        className="w-6 h-6 rounded-full bg-terracotta flex items-center justify-center shrink-0 mt-0.5"
+                        style={{ boxShadow: '0 0 12px rgba(255, 107, 53, 0.4)' }}
+                      >
+                        <Check className="w-4 h-4 text-white" strokeWidth={3} />
+                      </div>
+                      <span className="text-lg md:text-xl font-semibold text-quiz-navy leading-relaxed">
+                        {factor}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+            )}
+
+            {/* Additional Factors */}
+            {additional.length > 0 && (
+              <div className="mb-10">
+                <h3 className="text-xs uppercase tracking-[0.15em] text-gray-500 font-semibold mb-5">
+                  Additional Factors
+                </h3>
+                <div className="space-y-4">
+                  {additional.map((factor, index) => (
+                    <div key={index} className="flex items-start gap-4">
+                      <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center shrink-0 mt-0.5">
+                        <Check className="w-4 h-4 text-white" strokeWidth={3} />
+                      </div>
+                      <span className="text-base md:text-lg text-gray-700 leading-relaxed">
+                        {factor}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* No factors */}
+            {highPriority.length === 0 && additional.length === 0 && (
+              <p className="text-lg text-gray-600 mb-8">
+                No elevated risk factors were identified based on your responses.
+              </p>
+            )}
+
+            {/* Citations footer */}
+            <div className="bg-orange-50 rounded-b-[20px] -mx-8 md:-mx-12 -mb-8 md:-mb-12 mt-8 px-8 md:px-12 py-8">
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Based on established risk factors from{" "}
+                <a href="https://www.cancer.gov" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:underline">
+                  National Cancer Institute
+                </a>
+                {" "}and{" "}
+                <a href="https://www.cancer.org" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:underline">
+                  American Cancer Society
+                </a>
+                {" "}guidelines.
+              </p>
             </div>
           </div>
 
           {/* What This Means Card */}
-          <div className="bg-card rounded-2xl border border-border p-6 md:p-8 mb-12 shadow-sm">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-xl bg-earth/10 flex items-center justify-center">
-                <FileText className="w-5 h-5 text-earth" />
-              </div>
-              <h2 className="text-xl font-semibold text-foreground">What This Means</h2>
-            </div>
+          <div className="bg-white rounded-[20px] shadow-xl p-8 md:p-12">
+            <h2 className="text-2xl md:text-[30px] font-semibold text-quiz-navy mb-4">
+              What This Means for You
+            </h2>
+            <div className="w-20 h-1 bg-terracotta rounded-full mb-8" />
 
-            <div className="space-y-4 text-muted-foreground">
+            <div className="space-y-6 text-gray-700 text-base md:text-lg leading-relaxed max-w-[650px]">
               {hasElevatedRisk ? (
                 <>
                   <p>
-                    Your family history suggests you may benefit from <strong className="text-foreground">earlier or more frequent screening</strong> than 
-                    what standard guidelines recommend for the general population.
+                    Current cancer screening guidelines are designed for the general population with average risk. However, your responses indicate you{" "}
+                    <span className="bg-orange-100 text-orange-900 px-2 py-0.5 rounded">
+                      may fall outside standard screening guidelines
+                    </span>
+                    .
                   </p>
                   <p>
-                    The National Comprehensive Cancer Network (NCCN) guidelines indicate that individuals with your 
-                    risk profile should discuss <strong className="text-foreground">enhanced screening options</strong> with their healthcare provider.
+                    This means the screenings your doctor typically recommends based on age alone may not be sufficient for someone with your{" "}
+                    <span className="bg-orange-100 text-orange-900 px-2 py-0.5 rounded">
+                      elevated risk
+                    </span>
+                    {" "}profile.
                   </p>
                   <p>
-                    This might include earlier mammograms, more frequent colonoscopies, or genetic testing to 
-                    better understand your personal risk.
+                    Studies show that individuals with similar risk profiles who receive enhanced screening have significantly better outcomes through earlier detection.
                   </p>
                 </>
               ) : (
                 <>
                   <p>
-                    Based on your responses, your risk profile appears to <strong className="text-foreground">align with general population guidelines</strong>.
+                    Good news — your responses suggest your cancer risk aligns with the general population. This means standard age-appropriate screening guidelines are likely appropriate for you.
                   </p>
                   <p>
-                    This means following standard age-appropriate screening recommendations should be appropriate for you. 
-                    However, it's always a good idea to discuss your family history with your doctor.
+                    However, we recommend discussing your complete family history with your healthcare provider, as new information may change your risk profile.
                   </p>
                 </>
               )}
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Pricing Section */}
-          <div className="mb-12">
-            <div className="text-center mb-8">
-              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2">
-                <span className="italic">Take the</span> Next Step
+      {/* SECTION 3: Recommended Screenings (Dark) */}
+      {hasElevatedRisk && (
+        <section className="bg-quiz-dark py-16 md:py-20 px-6 relative overflow-hidden">
+          {/* DNA pattern */}
+          <div 
+            className="absolute inset-0 pointer-events-none opacity-[0.03]"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0c0 10-10 20-10 30s10 20 10 30M30 0c0 10 10 20 10 30s-10 20-10 30' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3C/svg%3E")`,
+              backgroundSize: '60px 60px',
+            }}
+          />
+          
+          <div className="max-w-[900px] mx-auto relative z-10">
+            {/* Header */}
+            <div className="flex items-center gap-3 mb-10">
+              <ClipboardCheck className="w-8 h-8 text-terracotta" />
+              <h2 className="text-2xl md:text-[32px] font-semibold text-white">
+                You May Benefit From:
               </h2>
-              <p className="text-muted-foreground">
-                Get personalized guidance based on your risk profile
-              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {pricingTiers.map((tier, index) => (
-                <div
+            {/* Screening cards */}
+            <div className="space-y-6">
+              {screenings.map((screening, index) => (
+                <div 
                   key={index}
-                  className={cn(
-                    "relative rounded-2xl border-2 p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg",
-                    tier.popular 
-                      ? "border-terracotta bg-terracotta/5 shadow-md" 
-                      : "border-border bg-card hover:border-terracotta/30"
-                  )}
+                  className="bg-white/[0.08] border border-gray-600 rounded-2xl p-6 md:p-8 hover:bg-white/[0.12] transition-all duration-200"
                 >
-                  {tier.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <span className="bg-terracotta text-white text-xs font-semibold px-3 py-1 rounded-full">
-                        Recommended
-                      </span>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-terracotta/20 flex items-center justify-center shrink-0">
+                      <screening.icon className="w-6 h-6 text-terracotta" />
                     </div>
-                  )}
-
-                  <div className="text-center mb-6">
-                    <h3 className="text-lg font-semibold text-foreground mb-1">{tier.name}</h3>
-                    <p className="text-sm text-muted-foreground mb-4">{tier.description}</p>
-                    <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-4xl font-bold text-foreground">{tier.price}</span>
-                      {tier.price !== "Free" && (
-                        <span className="text-muted-foreground text-sm">one-time</span>
-                      )}
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-semibold text-white mb-1">
+                        {screening.name}
+                      </h3>
+                      <p className="text-sm text-terracotta font-medium mb-3">
+                        {screening.type}
+                      </p>
+                      <p className="text-gray-300 leading-relaxed">
+                        {screening.description}
+                      </p>
                     </div>
                   </div>
-
-                  <ul className="space-y-3 mb-6">
-                    {tier.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-start gap-2">
-                        <CheckCircle className="w-4 h-4 text-terracotta shrink-0 mt-0.5" />
-                        <span className="text-sm text-muted-foreground">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Button
-                    variant={tier.popular ? "cta" : "outline"}
-                    className={cn("w-full", tier.popular && "bg-terracotta hover:bg-terracotta-light")}
-                  >
-                    {tier.cta}
-                    <ArrowRight className="w-4 h-4 ml-1" />
-                  </Button>
                 </div>
               ))}
             </div>
           </div>
+        </section>
+      )}
 
-          {/* Trust indicators */}
-          <div className="flex flex-wrap items-center justify-center gap-6 mb-10">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Shield className="w-4 h-4 text-terracotta" />
-              <span>HIPAA Compliant</span>
-            </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Users className="w-4 h-4 text-terracotta" />
-              <span>Stanford Medicine Collaboration</span>
-            </div>
+      {/* Divider */}
+      <div className="bg-quiz-light py-8 px-6">
+        <div className="max-w-[900px] mx-auto relative">
+          <div className="border-t border-gray-300" />
+          <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-quiz-light px-6 text-gray-400 text-sm">
+            How We Can Help
+          </span>
+        </div>
+      </div>
+
+      {/* SECTION 4: Service Tiers (Light) */}
+      <section className="bg-quiz-light py-16 md:py-20 px-6">
+        <div className="max-w-[1100px] mx-auto">
+          {/* Section header */}
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-[36px] font-semibold text-quiz-navy mb-3">
+              Choose Your Path Forward
+            </h2>
+            <p className="text-lg text-gray-600">
+              Early access pricing for Q1 2026 launch
+            </p>
           </div>
 
-          {/* Disclaimers */}
-          <div className="bg-sand-light rounded-xl p-6 text-center">
-            <p className="text-xs text-muted-foreground leading-relaxed mb-3">
-              <strong className="text-muted-foreground/80">Medical Disclaimer:</strong> This assessment provides 
-              educational information only and is not a substitute for professional medical advice, diagnosis, or treatment. 
-              The information presented does not constitute medical advice and should not be relied upon as such.
+          {/* Pricing cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {pricingTiers.map((tier, index) => (
+              <div
+                key={index}
+                className={cn(
+                  "relative bg-white rounded-[20px] p-8 md:p-10 flex flex-col transition-all duration-250",
+                  "hover:-translate-y-2 hover:scale-[1.02]",
+                  tier.popular 
+                    ? "border-[3px] border-terracotta shadow-2xl md:-mt-4 md:mb-4" 
+                    : "border border-gray-200 shadow-lg hover:shadow-xl"
+                )}
+              >
+                {/* Popular badge */}
+                {tier.popular && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="bg-terracotta text-white text-xs font-semibold px-4 py-1.5 rounded-full whitespace-nowrap">
+                      MOST POPULAR
+                    </span>
+                  </div>
+                )}
+
+                {/* Tier name */}
+                <h3 className="text-xl md:text-2xl font-semibold text-quiz-navy mb-2">
+                  {tier.name}
+                </h3>
+                
+                {/* Price */}
+                <div className="mb-1">
+                  <span className="text-5xl md:text-[56px] font-bold text-quiz-navy">
+                    {tier.price === 0 ? "Free" : `$${tier.price}`}
+                  </span>
+                </div>
+                {tier.price > 0 && (
+                  <p className="text-sm text-gray-500 mb-6">/one-time</p>
+                )}
+                {tier.price === 0 && <div className="mb-6" />}
+
+                {/* Divider */}
+                <div className="border-t border-gray-200 my-6" />
+
+                {/* Features */}
+                <ul className="space-y-3.5 flex-1">
+                  {tier.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-terracotta shrink-0 mt-0.5" strokeWidth={2.5} />
+                      <span className={cn(
+                        "text-gray-700 leading-relaxed",
+                        feature.bold ? "font-semibold" : ""
+                      )}>
+                        {feature.text}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA Button */}
+                <button
+                  className={cn(
+                    "w-full h-[52px] rounded-full font-semibold text-base mt-8 transition-all duration-200",
+                    "hover:-translate-y-1 hover:shadow-lg",
+                    tier.popular
+                      ? "bg-terracotta text-white hover:bg-terracotta-light"
+                      : "bg-white text-terracotta border-2 border-terracotta hover:bg-terracotta/5"
+                  )}
+                >
+                  {tier.cta}
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Below cards text */}
+          <div className="text-center mt-10 space-y-2">
+            <p className="text-gray-600">
+              Launching Q1 2026. Reserve your spot for early access pricing.
             </p>
-            <p className="text-xs text-muted-foreground">
-              By using this service, you agree to our{" "}
-              <a href="#" className="text-terracotta hover:underline">Privacy Policy</a>
-              {" "}and{" "}
-              <a href="#" className="text-terracotta hover:underline">Terms of Service</a>.
+            <p className="text-gray-500 text-sm flex items-center justify-center gap-2">
+              <Check className="w-4 h-4 text-terracotta" />
+              30-day money-back guarantee
             </p>
           </div>
         </div>
-      </main>
+      </section>
+
+      {/* SECTION 5: Trust & Disclaimers (Dark) */}
+      <section className="bg-quiz-dark py-12 md:py-16 px-6">
+        <div className="max-w-[1000px] mx-auto">
+          {/* Trust badges */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 mb-8">
+            <div className="flex items-center gap-2 text-gray-400">
+              <Shield className="w-5 h-5 text-gray-500" />
+              <span className="text-sm">HIPAA Compliant</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-400">
+              <Award className="w-5 h-5 text-gray-500" />
+              <span className="text-sm">Evidence-Based</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-400">
+              <Brain className="w-5 h-5 text-gray-500" />
+              <span className="text-sm">AI-Powered Analysis</span>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-gray-600 mb-8" />
+
+          {/* Disclaimers - two columns */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Important Information */}
+            <div>
+              <h4 className="text-xs uppercase tracking-[0.1em] text-gray-400 font-semibold mb-3">
+                Important Information
+              </h4>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                This assessment provides educational information only and is not a substitute for professional medical advice, diagnosis, or treatment. The risk factors identified are based on your self-reported responses and established medical guidelines. Always consult with a qualified healthcare provider before making decisions about cancer screening.
+              </p>
+            </div>
+
+            {/* Privacy & Data */}
+            <div>
+              <h4 className="text-xs uppercase tracking-[0.1em] text-gray-400 font-semibold mb-3">
+                Privacy & Data
+              </h4>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                Your responses are encrypted and stored securely. We never sell your personal health information. All data processing follows HIPAA guidelines and industry best practices for health data security.{" "}
+                <a href="#" className="text-terracotta hover:underline">
+                  Privacy Policy
+                </a>
+              </p>
+            </div>
+          </div>
+
+          {/* Logo / Footer */}
+          <div className="mt-12 pt-8 border-t border-gray-700 flex justify-center">
+            <Link to="/" className="flex items-center gap-2 text-gray-400 hover:text-gray-300 transition-colors">
+              <div className="w-8 h-8 rounded-full bg-terracotta/20 flex items-center justify-center">
+                <svg viewBox="0 0 24 24" className="w-4 h-4 text-terracotta" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+              </div>
+              <span className="text-sm font-medium">ArtemisAI</span>
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
