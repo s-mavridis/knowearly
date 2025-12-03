@@ -16,13 +16,13 @@ const QuizNavigation = ({
 }: QuizNavigationProps) => {
   return (
     <div className={cn(
-      "fixed bottom-0 left-0 right-0 p-6 pb-8",
+      "fixed bottom-0 left-0 right-0 p-6 pb-8 pointer-events-none",
       "bg-gradient-to-t",
       isDark 
         ? "from-quiz-dark via-quiz-dark/90 to-transparent" 
         : "from-quiz-light via-quiz-light/90 to-transparent"
     )}>
-      <div className="max-w-xl mx-auto flex justify-center">
+      <div className="max-w-xl mx-auto flex justify-center pointer-events-auto">
         <button
           onClick={onNext}
           disabled={!canGoNext}
