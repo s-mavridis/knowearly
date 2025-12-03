@@ -204,18 +204,20 @@ const Results = () => {
 
           {/* Main headline */}
           <h1 className="mb-6">
-            <span className="block font-display text-2xl md:text-[28px] text-white font-normal mb-2">
+            <span className="block font-display text-2xl md:text-[28px] text-white font-normal mb-4">
               Your Risk Factor Profile:
             </span>
             <span 
               className={cn(
-                "block text-4xl md:text-[48px] font-bold",
-                riskLevel === "STANDARD" ? "text-sage" : "text-terracotta"
+                "inline-block text-4xl md:text-[48px] font-bold px-8 py-4 rounded-2xl backdrop-blur-md border",
+                riskLevel === "STANDARD" 
+                  ? "text-sage bg-white/10 border-sage/30" 
+                  : "text-terracotta bg-black/30 border-terracotta/30"
               )}
               style={{ 
-                textShadow: riskLevel !== "STANDARD" 
-                  ? '0 0 30px rgba(207, 92, 54, 0.5), 0 0 60px rgba(207, 92, 54, 0.3)' 
-                  : '0 0 30px rgba(107, 142, 107, 0.5)'
+                boxShadow: riskLevel !== "STANDARD" 
+                  ? '0 0 40px rgba(207, 92, 54, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.2)' 
+                  : '0 0 40px rgba(107, 142, 107, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.1)'
               }}
             >
               {riskLevel}
