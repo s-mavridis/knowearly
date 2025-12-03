@@ -177,7 +177,7 @@ const Results = () => {
         
         <div className="max-w-[900px] mx-auto text-center relative z-10">
           {/* Glass card container */}
-          <div className="bg-earth/60 backdrop-blur-xl border border-white/20 rounded-3xl p-8 md:p-12 max-w-[500px] mx-auto shadow-2xl">
+          <div className="bg-earth/40 backdrop-blur-xl border border-white/20 rounded-3xl p-8 md:p-12 max-w-[500px] mx-auto shadow-2xl">
             {/* Top badge */}
             <div className="inline-block mb-6">
               <span className="text-xs uppercase tracking-[0.2em] text-white/80 font-medium">
