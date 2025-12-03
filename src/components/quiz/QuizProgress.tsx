@@ -9,9 +9,9 @@ const QuizProgress = ({ currentQuestion, totalQuestions }: QuizProgressProps) =>
   return (
     <div className="w-full">
       {/* Progress bar */}
-      <div className="w-full h-2 bg-warm-neutral rounded-full overflow-hidden">
+      <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
         <div
-          className="h-full bg-teal rounded-full transition-all duration-500 ease-out"
+          className="h-full bg-terracotta rounded-full transition-all duration-500 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>

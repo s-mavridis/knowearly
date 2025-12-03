@@ -2,59 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    /* ArtemisAI Design System - Premium Health & Cancer Prevention */
-    --background: 0 0% 100%;
-    --foreground: 201 72% 15%;
+    /* Function Health Inspired - Warm, Premium Health Aesthetic */
+    --background: 30 20% 98%;
+    --foreground: 20 14% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 201 72% 15%;
+    --card-foreground: 20 14% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 201 72% 15%;
+    --popover-foreground: 20 14% 15%;
 
-    --primary: 201 72% 15%;
+    /* Terracotta/Rust - warm, earthy, health-focused */
+    --primary: 16 65% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 186 59% 29%;
+    /* Warm brown for secondary elements */
+    --secondary: 20 14% 25%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 35 42% 93%;
-    --muted-foreground: 201 50% 30%;
+    --muted: 30 15% 93%;
+    --muted-foreground: 20 10% 45%;
 
-    --accent: 186 59% 29%;
+    --accent: 16 65% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 65% 55%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 35 30% 88%;
-    --input: 35 30% 88%;
-    --ring: 186 59% 29%;
+    --border: 30 15% 88%;
+    --input: 30 15% 88%;
+    --ring: 16 65% 50%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    /* Custom tokens */
-    --deep-teal: 201 72% 15%;
-    --deep-teal-light: 201 60% 22%;
-    --teal: 186 59% 29%;
-    --teal-light: 186 50% 38%;
-    --lavender: 280 27% 83%;
-    --lavender-light: 280 25% 90%;
-    --mint: 163 52% 77%;
-    --mint-light: 163 45% 88%;
-    --warm-neutral: 35 42% 83%;
-    --warm-neutral-light: 35 40% 92%;
-    --success: 160 84% 39%;
-    --warning: 38 92% 50%;
+    /* Custom tokens - Warm health palette */
+    --terracotta: 16 65% 50%;
+    --terracotta-light: 16 55% 60%;
+    --earth: 20 14% 25%;
+    --earth-light: 20 10% 35%;
+    --sand: 35 30% 90%;
+    --sand-light: 35 25% 95%;
+    --cream: 30 20% 98%;
+    --sage: 140 20% 50%;
+    --sage-light: 140 20% 70%;
 
     /* Glass effect */
     --glass-bg: 0 0% 100% / 0.9;
-    --glass-border: 35 30% 88% / 0.6;
-    --glass-shadow: 201 72% 15% / 0.08;
+    --glass-border: 30 15% 88% / 0.6;
+    --glass-shadow: 20 14% 15% / 0.06;
 
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 hsl(var(--glass-shadow));
@@ -63,52 +62,52 @@
     --shadow-xl: 0 20px 25px -5px hsl(var(--glass-shadow)), 0 8px 10px -6px hsl(var(--glass-shadow));
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 201 72% 15%;
-    --sidebar-primary: 186 59% 29%;
+    --sidebar-foreground: 20 14% 15%;
+    --sidebar-primary: 16 65% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 35 42% 93%;
-    --sidebar-accent-foreground: 201 72% 15%;
-    --sidebar-border: 35 30% 88%;
-    --sidebar-ring: 186 59% 29%;
+    --sidebar-accent: 30 15% 93%;
+    --sidebar-accent-foreground: 20 14% 15%;
+    --sidebar-border: 30 15% 88%;
+    --sidebar-ring: 16 65% 50%;
   }
 
   .dark {
-    --background: 201 72% 8%;
-    --foreground: 0 0% 98%;
+    --background: 20 14% 8%;
+    --foreground: 30 20% 95%;
 
-    --card: 201 65% 12%;
-    --card-foreground: 0 0% 98%;
+    --card: 20 14% 12%;
+    --card-foreground: 30 20% 95%;
 
-    --popover: 201 65% 12%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 20 14% 12%;
+    --popover-foreground: 30 20% 95%;
 
-    --primary: 0 0% 98%;
-    --primary-foreground: 201 72% 15%;
+    --primary: 16 65% 55%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 186 59% 35%;
+    --secondary: 16 40% 40%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 201 50% 18%;
-    --muted-foreground: 35 30% 70%;
+    --muted: 20 10% 18%;
+    --muted-foreground: 30 15% 65%;
 
-    --accent: 186 59% 35%;
+    --accent: 16 65% 55%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 201 45% 22%;
-    --input: 201 45% 22%;
-    --ring: 186 59% 35%;
+    --border: 20 10% 22%;
+    --input: 20 10% 22%;
+    --ring: 16 65% 55%;
 
-    --sidebar-background: 201 72% 8%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 186 59% 35%;
+    --sidebar-background: 20 14% 8%;
+    --sidebar-foreground: 30 20% 95%;
+    --sidebar-primary: 16 65% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 201 50% 15%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 201 45% 18%;
-    --sidebar-ring: 186 59% 35%;
+    --sidebar-accent: 20 10% 15%;
+    --sidebar-accent-foreground: 30 20% 95%;
+    --sidebar-border: 20 10% 18%;
+    --sidebar-ring: 16 65% 55%;
   }
 }
 
@@ -118,7 +117,8 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
+    font-family: "Inter", system-ui, sans-serif;
   }
 }
 
@@ -134,7 +134,11 @@
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary to-terracotta-light bg-clip-text text-transparent;
+  }
+
+  .font-display {
+    font-family: "Playfair Display", Georgia, serif;
   }
 }
 

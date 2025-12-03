@@ -1,50 +1,70 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="min-h-screen flex items-center justify-center px-6 pt-32 pb-24 bg-white">
-      {/* Hero Card with DNA Background */}
-      <div 
-        className="relative w-full max-w-6xl mx-auto rounded-3xl overflow-hidden min-h-[600px] flex items-center justify-center bg-[#0B2B40]"
-        style={{
-          backgroundImage: `url('/images/dna-bg.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        {/* Content */}
-        <div className="relative z-10 px-8 py-16 md:px-16 md:py-24 text-center">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight mb-8">
-            What's Your Cancer Risk?
+    <section 
+      className="relative min-h-screen flex items-center px-6 pt-24 pb-24 overflow-hidden"
+      style={{
+        backgroundImage: `url('/images/dna-bg.png')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      {/* Warm overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-earth/85 via-earth/80 to-earth/90" />
+      
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto w-full">
+        <div className="max-w-2xl">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium mb-8">
+            Evidence-Based Assessment
+          </div>
+
+          {/* Headline with serif font */}
+          <h1 className="font-display text-5xl md:text-6xl lg:text-7xl text-white leading-[1.1] tracking-tight mb-6">
+            <span className="italic">Your advanced</span>
+            <br />
+            cancer risk check
           </h1>
           
-          <p className="text-lg md:text-xl text-white/85 font-medium max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-lg md:text-xl text-white/80 max-w-xl mb-10 leading-relaxed">
             If cancer runs in your family, you might need screening that standard guidelines don't cover. Find out in 2 minutes.
           </p>
 
           <Button 
             variant="cta" 
-            size="xl"
-            className="group"
+            size="lg"
+            className="group bg-terracotta hover:bg-terracotta-light"
             asChild
           >
             <Link to="/quiz">
-              Check Your Risk
+              Start assessment
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
 
           {/* Disclaimer */}
-          <p className="mt-8 text-sm text-white/60 max-w-md mx-auto">
+          <p className="mt-10 text-sm text-white/50 max-w-md">
             For research and educational purposes only. Not intended for clinical diagnosis or treatment.
           </p>
+        </div>
 
-          {/* Trust indicator */}
-          <div className="mt-6 flex items-center justify-center gap-2 text-white/80">
-            <CheckCircle className="w-4 h-4 text-mint" />
-            <span className="text-sm font-medium">Confidential & Secure</span>
+        {/* Stats at bottom */}
+        <div className="absolute bottom-12 right-0 hidden lg:flex items-center gap-8 text-white">
+          <div className="text-center border-r border-white/20 pr-8">
+            <div className="text-2xl font-semibold">2 min</div>
+            <div className="text-sm text-white/60">Assessment</div>
+          </div>
+          <div className="text-center border-r border-white/20 pr-8">
+            <div className="text-2xl font-semibold">Free</div>
+            <div className="text-sm text-white/60">No account needed</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-semibold">Private</div>
+            <div className="text-sm text-white/60">Confidential results</div>
           </div>
         </div>
       </div>
