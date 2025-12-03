@@ -93,10 +93,48 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "float-slow": {
+          "0%, 100%": { transform: "translateY(0) rotate(0deg)" },
+          "50%": { transform: "translateY(-20px) rotate(2deg)" },
+        },
+        "float-reverse": {
+          "0%, 100%": { transform: "translateY(0) rotate(0deg)" },
+          "50%": { transform: "translateY(15px) rotate(-2deg)" },
+        },
+        "particle-1": {
+          "0%, 100%": { transform: "translate(0, 0)", opacity: "0.06" },
+          "25%": { transform: "translate(10px, -15px)", opacity: "0.08" },
+          "50%": { transform: "translate(5px, -25px)", opacity: "0.04" },
+          "75%": { transform: "translate(-5px, -10px)", opacity: "0.07" },
+        },
+        "particle-2": {
+          "0%, 100%": { transform: "translate(0, 0)", opacity: "0.04" },
+          "33%": { transform: "translate(-15px, 10px)", opacity: "0.06" },
+          "66%": { transform: "translate(10px, 20px)", opacity: "0.03" },
+        },
+        "particle-3": {
+          "0%, 100%": { transform: "translate(0, 0)", opacity: "0.05" },
+          "50%": { transform: "translate(-20px, -10px)", opacity: "0.07" },
+        },
+        "pulse-slow": {
+          "0%, 100%": { opacity: "0.03", transform: "scale(1)" },
+          "50%": { opacity: "0.05", transform: "scale(1.1)" },
+        },
+        "pulse-slower": {
+          "0%, 100%": { opacity: "0.02", transform: "scale(1)" },
+          "50%": { opacity: "0.04", transform: "scale(1.15)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float-slow": "float-slow 8s ease-in-out infinite",
+        "float-reverse": "float-reverse 10s ease-in-out infinite",
+        "particle-1": "particle-1 12s ease-in-out infinite",
+        "particle-2": "particle-2 15s ease-in-out infinite",
+        "particle-3": "particle-3 10s ease-in-out infinite",
+        "pulse-slow": "pulse-slow 6s ease-in-out infinite",
+        "pulse-slower": "pulse-slower 8s ease-in-out infinite",
       },
     },
   },

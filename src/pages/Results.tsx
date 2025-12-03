@@ -12,6 +12,7 @@ import {
   RotateCcw
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import AnimatedBackground from "@/components/AnimatedBackground";
 
 const Results = () => {
   const location = useLocation();
@@ -138,6 +139,7 @@ const Results = () => {
     <div className="min-h-screen">
       {/* SECTION 1: Hero / Status (Dark - Earth tone) */}
       <section className="bg-earth py-16 md:py-24 px-6 md:px-10 relative overflow-hidden">
+        <AnimatedBackground />
         
         <div className="max-w-[900px] mx-auto text-center relative z-10">
           {/* Top badge */}
@@ -321,6 +323,7 @@ const Results = () => {
       {/* SECTION 3: Recommended Screenings (Dark - Earth tone) */}
       {hasElevatedRisk && (
         <section className="bg-earth py-16 md:py-20 px-6 relative overflow-hidden">
+          <AnimatedBackground />
           
           <div className="max-w-[900px] mx-auto relative z-10">
             {/* Header */}
@@ -471,6 +474,7 @@ const Results = () => {
 
       {/* SECTION 5: Trust & Disclaimers (Dark - Earth tone) */}
       <section className="bg-earth py-12 md:py-16 px-6 relative overflow-hidden">
+        <AnimatedBackground />
         <div className="max-w-[1000px] mx-auto relative z-10">
           {/* Trust badges */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 mb-8">
