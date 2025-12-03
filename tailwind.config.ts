@@ -124,6 +124,14 @@ export default {
           "0%, 100%": { opacity: "0.02", transform: "scale(1)" },
           "50%": { opacity: "0.04", transform: "scale(1.15)" },
         },
+        "slow-zoom": {
+          "0%": { transform: "scale(1)" },
+          "100%": { transform: "scale(1.1)" },
+        },
+        "draw-line": {
+          "0%": { strokeDasharray: "0, 1000" },
+          "100%": { strokeDasharray: "1000, 0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -135,6 +143,8 @@ export default {
         "particle-3": "particle-3 10s ease-in-out infinite",
         "pulse-slow": "pulse-slow 6s ease-in-out infinite",
         "pulse-slower": "pulse-slower 8s ease-in-out infinite",
+        "slow-zoom": "slow-zoom 20s ease-out forwards",
+        "draw-line": "draw-line 2s ease-out forwards",
       },
     },
   },
