@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import QuizProgress from "@/components/quiz/QuizProgress";
 import QuizQuestion from "@/components/quiz/QuizQuestion";
@@ -45,7 +45,7 @@ const Quiz = () => {
     <div 
       className={cn(
         "min-h-screen flex flex-col transition-colors duration-500 relative overflow-hidden",
-        isDarkBackground ? "bg-quiz-dark" : "bg-quiz-light"
+        isDarkBackground ? "bg-earth" : "bg-background"
       )}
     >
       {/* Subtle DNA pattern background */}
@@ -73,7 +73,7 @@ const Quiz = () => {
           {/* Question counter - top left */}
           <span className={cn(
             "text-sm uppercase tracking-widest font-medium",
-            isDarkBackground ? "text-gray-400" : "text-gray-600"
+            isDarkBackground ? "text-white/60" : "text-muted-foreground"
           )}>
             Question {currentIndex + 1} of {quizQuestions.length}
           </span>
@@ -85,8 +85,8 @@ const Quiz = () => {
               className={cn(
                 "flex items-center gap-1 text-base font-medium transition-colors duration-200",
                 isDarkBackground 
-                  ? "text-gray-400 hover:text-gray-200" 
-                  : "text-gray-600 hover:text-gray-800"
+                  ? "text-white/60 hover:text-white" 
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
               <ArrowLeft className="w-4 h-4" />
