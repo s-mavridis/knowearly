@@ -142,13 +142,17 @@ const Results = () => {
       <section className="relative py-16 md:py-24 px-6 md:px-10 overflow-hidden">
         {/* Premium background image with dark center for text contrast */}
         <div className="absolute inset-0">
-          <img
-            src={heroBg}
-            alt=""
-            className="w-full h-full object-cover animate-slow-zoom"
+          <div 
+            className="w-full h-full animate-slow-zoom"
+            style={{
+              backgroundImage: `url(${heroBg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              transform: 'scaleX(-1)'
+            }}
           />
-          {/* Overlay for text readability - similar to main page */}
-          <div className="absolute inset-0 bg-gradient-to-r from-earth/70 via-earth/50 to-earth/30" />
+          {/* Same overlay as main page */}
+          <div className="absolute inset-0 bg-gradient-to-r from-earth/70 via-earth/40 to-earth/20" />
         </div>
         
         {/* Decorative elements */}
@@ -208,8 +212,8 @@ const Results = () => {
             </span>
             <span 
               className={cn(
-                "inline-block text-4xl md:text-[48px] font-bold px-8 py-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20",
-                riskLevel === "STANDARD" ? "text-sage" : "text-terracotta"
+                "inline-block text-2xl md:text-3xl font-bold px-6 py-3 rounded-full text-white",
+                riskLevel === "STANDARD" ? "bg-sage" : "bg-terracotta"
               )}
             >
               {riskLevel}
