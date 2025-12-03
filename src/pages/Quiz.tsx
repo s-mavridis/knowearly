@@ -85,8 +85,8 @@ const Quiz = () => {
               ))}
             </div>
 
-            {/* Right column - Premium visual (hidden on mobile) */}
-            <div className="hidden lg:block h-[500px] sticky top-24">
+            {/* Right column - Premium visual (hidden on mobile) - height matches options */}
+            <div className="hidden lg:block h-[400px] sticky top-24">
               <QuizVisual
                 questionIndex={currentIndex}
                 isVisible={true}

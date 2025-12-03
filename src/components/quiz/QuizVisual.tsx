@@ -28,11 +28,21 @@ const QuizVisual = ({ questionIndex, isVisible }: QuizVisualProps) => {
           alt=""
           className="w-full h-full object-cover animate-slow-zoom"
         />
-        {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+        {/* Gradient overlay for premium feel */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
       </div>
 
-      {/* Floating glass card - top right */}
+      {/* Moving particles - same as Results page */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-1.5 h-1.5 rounded-full bg-white/40 animate-drift-1" />
+        <div className="absolute top-1/3 left-1/2 w-1 h-1 rounded-full bg-white/30 animate-drift-2" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/3 w-2 h-2 rounded-full bg-white/20 animate-drift-3" style={{ animationDelay: '4s' }} />
+        <div className="absolute top-2/3 left-2/3 w-1.5 h-1.5 rounded-full bg-white/35 animate-drift-1" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-3/4 left-1/4 w-1 h-1 rounded-full bg-white/25 animate-drift-2" style={{ animationDelay: '5s' }} />
+        <div className="absolute top-1/2 right-1/4 w-1.5 h-1.5 rounded-full bg-sage/40 animate-drift-3" style={{ animationDelay: '1s' }} />
+      </div>
+
+      {/* Decorative dot - top right */}
       <div 
         className={cn(
           "absolute top-6 right-6 transition-all duration-1000 delay-300",
@@ -40,24 +50,6 @@ const QuizVisual = ({ questionIndex, isVisible }: QuizVisualProps) => {
         )}
       >
         <div className="w-3 h-3 rounded-full bg-white/80 border-2 border-white/40 shadow-lg animate-pulse" />
-      </div>
-
-      {/* Floating glass card - center */}
-      <div 
-        className={cn(
-          "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-1000 delay-500",
-          isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
-        )}
-      >
-        <div className="px-8 py-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl">
-          <div className="text-center">
-            <span className="text-5xl md:text-6xl font-light text-white tracking-tight">
-              {questionIndex + 1}
-            </span>
-            <span className="text-2xl md:text-3xl text-white/60 ml-1">/5</span>
-          </div>
-          <p className="text-white/70 text-sm mt-2 text-center">Questions</p>
-        </div>
       </div>
 
       {/* Decorative curved line with dots */}
@@ -76,7 +68,6 @@ const QuizVisual = ({ questionIndex, isVisible }: QuizVisualProps) => {
           strokeWidth="2"
           className="animate-draw-line"
         />
-        {/* Dots along the path */}
         <circle cx="50" cy="200" r="6" fill="white" fillOpacity="0.6" className="animate-pulse" />
         <circle cx="380" cy="120" r="6" fill="white" fillOpacity="0.6" className="animate-pulse delay-200" />
       </svg>

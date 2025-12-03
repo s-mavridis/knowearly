@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import resultsBanner1 from "@/assets/results-banner-1.png";
-import resultsHeroBg from "@/assets/results-hero-bg.png";
+import resultsHeroBgWarm from "@/assets/results-hero-bg-warm.png";
 
 const Results = () => {
   const location = useLocation();
@@ -143,7 +143,7 @@ const Results = () => {
         {/* Premium background image with dark center for text contrast */}
         <div className="absolute inset-0">
           <img
-            src={resultsHeroBg}
+            src={resultsHeroBgWarm}
             alt=""
             className="w-full h-full object-cover animate-slow-zoom"
           />
