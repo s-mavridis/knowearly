@@ -399,7 +399,7 @@ const Results = () => {
             {/* Header */}
             <div className="flex items-center gap-3 mb-10">
               <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
-                <ClipboardCheck className="w-6 h-6 text-terracotta" />
+                <ClipboardCheck className="w-6 h-6 text-white" />
               </div>
               <h2 className="font-display text-2xl md:text-[32px] text-white">
                 You May Benefit From:
@@ -414,14 +414,14 @@ const Results = () => {
                   className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 md:p-8 hover:bg-white/15 transition-all duration-200"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-terracotta/20 backdrop-blur-sm flex items-center justify-center shrink-0">
-                      <screening.icon className="w-6 h-6 text-terracotta" />
+                    <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0">
+                      <screening.icon className="w-6 h-6 text-white" />
                     </div>
                     <div>
                       <h3 className="text-xl md:text-2xl font-semibold text-white mb-1">
                         {screening.name}
                       </h3>
-                      <p className="text-sm text-terracotta font-medium mb-3">
+                      <p className="text-sm text-white/70 font-medium mb-3">
                         {screening.type}
                       </p>
                       <p className="text-white/70 leading-relaxed">
