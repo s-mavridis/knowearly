@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import QuizProgress from "@/components/quiz/QuizProgress";
 import QuizQuestion from "@/components/quiz/QuizQuestion";
 import QuizNavigation from "@/components/quiz/QuizNavigation";
+import QuizVisual from "@/components/quiz/QuizVisual";
 import { quizQuestions } from "@/data/quizQuestions";
 
 const Quiz = () => {
@@ -47,7 +48,7 @@ const Quiz = () => {
 
       {/* Header with question counter and back button */}
       <header className="relative z-10 px-6 pt-8 pb-4">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Question counter - top left - terracotta color like reference */}
           <span className="text-sm uppercase tracking-widest font-semibold text-primary">
             Question {currentIndex + 1} · of {quizQuestions.length}
@@ -66,19 +67,32 @@ const Quiz = () => {
         </div>
       </header>
 
-      {/* Main content */}
+      {/* Main content - Two column layout */}
       <main className="flex-1 px-6 py-8 pb-40 relative z-10">
-        <div className="max-w-3xl mx-auto relative">
-          {quizQuestions.map((question, index) => (
-            <QuizQuestion
-              key={question.id}
-              question={question}
-              selectedAnswer={answers[question.id] || null}
-              onSelectAnswer={handleSelectAnswer}
-              isVisible={index === currentIndex}
-              isDark={false}
-            />
-          ))}
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+            {/* Left column - Quiz content */}
+            <div className="relative">
+              {quizQuestions.map((question, index) => (
+                <QuizQuestion
+                  key={question.id}
+                  question={question}
+                  selectedAnswer={answers[question.id] || null}
+                  onSelectAnswer={handleSelectAnswer}
+                  isVisible={index === currentIndex}
+                  isDark={false}
+                />
+              ))}
+            </div>
+
+            {/* Right column - Premium visual (hidden on mobile) */}
+            <div className="hidden lg:block h-[500px] sticky top-24">
+              <QuizVisual
+                questionIndex={currentIndex}
+                isVisible={true}
+              />
+            </div>
+          </div>
         </div>
       </main>
 
