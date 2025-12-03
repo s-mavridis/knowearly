@@ -70,9 +70,9 @@ const Quiz = () => {
       {/* Main content - Two column layout */}
       <main className="flex-1 px-6 py-8 pb-40 relative z-10">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-12 items-start">
             {/* Left column - Quiz content */}
-            <div className="relative">
+            <div className="relative w-full">
               {quizQuestions.map((question, index) => (
                 <QuizQuestion
                   key={question.id}
@@ -85,8 +85,8 @@ const Quiz = () => {
               ))}
             </div>
 
-            {/* Right column - Premium visual (hidden on mobile) - height matches options */}
-            <div className="hidden lg:block h-[400px] sticky top-24">
+            {/* Right column - Premium visual (hidden on mobile) */}
+            <div className="hidden lg:block h-[400px] sticky top-24 w-full">
               <QuizVisual
                 questionIndex={currentIndex}
                 isVisible={true}

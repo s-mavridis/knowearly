@@ -46,16 +46,16 @@ const QuizQuestion = ({
       )}
     >
       {/* Question text - positioned in upper third */}
-      <div className="text-center mb-12 md:mb-16">
+      <div className="mb-12 md:mb-16">
         <h2 className={cn(
-          "font-display text-[28px] md:text-[42px] leading-tight mb-4 max-w-[700px] mx-auto",
+          "font-display text-[28px] md:text-[42px] leading-tight mb-4",
           isDark ? "text-white" : "text-foreground"
         )}>
           {question.text}
         </h2>
         {question.subtext && (
           <p className={cn(
-            "text-base md:text-lg italic leading-relaxed max-w-[600px] mx-auto",
+            "text-base md:text-lg italic leading-relaxed",
             isDark ? "text-white/60" : "text-muted-foreground"
           )}>
             {question.subtext}
@@ -65,7 +65,6 @@ const QuizQuestion = ({
 
       {/* Options */}
       <div className={cn(
-        "max-w-xl mx-auto",
         isYesNo 
           ? "grid grid-cols-1 md:grid-cols-2 gap-4" 
           : "space-y-4"
