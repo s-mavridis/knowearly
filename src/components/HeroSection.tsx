@@ -4,19 +4,21 @@ import { ArrowRight } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section 
-      className="relative min-h-screen flex items-center px-6 pt-24 pb-24 overflow-hidden"
-      style={{
-        backgroundImage: `url('/images/dna-bg.png')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-earth">
+      {/* Background image */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `url('/images/dna-bg.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
       {/* Warm overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-earth/85 via-earth/80 to-earth/90" />
+      <div className="absolute inset-0 bg-gradient-to-br from-earth/90 via-earth/85 to-earth/90" />
       
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full">
+      <div className="relative z-10 max-w-7xl mx-auto w-full px-6 pt-32 pb-24">
         <div className="max-w-2xl">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium mb-8">
