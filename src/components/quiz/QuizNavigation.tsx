@@ -16,14 +16,7 @@ const QuizNavigation = ({
 }: QuizNavigationProps) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-6 pb-8">
-      <div 
-        className={cn(
-          "absolute inset-0 bg-gradient-to-t pointer-events-none",
-          isDark 
-            ? "from-[#1c1917] via-[#1c1917]/90 to-transparent" 
-            : "from-background via-background/90 to-transparent"
-        )}
-      />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/90 to-transparent pointer-events-none" />
       <div className="relative max-w-xl mx-auto flex justify-center">
         <button
           type="button"

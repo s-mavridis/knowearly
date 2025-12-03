@@ -12,7 +12,7 @@ const QuizProgress = ({ currentQuestion, totalQuestions, isDark = true }: QuizPr
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
       {/* Progress bar track */}
-      <div className="w-full h-1.5 bg-gray-200/20">
+      <div className="w-full h-1.5 bg-border">
         {/* Progress bar fill with glow */}
         <div
           className={cn(
