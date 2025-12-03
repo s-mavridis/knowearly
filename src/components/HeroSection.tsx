@@ -24,7 +24,9 @@ const HeroSection = () => {
 
           {/* Headline with serif font */}
           <h1 className="font-display text-5xl md:text-6xl lg:text-7xl text-white leading-[1.1] tracking-tight mb-6">
-            Know your Cancer Risk
+            <span className="italic">Know</span> your
+            <br />
+            <span className="italic">Cancer</span> Risk
           </h1>
           
           <p className="text-lg md:text-xl text-white/80 max-w-xl mb-10 leading-relaxed">
