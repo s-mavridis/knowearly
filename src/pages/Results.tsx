@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import PremiumBanner from "@/components/PremiumBanner";
 
 const Results = () => {
   const location = useLocation();
@@ -364,6 +365,37 @@ const Results = () => {
         </section>
       )}
 
+      {/* Premium Banner Section */}
+      <section className="bg-background py-12 md:py-16 px-6">
+        <div className="max-w-[1200px] mx-auto">
+          <PremiumBanner
+            variant="copper"
+            headline="Knowledge is power."
+            headlineAccent="Action is everything."
+            glassCards={[
+              {
+                title: "Genetic Screening",
+                description: "Identify inherited cancer risk genes",
+                status: "positive",
+                position: "left",
+              },
+              {
+                title: "Early Detection",
+                description: "Catch warning signs sooner",
+                status: "positive",
+                position: "center",
+              },
+              {
+                title: "Personalized Plan",
+                description: "Tailored to your risk profile",
+                status: "positive",
+                position: "right",
+              },
+            ]}
+          />
+        </div>
+      </section>
+
       {/* Divider */}
       <div className="bg-background py-8 px-6">
         <div className="max-w-[900px] mx-auto relative">
@@ -469,6 +501,31 @@ const Results = () => {
               30-day money-back guarantee
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Second Premium Banner Section */}
+      <section className="bg-background py-12 md:py-16 px-6">
+        <div className="max-w-[1200px] mx-auto">
+          <PremiumBanner
+            variant="teal"
+            headline="Tested by few."
+            headlineAccent="Trusted by science."
+            glassCards={[
+              {
+                title: "Risk Assessment",
+                description: "Evidence-based analysis",
+                status: "positive",
+                position: "left",
+              },
+              {
+                title: "Expert Review",
+                description: "Clinician-validated results",
+                status: "positive",
+                position: "center",
+              },
+            ]}
+          />
         </div>
       </section>
 
