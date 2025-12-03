@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import QuizProgress from "@/components/quiz/QuizProgress";
 import QuizQuestion from "@/components/quiz/QuizQuestion";
 import QuizNavigation from "@/components/quiz/QuizNavigation";
+import AnimatedBackground from "@/components/AnimatedBackground";
 import { quizQuestions } from "@/data/quizQuestions";
 import { cn } from "@/lib/utils";
 
@@ -48,6 +49,8 @@ const Quiz = () => {
         isDarkBackground ? "bg-earth" : "bg-background"
       )}
     >
+      {/* Animated background for dark sections */}
+      {isDarkBackground && <AnimatedBackground />}
 
       {/* Fixed Progress Bar at very top */}
       <QuizProgress
