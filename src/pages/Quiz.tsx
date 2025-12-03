@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import QuizProgress from "@/components/quiz/QuizProgress";
@@ -7,21 +7,36 @@ import QuizNavigation from "@/components/quiz/QuizNavigation";
 import QuizVisual from "@/components/quiz/QuizVisual";
 import { quizQuestions } from "@/data/quizQuestions";
 
+// Questions that should be skipped if user has no family cancer history
+const FAMILY_CANCER_FOLLOWUP_QUESTIONS = ["cancer-age", "cancer-type"];
+
 const Quiz = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
 
-  const currentQuestion = quizQuestions[currentIndex];
-  const selectedAnswer = answers[currentQuestion.id] || null;
-  const isLastQuestion = currentIndex === quizQuestions.length - 1;
+  // Filter questions based on answers - skip follow-up questions if no family history
+  const activeQuestions = useMemo(() => {
+    const familyCancerAnswer = answers["family-cancer"];
+    const hasNoFamilyCancer = familyCancerAnswer === "no" || familyCancerAnswer === "unsure";
+    
+    if (hasNoFamilyCancer) {
+      return quizQuestions.filter(q => !FAMILY_CANCER_FOLLOWUP_QUESTIONS.includes(q.id));
+    }
+    return quizQuestions;
+  }, [answers]);
+
+  const currentQuestion = activeQuestions[currentIndex];
+  const selectedAnswer = currentQuestion ? answers[currentQuestion.id] || null : null;
+  const isLastQuestion = currentIndex === activeQuestions.length - 1;
 
   const handleSelectAnswer = useCallback((answerId: string) => {
+    if (!currentQuestion) return;
     setAnswers((prev) => ({
       ...prev,
       [currentQuestion.id]: answerId,
     }));
-  }, [currentQuestion.id]);
+  }, [currentQuestion]);
 
   const handleNext = useCallback(() => {
     if (isLastQuestion) {
@@ -42,7 +57,7 @@ const Quiz = () => {
       {/* Fixed Progress Bar at very top */}
       <QuizProgress
         currentQuestion={currentIndex + 1}
-        totalQuestions={quizQuestions.length}
+        totalQuestions={activeQuestions.length}
         isDark={false}
       />
 
@@ -51,7 +66,7 @@ const Quiz = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Question counter - top left - terracotta color like reference */}
           <span className="text-sm tracking-wide font-semibold text-primary">
-            Question {currentIndex + 1} of {quizQuestions.length}
+            Question {currentIndex + 1} of {activeQuestions.length}
           </span>
           
           {/* Back button - top right */}
@@ -73,7 +88,7 @@ const Quiz = () => {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-12">
             {/* Left column - Quiz content - fixed height */}
             <div className="relative w-full h-[520px]">
-              {quizQuestions.map((question, index) => (
+              {activeQuestions.map((question, index) => (
                 <QuizQuestion
                   key={question.id}
                   question={question}
