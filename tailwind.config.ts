@@ -126,7 +126,11 @@ export default {
         },
         "slow-zoom": {
           "0%": { transform: "scale(1)" },
-          "100%": { transform: "scale(1.1)" },
+          "100%": { transform: "scale(1.08)" },
+        },
+        "slow-pan": {
+          "0%": { transform: "scale(1.05) translateX(0)" },
+          "100%": { transform: "scale(1.1) translateX(-2%)" },
         },
         "draw-line": {
           "0%": { strokeDasharray: "0, 1000" },
@@ -143,7 +147,8 @@ export default {
         "particle-3": "particle-3 10s ease-in-out infinite",
         "pulse-slow": "pulse-slow 6s ease-in-out infinite",
         "pulse-slower": "pulse-slower 8s ease-in-out infinite",
-        "slow-zoom": "slow-zoom 20s ease-out forwards",
+        "slow-zoom": "slow-zoom 25s ease-out forwards",
+        "slow-pan": "slow-pan 30s ease-out forwards",
         "draw-line": "draw-line 2s ease-out forwards",
       },
     },
