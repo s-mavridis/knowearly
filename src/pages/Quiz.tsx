@@ -46,7 +46,7 @@ const Quiz = () => {
     <div 
       className={cn(
         "min-h-screen flex flex-col transition-colors duration-500 relative overflow-hidden",
-        isDarkBackground ? "bg-earth" : "bg-background"
+        isDarkBackground ? "bg-[#1a1f2e]" : "bg-background"
       )}
     >
       {/* Animated background for dark sections */}
