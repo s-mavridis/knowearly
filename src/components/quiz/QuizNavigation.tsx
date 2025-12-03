@@ -1,46 +1,51 @@
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface QuizNavigationProps {
-  onBack: () => void;
   onNext: () => void;
-  canGoBack: boolean;
   canGoNext: boolean;
   isLastQuestion: boolean;
+  isDark?: boolean;
 }
 
 const QuizNavigation = ({
-  onBack,
   onNext,
-  canGoBack,
   canGoNext,
   isLastQuestion,
+  isDark = true,
 }: QuizNavigationProps) => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background via-background to-transparent pt-8">
-      <div className="max-w-lg mx-auto flex flex-col gap-3">
-        <Button
-          variant="cta"
-          size="lg"
+    <div className={cn(
+      "fixed bottom-0 left-0 right-0 p-6 pb-8",
+      "bg-gradient-to-t",
+      isDark 
+        ? "from-quiz-dark via-quiz-dark/90 to-transparent" 
+        : "from-quiz-light via-quiz-light/90 to-transparent"
+    )}>
+      <div className="max-w-xl mx-auto flex justify-center">
+        <button
           onClick={onNext}
           disabled={!canGoNext}
-          className="w-full"
+          className={cn(
+            "w-full md:w-[200px] h-14 md:h-[60px] rounded-full font-semibold text-lg",
+            "flex items-center justify-center gap-2",
+            "transition-all duration-200",
+            "focus:outline-none focus:ring-3 focus:ring-terracotta/50 focus:ring-offset-2",
+            canGoNext && [
+              "bg-terracotta text-white",
+              "hover:bg-terracotta-light hover:-translate-y-1 hover:scale-[1.02]",
+              "hover:shadow-[0_8px_30px_rgba(255,107,53,0.4)]",
+              "active:translate-y-0 active:scale-100"
+            ],
+            !canGoNext && [
+              "bg-gray-400 text-gray-600 cursor-not-allowed",
+              "opacity-60"
+            ]
+          )}
         >
-          {isLastQuestion ? "See My Results" : "Next"}
-          <ArrowRight className="w-5 h-5 ml-1" />
-        </Button>
-        
-        {canGoBack && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onBack}
-            className="text-muted-foreground hover:text-primary mx-auto"
-          >
-            <ArrowLeft className="w-4 h-4 mr-1" />
-            Back
-          </Button>
-        )}
+          {isLastQuestion ? "See My Results" : "Continue"}
+          <ArrowRight className="w-5 h-5" />
+        </button>
       </div>
     </div>
   );
