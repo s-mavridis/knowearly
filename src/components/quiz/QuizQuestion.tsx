@@ -39,34 +39,33 @@ const QuizQuestion = ({
   return (
     <div
       className={cn(
-        "w-full transition-all duration-300 ease-out",
+        "w-full h-[520px] flex flex-col transition-all duration-300 ease-out",
         isVisible 
           ? "opacity-100 translate-y-0" 
           : "opacity-0 translate-y-4 pointer-events-none absolute"
       )}
     >
-      {/* Question text - positioned in upper third */}
-      <div className="mb-12 md:mb-16">
+      {/* Question text - fixed height area */}
+      <div className="h-[180px] flex flex-col justify-start">
         <h2 className={cn(
-          "font-display text-[28px] md:text-[42px] leading-tight mb-4",
+          "font-display text-[28px] md:text-[36px] leading-tight mb-4",
           isDark ? "text-white" : "text-foreground"
         )}>
           {question.text}
         </h2>
-        {question.subtext && (
-          <p className={cn(
-            "text-base md:text-lg italic leading-relaxed",
-            isDark ? "text-white/60" : "text-muted-foreground"
-          )}>
-            {question.subtext}
-          </p>
-        )}
+        <p className={cn(
+          "text-base md:text-lg italic leading-relaxed min-h-[28px]",
+          isDark ? "text-white/60" : "text-muted-foreground"
+        )}>
+          {question.subtext || ""}
+        </p>
       </div>
 
-      {/* Options */}
+      {/* Options - fixed height area for up to 5 options */}
       <div className={cn(
+        "flex-1",
         isYesNo 
-          ? "grid grid-cols-1 md:grid-cols-2 gap-4" 
+          ? "grid grid-cols-1 md:grid-cols-2 gap-4 content-start" 
           : "space-y-4"
       )}>
         {question.options.map((option) => (
