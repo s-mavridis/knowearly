@@ -12,6 +12,7 @@ export interface Question {
   text: string;
   subtext?: string;
   options: QuestionOption[];
+  isYesNo?: boolean;
 }
 
 interface QuizQuestionProps {
@@ -19,14 +20,22 @@ interface QuizQuestionProps {
   selectedAnswer: string | null;
   onSelectAnswer: (answerId: string) => void;
   isVisible: boolean;
+  isDark?: boolean;
 }
 
 const QuizQuestion = ({ 
   question, 
   selectedAnswer, 
   onSelectAnswer, 
-  isVisible 
+  isVisible,
+  isDark = true
 }: QuizQuestionProps) => {
+  // Detect if this is a yes/no question (2 options with yes/no type answers)
+  const isYesNo = question.isYesNo || (
+    question.options.length === 2 && 
+    question.options.some(o => o.id.toLowerCase().includes('yes') || o.label.toLowerCase().includes('yes'))
+  );
+
   return (
     <div
       className={cn(
@@ -36,18 +45,31 @@ const QuizQuestion = ({
           : "opacity-0 translate-y-4 pointer-events-none absolute"
       )}
     >
-      {/* Question text */}
-      <div className="text-center mb-10">
-        <h2 className="text-2xl md:text-[32px] font-semibold text-primary leading-tight mb-3">
+      {/* Question text - positioned in upper third */}
+      <div className="text-center mb-12 md:mb-16">
+        <h2 className={cn(
+          "text-[28px] md:text-[42px] font-semibold leading-tight mb-4 max-w-[700px] mx-auto",
+          isDark ? "text-white" : "text-quiz-navy"
+        )}>
           {question.text}
         </h2>
         {question.subtext && (
-          <p className="text-base text-muted-foreground">{question.subtext}</p>
+          <p className={cn(
+            "text-base md:text-lg italic leading-relaxed max-w-[600px] mx-auto",
+            isDark ? "text-gray-400" : "text-gray-600"
+          )}>
+            {question.subtext}
+          </p>
         )}
       </div>
 
       {/* Options */}
-      <div className="space-y-3 max-w-lg mx-auto">
+      <div className={cn(
+        "max-w-xl mx-auto",
+        isYesNo 
+          ? "grid grid-cols-1 md:grid-cols-2 gap-4" 
+          : "space-y-4"
+      )}>
         {question.options.map((option) => (
           <QuizOption
             key={option.id}
@@ -55,6 +77,8 @@ const QuizQuestion = ({
             description={option.description}
             selected={selectedAnswer === option.id}
             onClick={() => onSelectAnswer(option.id)}
+            isDark={isDark}
+            isYesNo={isYesNo}
           />
         ))}
       </div>

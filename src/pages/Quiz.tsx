@@ -1,11 +1,11 @@
 import { useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import QuizProgress from "@/components/quiz/QuizProgress";
 import QuizQuestion from "@/components/quiz/QuizQuestion";
 import QuizNavigation from "@/components/quiz/QuizNavigation";
 import { quizQuestions } from "@/data/quizQuestions";
+import { cn } from "@/lib/utils";
 
 const Quiz = () => {
   const navigate = useNavigate();
@@ -15,6 +15,10 @@ const Quiz = () => {
   const currentQuestion = quizQuestions[currentIndex];
   const selectedAnswer = answers[currentQuestion.id] || null;
   const isLastQuestion = currentIndex === quizQuestions.length - 1;
+  
+  // Determine if current question should have dark or light background
+  // Odd indices (0, 2, 4) = dark, Even indices (1, 3) = light
+  const isDarkBackground = currentIndex % 2 === 0;
 
   const handleSelectAnswer = useCallback((answerId: string) => {
     setAnswers((prev) => ({
@@ -25,7 +29,6 @@ const Quiz = () => {
 
   const handleNext = useCallback(() => {
     if (isLastQuestion) {
-      // Navigate to results with answers
       navigate("/results", { state: { answers } });
     } else {
       setCurrentIndex((prev) => prev + 1);
@@ -38,48 +41,64 @@ const Quiz = () => {
     }
   }, [currentIndex]);
 
-  const handleClose = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
-
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border/50 px-4 py-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="flex items-center justify-between mb-4">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-terracotta flex items-center justify-center">
-                <svg viewBox="0 0 24 24" className="w-4 h-4 text-white" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                </svg>
-              </div>
-              <span className="text-lg font-semibold text-foreground">ArtemisAI</span>
-            </Link>
-            
-            {/* Close button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleClose}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <X className="w-5 h-5" />
-            </Button>
-          </div>
+    <div 
+      className={cn(
+        "min-h-screen flex flex-col transition-colors duration-500 relative overflow-hidden",
+        isDarkBackground ? "bg-quiz-dark" : "bg-quiz-light"
+      )}
+    >
+      {/* Subtle DNA pattern background */}
+      <div 
+        className={cn(
+          "absolute inset-0 pointer-events-none transition-opacity duration-500",
+          isDarkBackground ? "opacity-[0.03]" : "opacity-[0.02]"
+        )}
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0c0 10-10 20-10 30s10 20 10 30M30 0c0 10 10 20 10 30s-10 20-10 30' fill='none' stroke='${isDarkBackground ? '%23ffffff' : '%23000000'}' stroke-width='1'/%3E%3C/svg%3E")`,
+          backgroundSize: '60px 60px',
+        }}
+      />
 
-          {/* Progress */}
-          <QuizProgress
-            currentQuestion={currentIndex + 1}
-            totalQuestions={quizQuestions.length}
-          />
+      {/* Fixed Progress Bar at very top */}
+      <QuizProgress
+        currentQuestion={currentIndex + 1}
+        totalQuestions={quizQuestions.length}
+        isDark={isDarkBackground}
+      />
+
+      {/* Header with question counter and back button */}
+      <header className="relative z-10 px-6 pt-8 pb-4">
+        <div className="max-w-3xl mx-auto flex items-center justify-between">
+          {/* Question counter - top left */}
+          <span className={cn(
+            "text-sm uppercase tracking-widest font-medium",
+            isDarkBackground ? "text-gray-400" : "text-gray-600"
+          )}>
+            Question {currentIndex + 1} of {quizQuestions.length}
+          </span>
+          
+          {/* Back button - top right */}
+          {currentIndex > 0 && (
+            <button
+              onClick={handleBack}
+              className={cn(
+                "flex items-center gap-1 text-base font-medium transition-colors duration-200",
+                isDarkBackground 
+                  ? "text-gray-400 hover:text-gray-200" 
+                  : "text-gray-600 hover:text-gray-800"
+              )}
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </button>
+          )}
         </div>
       </header>
 
       {/* Main content */}
-      <main className="flex-1 px-4 py-8 pb-40">
-        <div className="max-w-2xl mx-auto relative">
+      <main className="flex-1 px-6 py-8 pb-40 relative z-10">
+        <div className="max-w-3xl mx-auto relative">
           {quizQuestions.map((question, index) => (
             <QuizQuestion
               key={question.id}
@@ -87,6 +106,7 @@ const Quiz = () => {
               selectedAnswer={answers[question.id] || null}
               onSelectAnswer={handleSelectAnswer}
               isVisible={index === currentIndex}
+              isDark={index % 2 === 0}
             />
           ))}
         </div>
@@ -94,11 +114,10 @@ const Quiz = () => {
 
       {/* Navigation */}
       <QuizNavigation
-        onBack={handleBack}
         onNext={handleNext}
-        canGoBack={currentIndex > 0}
         canGoNext={!!selectedAnswer}
         isLastQuestion={isLastQuestion}
+        isDark={isDarkBackground}
       />
     </div>
   );
