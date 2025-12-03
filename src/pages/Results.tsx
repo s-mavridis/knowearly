@@ -12,8 +12,8 @@ import {
   RotateCcw
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import AnimatedBackground from "@/components/AnimatedBackground";
-import PremiumBanner from "@/components/PremiumBanner";
+import resultsBanner1 from "@/assets/results-banner-1.png";
+import resultsBanner2 from "@/assets/results-banner-2.png";
 
 const Results = () => {
   const location = useLocation();
@@ -138,14 +138,31 @@ const Results = () => {
 
   return (
     <div className="min-h-screen">
-      {/* SECTION 1: Hero / Status (Dark) */}
-      <section className="bg-[#1c1917] py-16 md:py-24 px-6 md:px-10 relative overflow-hidden">
-        <AnimatedBackground />
+      {/* SECTION 1: Hero / Status with Premium Image */}
+      <section className="relative py-16 md:py-24 px-6 md:px-10 overflow-hidden">
+        {/* Premium background image */}
+        <div className="absolute inset-0">
+          <img
+            src={resultsBanner2}
+            alt=""
+            className="w-full h-full object-cover animate-slow-zoom"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
+        </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute top-8 right-8 w-3 h-3 rounded-full bg-white/30 animate-pulse" />
+        <div className="absolute bottom-8 left-8 w-2 h-2 rounded-full bg-white/20 animate-pulse delay-300" />
+        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+          <path d="M50,350 Q200,200 400,280 T700,150" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" className="animate-draw-line" />
+          <circle cx="50" cy="350" r="4" fill="white" fillOpacity="0.4" />
+          <circle cx="700" cy="150" r="4" fill="white" fillOpacity="0.4" />
+        </svg>
         
         <div className="max-w-[900px] mx-auto text-center relative z-10">
           {/* Top badge */}
           <div className="inline-block mb-8">
-            <span className="text-xs uppercase tracking-[0.2em] text-white/60 font-medium px-4 py-2 border border-white/20 rounded-full">
+            <span className="text-xs uppercase tracking-[0.2em] text-white/80 font-medium px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full">
               Your Risk Assessment
             </span>
           </div>
@@ -153,7 +170,7 @@ const Results = () => {
           {/* Icon */}
           <div className="flex justify-center mb-6">
             <div 
-              className="w-20 h-20 rounded-full bg-terracotta/20 flex items-center justify-center"
+              className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center"
               style={{ boxShadow: '0 0 40px rgba(207, 92, 54, 0.3)' }}
             >
               <AlertCircle className="w-10 h-10 text-terracotta" />
@@ -181,7 +198,7 @@ const Results = () => {
           </h1>
 
           {/* Summary text */}
-          <p className="text-lg md:text-xl text-white/70 max-w-[600px] mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-white/80 max-w-[600px] mx-auto leading-relaxed">
             {hasElevatedRisk 
               ? `Based on your responses, you have ${totalFactors} risk factor${totalFactors > 1 ? 's' : ''} that may require enhanced screening beyond standard guidelines.`
               : "Based on your responses, your risk profile aligns with general population guidelines."
@@ -191,11 +208,18 @@ const Results = () => {
           {/* Retake link */}
           <button 
             onClick={() => navigate("/quiz")}
-            className="mt-8 inline-flex items-center gap-2 text-white/50 hover:text-white/80 transition-colors text-sm"
+            className="mt-8 inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm backdrop-blur-sm px-4 py-2 rounded-full border border-white/10 hover:border-white/20"
           >
             <RotateCcw className="w-4 h-4" />
             Retake Assessment
           </button>
+        </div>
+        
+        {/* Bottom timeline markers */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+          {[...Array(12)].map((_, i) => (
+            <div key={i} className={cn("w-0.5 bg-white/40", i % 3 === 0 ? "h-3" : "h-1.5")} />
+          ))}
         </div>
       </section>
 
@@ -321,29 +345,41 @@ const Results = () => {
         </div>
       </section>
 
-      {/* SECTION 3: Recommended Screenings (Dark) */}
+      {/* SECTION 3: Recommended Screenings with Premium Image */}
       {hasElevatedRisk && (
-        <section className="bg-[#1c1917] py-16 md:py-20 px-6 relative overflow-hidden">
-          <AnimatedBackground />
+        <section className="relative py-16 md:py-20 px-6 overflow-hidden">
+          {/* Premium background image */}
+          <div className="absolute inset-0">
+            <img src={resultsBanner1} alt="" className="w-full h-full object-cover animate-slow-zoom" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
+          </div>
+          
+          {/* Decorative elements */}
+          <div className="absolute top-6 right-6 w-3 h-3 rounded-full bg-white/30 animate-pulse" />
+          <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+            <path d="M100,300 Q300,150 500,250 T750,100" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" />
+          </svg>
           
           <div className="max-w-[900px] mx-auto relative z-10">
             {/* Header */}
             <div className="flex items-center gap-3 mb-10">
-              <ClipboardCheck className="w-8 h-8 text-terracotta" />
+              <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                <ClipboardCheck className="w-6 h-6 text-terracotta" />
+              </div>
               <h2 className="font-display text-2xl md:text-[32px] text-white">
                 You May Benefit From:
               </h2>
             </div>
 
-            {/* Screening cards */}
+            {/* Screening cards - glass style */}
             <div className="space-y-6">
               {screenings.map((screening, index) => (
                 <div 
                   key={index}
-                  className="bg-white/[0.08] border border-white/20 rounded-2xl p-6 md:p-8 hover:bg-white/[0.12] transition-all duration-200"
+                  className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 md:p-8 hover:bg-white/15 transition-all duration-200"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-terracotta/20 flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-terracotta/20 backdrop-blur-sm flex items-center justify-center shrink-0">
                       <screening.icon className="w-6 h-6 text-terracotta" />
                     </div>
                     <div>
@@ -362,39 +398,15 @@ const Results = () => {
               ))}
             </div>
           </div>
+          
+          {/* Bottom timeline markers */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+            {[...Array(10)].map((_, i) => (
+              <div key={i} className={cn("w-0.5 bg-white/40", i % 3 === 0 ? "h-3" : "h-1.5")} />
+            ))}
+          </div>
         </section>
       )}
-
-      {/* Premium Banner Section */}
-      <section className="bg-background py-12 md:py-16 px-6">
-        <div className="max-w-[1200px] mx-auto">
-          <PremiumBanner
-            variant="copper"
-            headline="Knowledge is power."
-            headlineAccent="Action is everything."
-            glassCards={[
-              {
-                title: "Genetic Screening",
-                description: "Identify inherited cancer risk genes",
-                status: "positive",
-                position: "left",
-              },
-              {
-                title: "Early Detection",
-                description: "Catch warning signs sooner",
-                status: "positive",
-                position: "center",
-              },
-              {
-                title: "Personalized Plan",
-                description: "Tailored to your risk profile",
-                status: "positive",
-                position: "right",
-              },
-            ]}
-          />
-        </div>
-      </section>
 
       {/* Divider */}
       <div className="bg-background py-8 px-6">
@@ -504,34 +516,13 @@ const Results = () => {
         </div>
       </section>
 
-      {/* Second Premium Banner Section */}
-      <section className="bg-background py-12 md:py-16 px-6">
-        <div className="max-w-[1200px] mx-auto">
-          <PremiumBanner
-            variant="teal"
-            headline="Tested by few."
-            headlineAccent="Trusted by science."
-            glassCards={[
-              {
-                title: "Risk Assessment",
-                description: "Evidence-based analysis",
-                status: "positive",
-                position: "left",
-              },
-              {
-                title: "Expert Review",
-                description: "Clinician-validated results",
-                status: "positive",
-                position: "center",
-              },
-            ]}
-          />
-        </div>
-      </section>
-
-      {/* SECTION 5: Trust & Disclaimers (Dark) */}
+      {/* SECTION 5: Trust & Disclaimers with subtle background */}
       <section className="bg-[#1c1917] py-12 md:py-16 px-6 relative overflow-hidden">
-        <AnimatedBackground />
+        {/* Subtle gradient background instead of animated */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1c1917] via-[#292524] to-[#1c1917]" />
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full blur-[120px] bg-terracotta/5" />
+        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full blur-[100px] bg-sage/5" />
+        
         <div className="max-w-[1000px] mx-auto relative z-10">
           {/* Trust badges */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 mb-8">
