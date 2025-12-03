@@ -7,48 +7,48 @@ interface AnimatedBackgroundProps {
 const AnimatedBackground = ({ className }: AnimatedBackgroundProps) => {
   return (
     <div className={cn("absolute inset-0 overflow-hidden pointer-events-none", className)}>
-      {/* Floating particles */}
+      {/* Floating circles - clearly visible */}
       <div 
-        className="absolute w-2 h-2 rounded-full bg-white/[0.06] animate-particle-1"
-        style={{ top: '15%', left: '20%' }}
+        className="absolute w-8 h-8 rounded-full bg-white/20 blur-sm animate-particle-1"
+        style={{ top: '15%', left: '15%' }}
       />
       <div 
-        className="absolute w-3 h-3 rounded-full bg-white/[0.04] animate-particle-2"
-        style={{ top: '55%', right: '15%' }}
+        className="absolute w-12 h-12 rounded-full bg-white/15 blur-sm animate-particle-2"
+        style={{ top: '50%', right: '10%' }}
       />
       <div 
-        className="absolute w-2 h-2 rounded-full bg-white/[0.05] animate-particle-3"
-        style={{ top: '35%', left: '70%' }}
+        className="absolute w-10 h-10 rounded-full bg-white/15 blur-sm animate-particle-3"
+        style={{ top: '30%', left: '75%' }}
       />
       <div 
-        className="absolute w-1.5 h-1.5 rounded-full bg-white/[0.06] animate-particle-1"
-        style={{ bottom: '25%', left: '10%' }}
+        className="absolute w-6 h-6 rounded-full bg-white/20 blur-sm animate-particle-1"
+        style={{ bottom: '20%', left: '8%' }}
       />
       <div 
-        className="absolute w-2.5 h-2.5 rounded-full bg-white/[0.04] animate-particle-2"
-        style={{ bottom: '15%', right: '30%' }}
+        className="absolute w-10 h-10 rounded-full bg-white/15 blur-sm animate-particle-2"
+        style={{ bottom: '25%', right: '20%' }}
       />
       <div 
-        className="absolute w-1.5 h-1.5 rounded-full bg-white/[0.05] animate-particle-3"
-        style={{ top: '70%', left: '45%' }}
+        className="absolute w-8 h-8 rounded-full bg-white/15 blur-sm animate-particle-3"
+        style={{ top: '65%', left: '40%' }}
       />
       <div 
-        className="absolute w-2 h-2 rounded-full bg-white/[0.04] animate-particle-1"
-        style={{ top: '25%', right: '40%' }}
+        className="absolute w-6 h-6 rounded-full bg-white/20 blur-sm animate-particle-1"
+        style={{ top: '20%', right: '35%' }}
+      />
+      <div 
+        className="absolute w-8 h-8 rounded-full bg-white/15 blur-sm animate-particle-2"
+        style={{ top: '75%', left: '20%' }}
       />
 
-      {/* Subtle gradient orbs */}
+      {/* Larger gradient orbs for atmosphere */}
       <div 
-        className="absolute w-[300px] h-[300px] rounded-full bg-terracotta/[0.03] blur-3xl animate-pulse-slow"
-        style={{ top: '-10%', right: '-5%' }}
+        className="absolute w-[500px] h-[500px] rounded-full bg-terracotta/10 blur-[100px] animate-pulse-slow"
+        style={{ top: '-20%', right: '-15%' }}
       />
       <div 
-        className="absolute w-[250px] h-[250px] rounded-full bg-white/[0.02] blur-3xl animate-pulse-slower"
-        style={{ bottom: '-5%', left: '-5%' }}
-      />
-      <div 
-        className="absolute w-[200px] h-[200px] rounded-full bg-terracotta/[0.02] blur-3xl animate-pulse-slower"
-        style={{ top: '40%', left: '30%' }}
+        className="absolute w-[400px] h-[400px] rounded-full bg-white/[0.08] blur-[80px] animate-pulse-slower"
+        style={{ bottom: '-15%', left: '-15%' }}
       />
     </div>
   );
