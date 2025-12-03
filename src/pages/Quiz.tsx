@@ -6,7 +6,6 @@ import QuizQuestion from "@/components/quiz/QuizQuestion";
 import QuizNavigation from "@/components/quiz/QuizNavigation";
 import { quizQuestions } from "@/data/quizQuestions";
 import { cn } from "@/lib/utils";
-import heroBg from "@/assets/hero-bg.png";
 
 const Quiz = () => {
   const navigate = useNavigate();
@@ -49,21 +48,6 @@ const Quiz = () => {
         isDarkBackground ? "bg-earth" : "bg-background"
       )}
     >
-      {/* Background image for dark sections - matching landing page */}
-      {isDarkBackground && (
-        <>
-          <div 
-            className="absolute inset-0 transition-opacity duration-500"
-            style={{
-              backgroundImage: `url(${heroBg})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              transform: 'scaleX(-1)',
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-earth/80 via-earth/70 to-earth/80" />
-        </>
-      )}
 
       {/* Fixed Progress Bar at very top */}
       <QuizProgress
