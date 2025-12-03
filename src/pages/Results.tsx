@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import resultsBanner1 from "@/assets/results-banner-1.png";
-import resultsBanner2 from "@/assets/results-banner-2.png";
+import resultsHeroBg from "@/assets/results-hero-bg.png";
 
 const Results = () => {
   const location = useLocation();
@@ -140,14 +140,16 @@ const Results = () => {
     <div className="min-h-screen">
       {/* SECTION 1: Hero / Status with Premium Image */}
       <section className="relative py-16 md:py-24 px-6 md:px-10 overflow-hidden">
-        {/* Premium background image */}
+        {/* Premium background image with dark center for text contrast */}
         <div className="absolute inset-0">
           <img
-            src={resultsBanner2}
+            src={resultsHeroBg}
             alt=""
             className="w-full h-full object-cover animate-slow-zoom"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
+          {/* Stronger center darkening for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/40" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.4)_0%,transparent_70%)]" />
         </div>
         
         {/* Decorative elements */}
