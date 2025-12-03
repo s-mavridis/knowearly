@@ -1,22 +1,22 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import heroBg from "@/assets/hero-bg.png";
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background layers */}
+      {/* Background image */}
       <div 
-        className="absolute inset-0 bg-earth"
+        className="absolute inset-0"
         style={{
-          backgroundImage: `url('/images/dna-bg.png')`,
+          backgroundImage: `url(${heroBg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
         }}
       />
-      {/* Warm overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-earth/95 via-earth/70 to-earth/50" />
+      {/* Warm overlay for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-earth/70 via-earth/40 to-earth/20" />
       
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto w-full px-6 pt-32 pb-24">
