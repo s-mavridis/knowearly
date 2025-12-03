@@ -143,7 +143,7 @@ const Results = () => {
         {/* Premium background image with dark center for text contrast */}
         <div className="absolute inset-0">
           <div 
-            className="w-full h-full animate-slow-zoom"
+            className="w-full h-full"
             style={{
               backgroundImage: `url(${heroBg})`,
               backgroundSize: 'cover',
