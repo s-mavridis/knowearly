@@ -155,6 +155,17 @@ const Results = () => {
         {/* Decorative elements */}
         <div className="absolute top-8 right-8 w-3 h-3 rounded-full bg-white/30 animate-pulse" />
         <div className="absolute bottom-8 left-8 w-2 h-2 rounded-full bg-white/20 animate-pulse delay-300" />
+        
+        {/* Moving particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-1.5 h-1.5 rounded-full bg-white/40 animate-drift-1" />
+          <div className="absolute top-1/3 left-1/2 w-1 h-1 rounded-full bg-white/30 animate-drift-2" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-1/2 left-1/3 w-2 h-2 rounded-full bg-white/20 animate-drift-3" style={{ animationDelay: '4s' }} />
+          <div className="absolute top-2/3 left-2/3 w-1.5 h-1.5 rounded-full bg-white/35 animate-drift-1" style={{ animationDelay: '3s' }} />
+          <div className="absolute top-3/4 left-1/4 w-1 h-1 rounded-full bg-white/25 animate-drift-2" style={{ animationDelay: '5s' }} />
+          <div className="absolute top-1/2 right-1/4 w-1.5 h-1.5 rounded-full bg-sage/40 animate-drift-3" style={{ animationDelay: '1s' }} />
+        </div>
+        
         <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
           <path d="M50,350 Q200,200 400,280 T700,150" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" className="animate-draw-line" />
           <circle cx="50" cy="350" r="4" fill="white" fillOpacity="0.4" />
@@ -370,6 +381,15 @@ const Results = () => {
           
           {/* Decorative elements */}
           <div className="absolute top-6 right-6 w-3 h-3 rounded-full bg-white/30 animate-pulse" />
+          
+          {/* Moving particles */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 left-1/5 w-1.5 h-1.5 rounded-full bg-white/40 animate-drift-1" />
+            <div className="absolute top-1/3 left-1/2 w-1 h-1 rounded-full bg-white/30 animate-drift-2" style={{ animationDelay: '1s' }} />
+            <div className="absolute top-1/2 left-1/4 w-2 h-2 rounded-full bg-white/20 animate-drift-3" style={{ animationDelay: '3s' }} />
+            <div className="absolute top-2/3 right-1/3 w-1.5 h-1.5 rounded-full bg-terracotta/30 animate-drift-1" style={{ animationDelay: '2s' }} />
+          </div>
+          
           <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
             <path d="M100,300 Q300,150 500,250 T750,100" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" />
           </svg>
