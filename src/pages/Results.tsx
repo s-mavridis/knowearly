@@ -175,69 +175,67 @@ const Results = () => {
           <circle cx="700" cy="150" r="4" fill="white" fillOpacity="0.4" />
         </svg>
         
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="max-w-2xl">
-            {/* Top badge */}
-            <div className="mb-8">
-              <span className="text-xs uppercase tracking-[0.2em] text-white/80 font-medium px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full">
-                Your Risk Assessment
-              </span>
-            </div>
-
-            {/* Icon - changes based on risk level */}
-            <div className="flex mb-6">
-              <div 
-                className={cn(
-                  "w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center",
-                )}
-                style={{ 
-                  boxShadow: riskLevel === "STANDARD" 
-                    ? '0 0 40px rgba(107, 142, 107, 0.4)' 
-                    : '0 0 40px rgba(207, 92, 54, 0.3)' 
-                }}
-              >
-                {riskLevel === "STANDARD" ? (
-                  <Check className="w-8 h-8 text-sage" />
-                ) : riskLevel === "HIGH PRIORITY" ? (
-                  <AlertCircle className="w-8 h-8 text-terracotta" />
-                ) : (
-                  <Activity className="w-8 h-8 text-terracotta" />
-                )}
-              </div>
-            </div>
-
-            {/* Main headline */}
-            <h1 className="mb-6">
-              <span className="block font-display text-xl md:text-2xl text-white/80 font-normal mb-3">
-                Your Risk Factor Profile:
-              </span>
-              <span 
-                className={cn(
-                  "inline-block text-2xl md:text-3xl font-bold px-6 py-3 rounded-full text-white",
-                  riskLevel === "STANDARD" ? "bg-sage" : "bg-terracotta"
-                )}
-              >
-                {riskLevel}
-              </span>
-            </h1>
-
-            {/* Summary text */}
-            <p className="text-lg md:text-xl text-white/80 max-w-xl leading-relaxed">
-              {hasElevatedRisk 
-                ? `Based on your responses, you have ${totalFactors} risk factor${totalFactors > 1 ? 's' : ''} that may require enhanced screening beyond standard guidelines.`
-                : "Based on your responses, your risk profile aligns with general population guidelines."
-              }
-            </p>
-
-            {/* Retake link */}
-            <button 
-              onClick={() => navigate("/quiz")}
-              className="mt-8 inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm backdrop-blur-sm px-4 py-2 rounded-full border border-white/10 hover:border-white/20"
-            >
-              <RotateCcw className="w-4 h-4" />
-              Retake Assessment
-            </button>
+        <div className="max-w-[900px] mx-auto text-center relative z-10">
+          {/* Top badge */}
+          <div className="inline-block mb-8">
+            <span className="text-xs uppercase tracking-[0.2em] text-white/80 font-medium px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full">
+              Your Risk Assessment
+            </span>
           </div>
+
+          {/* Icon - changes based on risk level */}
+          <div className="flex justify-center mb-6">
+            <div 
+              className={cn(
+                "w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center",
+              )}
+              style={{ 
+                boxShadow: riskLevel === "STANDARD" 
+                  ? '0 0 40px rgba(107, 142, 107, 0.4)' 
+                  : '0 0 40px rgba(207, 92, 54, 0.3)' 
+              }}
+            >
+              {riskLevel === "STANDARD" ? (
+                <Check className="w-10 h-10 text-sage" />
+              ) : riskLevel === "HIGH PRIORITY" ? (
+                <AlertCircle className="w-10 h-10 text-terracotta" />
+              ) : (
+                <Activity className="w-10 h-10 text-terracotta" />
+              )}
+            </div>
+          </div>
+
+          {/* Main headline */}
+          <h1 className="mb-6">
+            <span className="block font-display text-2xl md:text-[28px] text-white font-normal mb-4">
+              Your Risk Factor Profile:
+            </span>
+            <span 
+              className={cn(
+                "inline-block text-2xl md:text-3xl font-bold px-6 py-3 rounded-full text-white",
+                riskLevel === "STANDARD" ? "bg-sage" : "bg-terracotta"
+              )}
+            >
+              {riskLevel}
+            </span>
+          </h1>
+
+          {/* Summary text */}
+          <p className="text-lg md:text-xl text-white/80 max-w-[600px] mx-auto leading-relaxed">
+            {hasElevatedRisk 
+              ? `Based on your responses, you have ${totalFactors} risk factor${totalFactors > 1 ? 's' : ''} that may require enhanced screening beyond standard guidelines.`
+              : "Based on your responses, your risk profile aligns with general population guidelines."
+            }
+          </p>
+
+          {/* Retake link */}
+          <button 
+            onClick={() => navigate("/quiz")}
+            className="mt-8 inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm backdrop-blur-sm px-4 py-2 rounded-full border border-white/10 hover:border-white/20"
+          >
+            <RotateCcw className="w-4 h-4" />
+            Retake Assessment
+          </button>
         </div>
         
         {/* Bottom timeline markers */}
