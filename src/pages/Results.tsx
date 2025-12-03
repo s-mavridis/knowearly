@@ -169,13 +169,25 @@ const Results = () => {
             </span>
           </div>
 
-          {/* Icon */}
+          {/* Icon - changes based on risk level */}
           <div className="flex justify-center mb-6">
             <div 
-              className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center"
-              style={{ boxShadow: '0 0 40px rgba(207, 92, 54, 0.3)' }}
+              className={cn(
+                "w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center",
+              )}
+              style={{ 
+                boxShadow: riskLevel === "STANDARD" 
+                  ? '0 0 40px rgba(107, 142, 107, 0.4)' 
+                  : '0 0 40px rgba(207, 92, 54, 0.3)' 
+              }}
             >
-              <AlertCircle className="w-10 h-10 text-terracotta" />
+              {riskLevel === "STANDARD" ? (
+                <Check className="w-10 h-10 text-sage" />
+              ) : riskLevel === "HIGH PRIORITY" ? (
+                <AlertCircle className="w-10 h-10 text-terracotta" />
+              ) : (
+                <Activity className="w-10 h-10 text-terracotta" />
+              )}
             </div>
           </div>
 
