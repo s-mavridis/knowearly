@@ -209,16 +209,9 @@ const Results = () => {
             </span>
             <span 
               className={cn(
-                "inline-block text-4xl md:text-[48px] font-bold px-8 py-4 rounded-2xl backdrop-blur-md border",
-                riskLevel === "STANDARD" 
-                  ? "text-sage bg-white/10 border-sage/30" 
-                  : "text-terracotta bg-black/30 border-terracotta/30"
+                "inline-block text-4xl md:text-[48px] font-bold px-8 py-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20",
+                riskLevel === "STANDARD" ? "text-sage" : "text-terracotta"
               )}
-              style={{ 
-                boxShadow: riskLevel !== "STANDARD" 
-                  ? '0 0 40px rgba(207, 92, 54, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.2)' 
-                  : '0 0 40px rgba(107, 142, 107, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.1)'
-              }}
             >
               {riskLevel}
             </span>
