@@ -72,7 +72,7 @@ const Quiz = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-12 items-stretch">
             {/* Left column - Quiz content */}
-            <div className="relative w-full">
+            <div className="relative w-full min-h-[500px]">
               {quizQuestions.map((question, index) => (
                 <QuizQuestion
                   key={question.id}
@@ -85,8 +85,8 @@ const Quiz = () => {
               ))}
             </div>
 
-            {/* Right column - Premium visual (hidden on mobile) - stretches to match left */}
-            <div className="hidden lg:block w-full">
+            {/* Right column - Premium visual (hidden on mobile) */}
+            <div className="hidden lg:flex w-full min-h-[500px]">
               <QuizVisual
                 questionIndex={currentIndex}
                 isVisible={true}
