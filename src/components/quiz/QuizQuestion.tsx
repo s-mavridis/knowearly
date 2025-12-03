@@ -48,15 +48,15 @@ const QuizQuestion = ({
       {/* Question text - positioned in upper third */}
       <div className="text-center mb-12 md:mb-16">
         <h2 className={cn(
-          "text-[28px] md:text-[42px] font-semibold leading-tight mb-4 max-w-[700px] mx-auto",
-          isDark ? "text-white" : "text-quiz-navy"
+          "font-display text-[28px] md:text-[42px] leading-tight mb-4 max-w-[700px] mx-auto",
+          isDark ? "text-white" : "text-foreground"
         )}>
           {question.text}
         </h2>
         {question.subtext && (
           <p className={cn(
             "text-base md:text-lg italic leading-relaxed max-w-[600px] mx-auto",
-            isDark ? "text-gray-400" : "text-gray-600"
+            isDark ? "text-white/60" : "text-muted-foreground"
           )}>
             {question.subtext}
           </p>

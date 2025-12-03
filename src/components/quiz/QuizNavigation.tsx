@@ -20,8 +20,8 @@ const QuizNavigation = ({
         className={cn(
           "absolute inset-0 bg-gradient-to-t pointer-events-none",
           isDark 
-            ? "from-quiz-dark via-quiz-dark/90 to-transparent" 
-            : "from-quiz-light via-quiz-light/90 to-transparent"
+            ? "from-earth via-earth/90 to-transparent" 
+            : "from-background via-background/90 to-transparent"
         )}
       />
       <div className="relative max-w-xl mx-auto flex justify-center">
@@ -37,12 +37,12 @@ const QuizNavigation = ({
             canGoNext && [
               "bg-terracotta text-white",
               "hover:bg-terracotta-light hover:-translate-y-1 hover:scale-[1.02]",
-              "hover:shadow-[0_8px_30px_rgba(255,107,53,0.4)]",
+              "hover:shadow-[0_8px_30px_rgba(207,92,54,0.4)]",
               "active:translate-y-0 active:scale-100"
             ],
             !canGoNext && [
-              "bg-gray-400 text-gray-600 cursor-not-allowed",
-              "opacity-60"
+              "bg-white/20 text-white/40 cursor-not-allowed",
+              isDark ? "bg-white/10" : "bg-foreground/10 text-foreground/30"
             ]
           )}
         >

@@ -18,10 +18,6 @@ export default {
         display: ["Playfair Display", "Georgia", "serif"],
       },
       colors: {
-        // Quiz specific colors
-        'quiz-dark': '#2d3748',
-        'quiz-light': '#f7f6f4',
-        'quiz-navy': '#1a202c',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
