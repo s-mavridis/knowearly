@@ -163,21 +163,20 @@ const Results = () => {
   const pricingTiers = [
     {
       name: "Basic Report",
-      price: 0,
-      description: "General risk overview",
+      price: 49,
+      tier: "basic",
       features: [
         { text: "Personalized risk summary", bold: true },
         { text: "General screening guidelines", bold: true },
         { text: "Educational resources", bold: false },
         { text: "Shareable PDF report", bold: false },
       ],
-      cta: "Download Free",
       popular: false,
     },
     {
       name: "Guided Analysis",
-      price: 49,
-      description: "Personalized action plan",
+      price: 149,
+      tier: "guided",
       features: [
         { text: "Everything in Basic", bold: true },
         { text: "Personalized screening timeline", bold: true },
@@ -186,25 +185,29 @@ const Results = () => {
         { text: "Priority email support", bold: false },
         { text: "Risk updates for 1 year", bold: false },
       ],
-      cta: "Join Waitlist",
       popular: true,
     },
     {
       name: "Expert Consultation",
-      price: 149,
-      description: "1-on-1 genetic counselor call",
+      price: 249,
+      tier: "expert",
       features: [
         { text: "Everything in Guided", bold: true },
         { text: "30-min video consultation", bold: true },
-        { text: "Family history deep-dive", bold: true },
+        { text: "Provider referrals", bold: true },
+        { text: "Family history deep-dive", bold: false },
+        { text: "Insurance navigation", bold: false },
         { text: "Personalized action plan", bold: false },
         { text: "Follow-up support (90 days)", bold: false },
         { text: "Direct counselor access", bold: false },
       ],
-      cta: "Join Waitlist",
       popular: false,
     },
   ];
+
+  const handleJoinWaitlist = (tier: string, price: number) => {
+    navigate("/waitlist", { state: { tier, price, answers } });
+  };
 
   return (
     <div className="min-h-screen">
@@ -533,37 +536,34 @@ const Results = () => {
               <div
                 key={index}
                 className={cn(
-                  "relative bg-card rounded-[20px] p-8 md:p-10 flex flex-col transition-all duration-250 border",
-                  "hover:-translate-y-2 hover:scale-[1.02]",
+                  "relative bg-card rounded-[20px] p-10 flex flex-col transition-all duration-250 border",
+                  "hover:-translate-y-1 hover:shadow-2xl",
                   tier.popular 
-                    ? "border-2 border-terracotta shadow-2xl md:-mt-4 md:mb-4" 
+                    ? "border-[3px] border-terracotta shadow-2xl md:-mt-2 md:mb-2 md:scale-[1.02]" 
                     : "border-border shadow-lg hover:shadow-xl"
                 )}
               >
                 {/* Popular badge */}
                 {tier.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-terracotta text-white text-xs font-semibold px-4 py-1.5 rounded-full whitespace-nowrap">
+                    <span className="bg-terracotta text-white text-xs font-semibold uppercase tracking-wider px-4 py-1.5 rounded-full whitespace-nowrap">
                       Most Popular
                     </span>
                   </div>
                 )}
 
                 {/* Tier name */}
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-2">
+                <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-4">
                   {tier.name}
                 </h3>
                 
                 {/* Price */}
                 <div className="mb-1">
                   <span className="text-5xl md:text-[56px] font-bold text-foreground">
-                    {tier.price === 0 ? "Free" : `$${tier.price}`}
+                    ${tier.price}
                   </span>
                 </div>
-                {tier.price > 0 && (
-                  <p className="text-sm text-muted-foreground mb-6">/one-time</p>
-                )}
-                {tier.price === 0 && <div className="mb-6" />}
+                <p className="text-sm text-muted-foreground mb-6">/one-time</p>
 
                 {/* Divider */}
                 <div className="border-t border-border my-6" />
@@ -585,15 +585,16 @@ const Results = () => {
 
                 {/* CTA Button */}
                 <button
+                  onClick={() => handleJoinWaitlist(tier.tier, tier.price)}
                   className={cn(
-                    "w-full h-[52px] rounded-full font-semibold text-base mt-8 transition-all duration-200",
-                    "hover:-translate-y-1 hover:shadow-lg",
+                    "w-full h-[52px] rounded-full font-semibold text-base mt-8 transition-all duration-250",
+                    "hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02]",
                     tier.popular
                       ? "bg-terracotta text-white hover:bg-terracotta-light"
                       : "bg-card text-terracotta border-2 border-terracotta hover:bg-terracotta/5"
                   )}
                 >
-                  {tier.cta}
+                  Join Waitlist
                 </button>
               </div>
             ))}
