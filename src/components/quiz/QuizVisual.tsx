@@ -3,12 +3,11 @@ import quizVisual1 from "@/assets/quiz-visual-1.jpg";
 import quizVisual2 from "@/assets/quiz-visual-2.jpg";
 import quizVisual3 from "@/assets/quiz-visual-3.jpg";
 import quizVisual4 from "@/assets/quiz-visual-4.jpg";
-import quizVisual5 from "@/assets/quiz-visual-5.jpg";
 
-// Cycle through visuals for 7 questions
-const visuals = [quizVisual1, quizVisual2, quizVisual3, quizVisual4, quizVisual5, quizVisual1, quizVisual2];
+// Cycle through visuals for 4 questions
+const visuals = [quizVisual1, quizVisual2, quizVisual3, quizVisual4];
 
-// Explanations for why we ask each question (7 questions total)
+// Explanations for why we ask each question (4 questions total)
 const questionExplanations = [
   {
     title: "Age and Cancer Risk",
@@ -19,20 +18,8 @@ const questionExplanations = [
     description: "Hereditary factors account for 5-10% of all cancers. Understanding your family history helps identify inherited genetic mutations that may increase your risk."
   },
   {
-    title: "Age at Diagnosis",
-    description: "Cancer diagnosed before age 50 often indicates a stronger genetic component. Earlier onset in family members may suggest inherited cancer syndromes."
-  },
-  {
-    title: "Cancer Type Patterns",
-    description: "Certain cancers cluster in families due to shared genetic mutations. BRCA genes affect breast and ovarian cancer, while Lynch syndrome affects colorectal cancer."
-  },
-  {
     title: "Genetic Testing Insights",
     description: "Known genetic mutations in your family can directly inform your screening plan. If a mutation has been identified, targeted testing becomes more precise."
-  },
-  {
-    title: "Smoking and Lung Cancer",
-    description: "Smoking is the leading cause of lung cancer. Your smoking history directly affects lung cancer screening recommendations and may qualify you for annual low-dose CT scans."
   },
   {
     title: "Your Screening History",
@@ -52,7 +39,7 @@ const QuizVisual = ({ questionIndex, isVisible }: QuizVisualProps) => {
   return (
     <div
       className={cn(
-        "relative w-full h-full rounded-3xl overflow-hidden transition-all duration-700",
+        "relative w-full h-full min-h-[520px] rounded-3xl overflow-hidden transition-all duration-700",
         isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
       )}
     >

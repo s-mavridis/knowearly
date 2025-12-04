@@ -8,6 +8,7 @@ interface QuizOptionProps {
   onClick: () => void;
   isDark?: boolean;
   isYesNo?: boolean;
+  isCompact?: boolean;
 }
 
 const QuizOption = ({ 
@@ -16,7 +17,8 @@ const QuizOption = ({
   selected, 
   onClick, 
   isDark = true,
-  isYesNo = false 
+  isYesNo = false,
+  isCompact = false
 }: QuizOptionProps) => {
   return (
     <button
@@ -24,10 +26,11 @@ const QuizOption = ({
       onClick={onClick}
       aria-pressed={selected}
       className={cn(
-        "w-full px-6 py-5 rounded-2xl text-left transition-all duration-200",
+        "w-full rounded-2xl text-left transition-all duration-200",
         "flex items-center justify-between gap-4",
         "focus:outline-none focus:ring-2 focus:ring-terracotta/50 focus:ring-offset-2",
-        isYesNo ? "min-h-[56px] md:min-h-[70px]" : "min-h-[70px] md:min-h-[70px]",
+        isCompact ? "px-5 py-4 min-h-[52px]" : "px-6 py-5",
+        isYesNo ? "min-h-[56px] md:min-h-[70px]" : !isCompact && "min-h-[70px] md:min-h-[70px]",
         // Dark background styles (earth tone)
         isDark && !selected && [
           "bg-white/[0.08] border border-white/20",
@@ -49,7 +52,8 @@ const QuizOption = ({
     >
       <div className="flex-1">
         <span className={cn(
-          "text-base md:text-lg font-medium transition-colors",
+          "transition-colors",
+          isCompact ? "text-base font-medium" : "text-base md:text-lg font-medium",
           isDark && !selected && "text-white/90",
           isDark && selected && "text-white",
           !isDark && !selected && "text-foreground",
@@ -69,7 +73,8 @@ const QuizOption = ({
       
       {/* Selection indicator */}
       <div className={cn(
-        "w-6 h-6 rounded-full flex items-center justify-center transition-all duration-100 shrink-0",
+        "rounded-full flex items-center justify-center transition-all duration-100 shrink-0",
+        isCompact ? "w-5 h-5" : "w-6 h-6",
         selected 
           ? "bg-terracotta" 
           : cn(
@@ -77,7 +82,7 @@ const QuizOption = ({
               isDark ? "border-white/30 bg-transparent" : "border-border bg-white"
             )
       )}>
-        {selected && <Check className="w-4 h-4 text-white" strokeWidth={3} />}
+        {selected && <Check className={cn(isCompact ? "w-3 h-3" : "w-4 h-4", "text-white")} strokeWidth={3} />}
       </div>
     </button>
   );
