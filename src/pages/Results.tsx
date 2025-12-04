@@ -25,6 +25,13 @@ const Results = () => {
     const highPriority: string[] = [];
     const additional: string[] = [];
     
+    // Age-based risk
+    if (answers["age"] === "65+") {
+      additional.push("Age 65+ (increased cancer risk with age)");
+    } else if (answers["age"] === "55-64") {
+      additional.push("Age 55-64 (moderate age-related risk)");
+    }
+    
     if (answers["family-cancer"] === "yes-multiple") {
       highPriority.push("2+ immediate family members with cancer history");
     } else if (answers["family-cancer"] === "yes-one") {
@@ -41,12 +48,21 @@ const Results = () => {
       highPriority.push("Family history of breast or ovarian cancer (BRCA-associated)");
     } else if (answers["cancer-type"] === "colorectal") {
       additional.push("Family history of colorectal cancer");
+    } else if (answers["cancer-type"] === "lung") {
+      additional.push("Family history of lung cancer");
     } else if (answers["cancer-type"] === "multiple") {
       highPriority.push("Multiple cancer types in family (hereditary syndrome indicator)");
     }
     
     if (answers["genetic-testing"] === "yes-positive") {
       highPriority.push("Known genetic mutation identified in family");
+    }
+    
+    // Smoking history
+    if (answers["smoking-history"] === "current") {
+      highPriority.push("Current smoker (significantly elevated lung cancer risk)");
+    } else if (answers["smoking-history"] === "former") {
+      additional.push("Former smoker (elevated lung cancer risk)");
     }
     
     if (answers["personal-history"] === "no") {
@@ -81,6 +97,18 @@ const Results = () => {
     const cancerType = answers["cancer-type"];
     const hasFamilyHistory = answers["family-cancer"] === "yes-one" || answers["family-cancer"] === "yes-multiple";
     const hasGeneticMutation = answers["genetic-testing"] === "yes-positive";
+    const isSmoker = answers["smoking-history"] === "current" || answers["smoking-history"] === "former";
+    const age = answers["age"];
+
+    // Lung cancer screening for smokers/former smokers
+    if (isSmoker || cancerType === "lung" || cancerType === "multiple") {
+      screeningsList.push({
+        icon: Activity,
+        name: "Low-dose CT screening",
+        type: "Lung cancer",
+        description: "Recommended for current/former smokers or those with family history. LDCT can detect lung cancer early when it's most treatable."
+      });
+    }
 
     // Breast/ovarian cancer → Enhanced breast MRI
     if (cancerType === "breast-ovarian" || cancerType === "multiple" || hasGeneticMutation) {
@@ -93,12 +121,15 @@ const Results = () => {
     }
 
     // Colorectal cancer → Early colonoscopy
-    if (cancerType === "colorectal" || cancerType === "multiple") {
+    if (cancerType === "colorectal" || cancerType === "multiple" || (age === "45-54" || age === "55-64" || age === "65+")) {
+      const hasColorectalHistory = cancerType === "colorectal" || cancerType === "multiple";
       screeningsList.push({
         icon: Stethoscope,
-        name: "Early colonoscopy",
+        name: hasColorectalHistory ? "Early colonoscopy" : "Colonoscopy screening",
         type: "Colorectal cancer",
-        description: "Guidelines recommend starting at 45, but family history may warrant beginning 10 years before your relative's diagnosis age."
+        description: hasColorectalHistory 
+          ? "Guidelines recommend starting at 45, but family history may warrant beginning 10 years before your relative's diagnosis age."
+          : "Colonoscopy is recommended for adults 45 and older for colorectal cancer screening."
       });
     }
 
@@ -123,7 +154,7 @@ const Results = () => {
     }
 
     // If no specific screenings matched but has elevated risk, show general recommendation
-    if (screeningsList.length === 0 && hasFamilyHistory) {
+    if (screeningsList.length === 0 && (hasFamilyHistory || isSmoker)) {
       screeningsList.push({
         icon: ClipboardCheck,
         name: "Comprehensive cancer screening",

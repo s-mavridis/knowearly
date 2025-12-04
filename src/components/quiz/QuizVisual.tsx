@@ -5,10 +5,15 @@ import quizVisual3 from "@/assets/quiz-visual-3.jpg";
 import quizVisual4 from "@/assets/quiz-visual-4.jpg";
 import quizVisual5 from "@/assets/quiz-visual-5.jpg";
 
-const visuals = [quizVisual1, quizVisual2, quizVisual3, quizVisual4, quizVisual5];
+// Cycle through visuals for 7 questions
+const visuals = [quizVisual1, quizVisual2, quizVisual3, quizVisual4, quizVisual5, quizVisual1, quizVisual2];
 
-// Explanations for why we ask each question
+// Explanations for why we ask each question (7 questions total)
 const questionExplanations = [
+  {
+    title: "Age and Cancer Risk",
+    description: "Cancer risk increases with age. Your age helps determine which screenings are most appropriate and when they should begin based on established guidelines."
+  },
   {
     title: "Family History Matters",
     description: "Hereditary factors account for 5-10% of all cancers. Understanding your family history helps identify inherited genetic mutations that may increase your risk."
@@ -24,6 +29,10 @@ const questionExplanations = [
   {
     title: "Genetic Testing Insights",
     description: "Known genetic mutations in your family can directly inform your screening plan. If a mutation has been identified, targeted testing becomes more precise."
+  },
+  {
+    title: "Smoking and Lung Cancer",
+    description: "Smoking is the leading cause of lung cancer. Your smoking history directly affects lung cancer screening recommendations and may qualify you for annual low-dose CT scans."
   },
   {
     title: "Your Screening History",

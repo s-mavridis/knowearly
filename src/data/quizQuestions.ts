@@ -2,6 +2,17 @@ import { Question } from "@/components/quiz/QuizQuestion";
 
 export const quizQuestions: Question[] = [
   {
+    id: "age",
+    text: "What is your age?",
+    subtext: "Your age helps determine appropriate screening recommendations",
+    options: [
+      { id: "35-44", label: "35-44 years old" },
+      { id: "45-54", label: "45-54 years old" },
+      { id: "55-64", label: "55-64 years old" },
+      { id: "65+", label: "65 or older" },
+    ],
+  },
+  {
     id: "family-cancer",
     text: "Has anyone in your immediate family been diagnosed with cancer?",
     subtext: "Immediate family includes parents, siblings, and children",
@@ -31,6 +42,7 @@ export const quizQuestions: Question[] = [
       { id: "breast-ovarian", label: "Breast or ovarian cancer" },
       { id: "colorectal", label: "Colorectal cancer" },
       { id: "prostate", label: "Prostate cancer" },
+      { id: "lung", label: "Lung cancer" },
       { id: "other", label: "Other type of cancer" },
       { id: "multiple", label: "Multiple types" },
     ],
@@ -43,6 +55,16 @@ export const quizQuestions: Question[] = [
       { id: "yes-negative", label: "Yes, but no mutation was found" },
       { id: "no", label: "No genetic testing has been done" },
       { id: "unsure", label: "I'm not sure" },
+    ],
+  },
+  {
+    id: "smoking-history",
+    text: "Which best describes your smoking history?",
+    subtext: "Smoking history affects lung cancer screening recommendations",
+    options: [
+      { id: "never", label: "Never smoked" },
+      { id: "former", label: "Former smoker" },
+      { id: "current", label: "Current smoker" },
     ],
   },
   {
