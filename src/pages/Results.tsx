@@ -69,6 +69,74 @@ const Results = () => {
   const riskLevel = getRiskLevel();
   const hasElevatedRisk = riskLevel !== "Standard";
 
+  // Get recommended screenings based on answers
+  const getRecommendedScreenings = () => {
+    const screeningsList: Array<{
+      icon: typeof Activity;
+      name: string;
+      type: string;
+      description: string;
+    }> = [];
+
+    const cancerType = answers["cancer-type"];
+    const hasFamilyHistory = answers["family-cancer"] === "yes-one" || answers["family-cancer"] === "yes-multiple";
+    const hasGeneticMutation = answers["genetic-testing"] === "yes-positive";
+
+    // Breast/ovarian cancer → Enhanced breast MRI
+    if (cancerType === "breast-ovarian" || cancerType === "multiple" || hasGeneticMutation) {
+      screeningsList.push({
+        icon: HeartPulse,
+        name: "Enhanced breast MRI",
+        type: "Breast cancer",
+        description: "Standard mammograms may miss early cancers in high-risk individuals. MRI screening catches up to 30% more early-stage cancers."
+      });
+    }
+
+    // Colorectal cancer → Early colonoscopy
+    if (cancerType === "colorectal" || cancerType === "multiple") {
+      screeningsList.push({
+        icon: Stethoscope,
+        name: "Early colonoscopy",
+        type: "Colorectal cancer",
+        description: "Guidelines recommend starting at 45, but family history may warrant beginning 10 years before your relative's diagnosis age."
+      });
+    }
+
+    // Prostate cancer → PSA testing
+    if (cancerType === "prostate" || cancerType === "multiple") {
+      screeningsList.push({
+        icon: Activity,
+        name: "Early PSA screening",
+        type: "Prostate cancer",
+        description: "Men with family history of prostate cancer should discuss earlier PSA testing with their doctor, potentially starting at age 40-45."
+      });
+    }
+
+    // General family history with early diagnosis → Genetic counseling
+    if (hasFamilyHistory && answers["cancer-age"] === "under-50") {
+      screeningsList.push({
+        icon: Brain,
+        name: "Genetic counseling",
+        type: "Hereditary risk",
+        description: "Early-onset cancer in your family may indicate hereditary cancer syndromes. Genetic testing can identify specific mutations and guide screening."
+      });
+    }
+
+    // If no specific screenings matched but has elevated risk, show general recommendation
+    if (screeningsList.length === 0 && hasFamilyHistory) {
+      screeningsList.push({
+        icon: ClipboardCheck,
+        name: "Comprehensive cancer screening",
+        type: "General prevention",
+        description: "Discuss your family history with your healthcare provider to determine appropriate screening schedules based on your specific risk factors."
+      });
+    }
+
+    return screeningsList;
+  };
+
+  const screenings = getRecommendedScreenings();
+
   const pricingTiers = [
     {
       name: "Basic Report",
@@ -113,27 +181,6 @@ const Results = () => {
       cta: "Join Waitlist",
       popular: false,
     },
-  ];
-
-  const screenings = [
-    {
-      icon: Activity,
-      name: "Low-dose CT screening",
-      type: "Lung cancer",
-      description: "Most never-smokers with family history don't qualify under current USPSTF guidelines but may benefit based on emerging research on hereditary lung cancer risk."
-    },
-    {
-      icon: HeartPulse,
-      name: "Enhanced breast MRI",
-      type: "Breast cancer",
-      description: "Standard mammograms may miss early cancers in high-risk individuals. MRI screening catches up to 30% more early-stage cancers."
-    },
-    {
-      icon: Stethoscope,
-      name: "Early colonoscopy",
-      type: "Colorectal cancer",
-      description: "Guidelines recommend starting at 45, but family history may warrant beginning 10 years before your relative's diagnosis age."
-    }
   ];
 
   return (
@@ -372,7 +419,7 @@ const Results = () => {
       </section>
 
       {/* SECTION 3: Recommended Screenings with Premium Image */}
-      {hasElevatedRisk && (
+      {screenings.length > 0 && (
         <section className="relative py-16 md:py-20 px-6 overflow-hidden">
           {/* Premium background image */}
           <div className="absolute inset-0">
