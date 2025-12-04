@@ -1,58 +1,62 @@
-import { useLocation, Link } from "react-router-dom";
-import { CheckCircle, ArrowRight } from "lucide-react";
+import { useSearchParams, Link } from "react-router-dom";
+import { CheckCircle } from "lucide-react";
 
 const ThankYou = () => {
-  const location = useLocation();
-  const { firstName = "there" } = location.state || {};
+  const [searchParams] = useSearchParams();
+  const firstName = searchParams.get("name") || "";
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 md:px-6">
-      <div className="max-w-[540px] w-full text-center">
+    <div className="min-h-screen bg-cream">
+      <div className="max-w-[600px] mx-auto px-5 py-16 md:py-24 text-center">
         {/* Success Icon */}
-        <div className="w-20 h-20 rounded-full bg-terracotta/10 flex items-center justify-center mx-auto mb-8">
-          <CheckCircle className="w-10 h-10 text-terracotta" />
+        <div className="mb-6">
+          <CheckCircle className="w-20 h-20 text-terracotta mx-auto" strokeWidth={1.5} />
         </div>
 
-        {/* Heading */}
-        <h1 className="font-display text-3xl md:text-4xl text-foreground mb-4">
-          You're on the list!
+        {/* Main Heading */}
+        <h1 className="font-display text-4xl md:text-5xl font-bold text-navy mb-4">
+          You're on the list! 🎉
         </h1>
 
-        {/* Body Text */}
-        <div className="text-muted-foreground space-y-4 mb-10">
-          <p className="text-lg">
-            Thanks for joining the ArtemisAI waitlist, <span className="text-foreground font-medium">{firstName}</span>!
+        {/* Personalized Message */}
+        {firstName && (
+          <p className="text-xl md:text-2xl text-foreground/80 mb-4">
+            Thanks for joining, {firstName}!
           </p>
-          <p>
-            We're launching in Q1 2026, and you'll be among the first to know.
-          </p>
-          <p>
-            Check your email for confirmation and next steps.
-          </p>
-        </div>
+        )}
 
-        {/* Survey CTA */}
-        <div className="bg-card rounded-2xl border border-border p-6 md:p-8 mb-8">
-          <p className="text-foreground font-medium mb-4">
-            Help us build the right solution
+        {/* Body Text */}
+        <p className="text-lg text-foreground/80 leading-relaxed max-w-[500px] mx-auto mb-8">
+          We're launching in Q1 2026, and you'll be among the first to know.
+        </p>
+
+        {/* Divider */}
+        <div className="border-t border-border my-10" />
+
+        {/* Survey CTA Card */}
+        <div className="bg-white rounded-2xl shadow-md p-8 max-w-[450px] mx-auto">
+          <h2 className="text-xl font-semibold text-navy mb-3">
+            Help Us Build the Right Solution
+          </h2>
+          <p className="text-base text-muted-foreground leading-relaxed mb-6">
+            Take our 2-minute survey to help us create the best cancer screening experience.
           </p>
           <a
-            href="https://forms.google.com"
+            href="https://forms.gle/your-survey-link"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 w-full h-12 rounded-full bg-terracotta text-white font-semibold hover:bg-terracotta-light hover:-translate-y-0.5 hover:shadow-lg transition-all duration-250"
+            className="inline-block bg-terracotta text-white text-base font-semibold px-8 py-3.5 rounded-full hover:-translate-y-1 hover:shadow-lg transition-all duration-250"
           >
-            Take 3-Minute Survey
-            <ArrowRight className="w-4 h-4" />
+            Take Survey
           </a>
         </div>
 
         {/* Contact Info */}
-        <p className="text-sm text-muted-foreground">
-          Questions? Reply to the welcome email or contact us at{" "}
-          <a 
-            href="mailto:hello@artemisai.com" 
-            className="text-terracotta hover:underline"
+        <p className="text-sm text-muted-foreground mt-10">
+          Questions? Email us at{" "}
+          <a
+            href="mailto:hello@artemisai.com"
+            className="text-foreground/80 hover:underline"
           >
             hello@artemisai.com
           </a>

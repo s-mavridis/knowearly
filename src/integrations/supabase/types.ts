@@ -18,38 +18,38 @@ export type Database = {
         Row: {
           created_at: string
           email: string
-          first_name: string
+          first_name: string | null
           id: string
           selected_price: number
           selected_tier: string
-          subscription_preference: string
+          subscription_preference: string | null
           utm_campaign: string | null
           utm_source: string | null
-          willingness_to_pay: string
+          willingness_to_pay: string | null
         }
         Insert: {
           created_at?: string
           email: string
-          first_name: string
+          first_name?: string | null
           id?: string
-          selected_price: number
-          selected_tier: string
-          subscription_preference: string
+          selected_price?: number
+          selected_tier?: string
+          subscription_preference?: string | null
           utm_campaign?: string | null
           utm_source?: string | null
-          willingness_to_pay: string
+          willingness_to_pay?: string | null
         }
         Update: {
           created_at?: string
           email?: string
-          first_name?: string
+          first_name?: string | null
           id?: string
           selected_price?: number
           selected_tier?: string
-          subscription_preference?: string
+          subscription_preference?: string | null
           utm_campaign?: string | null
           utm_source?: string | null
-          willingness_to_pay?: string
+          willingness_to_pay?: string | null
         }
         Relationships: []
       }
