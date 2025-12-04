@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { 
   AlertCircle, 
@@ -14,6 +15,7 @@ import {
   Hospital
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import WaitlistModal from "@/components/WaitlistModal";
 import resultsBanner1 from "@/assets/results-banner-1.png";
 import heroBg from "@/assets/hero-bg.png";
 
@@ -21,6 +23,10 @@ const Results = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const answers = location.state?.answers || {};
+  
+  // Waitlist modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTier, setSelectedTier] = useState({ name: "", price: 0 });
 
   // Determine risk factors based on answers
   const getRiskFactors = () => {
@@ -206,7 +212,8 @@ const Results = () => {
   ];
 
   const handleJoinWaitlist = (tier: string, price: number) => {
-    navigate("/waitlist", { state: { tier, price, answers } });
+    setSelectedTier({ name: tier, price });
+    setIsModalOpen(true);
   };
 
   return (
@@ -679,6 +686,14 @@ const Results = () => {
           </div>
         </div>
       </section>
+      
+      {/* Waitlist Modal */}
+      <WaitlistModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        tierName={selectedTier.name}
+        tierPrice={selectedTier.price}
+      />
     </div>
   );
 };
