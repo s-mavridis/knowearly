@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Check, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { toast } from "@/hooks/use-toast";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const tierLabels: Record<string, string> = {
@@ -11,277 +9,207 @@ const tierLabels: Record<string, string> = {
   expert: "Expert Consultation",
 };
 
-const willingnessOptions = [
-  { value: "yes_definitely", label: "Yes, definitely" },
-  { value: "yes_probably", label: "Yes, probably" },
-  { value: "maybe", label: "Maybe, depends on details" },
-  { value: "probably_not", label: "Probably not" },
-];
-
-const subscriptionOptions = [
-  { value: "one_time_better", label: "No, one-time payment is better" },
-  { value: "monthly", label: "Yes, monthly subscription (~$15-29/month)" },
-  { value: "annual", label: "Yes, annual subscription (~$149-249/year)" },
-  { value: "not_sure", label: "Not sure, tell me more about both options" },
-];
-
 const Waitlist = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { tier = "guided", price = 149 } = location.state || {};
+  const [searchParams] = useSearchParams();
   
-  const [firstName, setFirstName] = useState("");
+  // Get tier info from URL params
+  const tier = searchParams.get("tier") || "guided";
+  const price = parseInt(searchParams.get("price") || "149", 10);
+  const utmSource = searchParams.get("utm_source") || null;
+  const utmCampaign = searchParams.get("utm_campaign") || null;
+  
   const [email, setEmail] = useState("");
-  const [willingnessToPay, setWillingnessToPay] = useState("");
-  const [subscriptionPreference, setSubscriptionPreference] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [alreadyRegistered, setAlreadyRegistered] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  const isFormValid = firstName.trim() && email.trim() && willingnessToPay && subscriptionPreference;
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleEmailBlur = () => {
+    if (email && !validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError("");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!isFormValid) {
-      toast({
-        title: "Please fill in all fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      toast({
-        title: "Please enter a valid email address",
-        variant: "destructive",
-      });
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
       return;
     }
 
     setIsSubmitting(true);
-    
-    // Get UTM parameters from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const utmSource = urlParams.get('utm_source');
-    const utmCampaign = urlParams.get('utm_campaign');
+    setSubmitError("");
+    setAlreadyRegistered(false);
 
-    const { error } = await supabase
-      .from('waitlist_signups')
-      .insert({
-        first_name: firstName.trim(),
-        email: email.trim().toLowerCase(),
-        selected_tier: tier,
-        selected_price: price,
-        willingness_to_pay: willingnessToPay,
-        subscription_preference: subscriptionPreference,
-        utm_source: utmSource,
-        utm_campaign: utmCampaign,
-      });
-
-    setIsSubmitting(false);
-
-    if (error) {
-      if (error.code === '23505') {
-        toast({
-          title: "You're already on the waitlist!",
-          description: "Check your email for confirmation.",
+    try {
+      const { error } = await supabase
+        .from("waitlist_signups")
+        .insert({
+          email: email.trim().toLowerCase(),
+          first_name: firstName.trim() || null,
+          selected_tier: tierLabels[tier] || tier,
+          selected_price: price,
+          utm_source: utmSource,
+          utm_campaign: utmCampaign,
         });
-      } else {
-        toast({
-          title: "Something went wrong",
-          description: "Please try again.",
-          variant: "destructive",
-        });
+
+      if (error) {
+        if (error.code === "23505") {
+          setAlreadyRegistered(true);
+        } else {
+          console.error("Error submitting to waitlist:", error);
+          setSubmitError("Something went wrong. Please try again.");
+        }
+        setIsSubmitting(false);
+        return;
       }
-      return;
+
+      navigate(`/thank-you?name=${encodeURIComponent(firstName.trim())}`);
+    } catch (error) {
+      console.error("Error:", error);
+      setSubmitError("Something went wrong. Please try again.");
+      setIsSubmitting(false);
     }
-    
-    navigate('/thank-you', { state: { firstName } });
   };
 
-  return (
-    <div className="min-h-screen bg-background py-8 md:py-16 px-4 md:px-6">
-      <div className="max-w-[600px] mx-auto">
-        {/* Back link */}
-        <button
-          onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to results
-        </button>
+  const isFormValid = email && validateEmail(email) && !alreadyRegistered;
 
-        {/* Header */}
+  return (
+    <div className="min-h-screen bg-cream">
+      <div className="max-w-[500px] mx-auto px-5 py-16 md:py-24">
+        {/* Header Section */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 border border-muted-foreground/30 text-muted-foreground px-4 py-2 rounded-full text-sm font-medium tracking-wide uppercase mb-6">
+          {/* Early Access Badge */}
+          <span className="inline-block px-4 py-2 text-xs font-medium tracking-widest uppercase text-muted-foreground border border-muted-foreground/30 rounded-full mb-5">
             Early Access
-          </div>
-          <h1 className="font-display text-3xl md:text-[42px] text-foreground mb-6 leading-tight">
+          </span>
+          
+          {/* Main Heading */}
+          <h1 className="font-display text-4xl md:text-[42px] font-bold text-navy mb-4">
             Join the Waitlist
           </h1>
-          <p className="text-lg md:text-xl text-foreground/80 font-medium mb-4">
-            You selected: {tierLabels[tier]} - ${price}
+          
+          {/* Selected Plan */}
+          <p className="text-lg md:text-xl font-medium text-foreground/80 mb-3">
+            You selected: {tierLabels[tier] || tier} - ${price}
           </p>
+          
+          {/* Subheading */}
           <p className="text-base text-muted-foreground">
-            Launching Q1 2026 - Reserve your spot for early access pricing
+            Launching Q1 2026 — Reserve your spot for early access pricing
           </p>
         </div>
 
         {/* Form Card */}
-        <form onSubmit={handleSubmit} className="bg-card rounded-[20px] shadow-lg p-8 md:p-12">
-          {/* First Name */}
-          <div className="mb-6">
-            <label htmlFor="firstName" className="block text-sm font-semibold text-foreground mb-2">
-              First Name
-            </label>
-            <input
-              type="text"
-              id="firstName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="Enter your first name"
-              className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-terracotta transition-all"
-              required
-            />
-          </div>
-
-          {/* Email */}
-          <div className="mb-6">
-            <label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your.email@example.com"
-              className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-terracotta transition-all"
-              required
-            />
-          </div>
-
-          {/* Selected Plan (Read-only) */}
-          <div className="mb-8">
-            <label className="block text-sm font-semibold text-foreground mb-2">
-              Selected Plan
-            </label>
-            <div className="w-full px-4 py-4 rounded-xl border border-border/50 bg-muted/50 text-foreground/80">
-              {tierLabels[tier]} - ${price} one-time
+        <div className="bg-white rounded-[20px] shadow-lg p-8 md:p-12 max-w-[450px] mx-auto">
+          <form onSubmit={handleSubmit}>
+            {/* Email Field */}
+            <div className="mb-5">
+              <label htmlFor="email" className="block text-sm font-semibold text-navy mb-2">
+                Email address
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailError("");
+                  setAlreadyRegistered(false);
+                }}
+                onBlur={handleEmailBlur}
+                placeholder="your.email@example.com"
+                className={`w-full h-[52px] px-4 text-base rounded-xl border transition-all duration-200 outline-none bg-background ${
+                  emailError 
+                    ? "border-red-500 focus:border-red-500" 
+                    : "border-border focus:border-terracotta focus:border-2"
+                }`}
+              />
+              {emailError && (
+                <p className="text-red-500 text-sm mt-2">{emailError}</p>
+              )}
             </div>
-          </div>
 
-          {/* Question 1: Willingness to Pay */}
-          <div className="mb-8">
-            <label className="block text-base font-semibold text-foreground mb-3">
-              Would you pay ${price} for this service when we launch?
-            </label>
-            <div className="space-y-3">
-              {willingnessOptions.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => setWillingnessToPay(option.value)}
-                  className={cn(
-                    "w-full px-4 py-4 rounded-xl border text-left transition-all duration-200",
-                    "hover:bg-muted/50 hover:-translate-y-0.5",
-                    willingnessToPay === option.value
-                      ? "border-terracotta border-2 bg-terracotta/5"
-                      : "border-border bg-card"
-                  )}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={cn(
-                      "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors",
-                      willingnessToPay === option.value
-                        ? "border-terracotta bg-terracotta"
-                        : "border-muted-foreground/40"
-                    )}>
-                      {willingnessToPay === option.value && (
-                        <div className="w-2 h-2 rounded-full bg-white" />
-                      )}
-                    </div>
-                    <span className="text-foreground">{option.label}</span>
-                  </div>
-                </button>
-              ))}
+            {/* First Name Field (Optional) */}
+            <div className="mb-8">
+              <label htmlFor="firstName" className="block text-sm font-semibold text-navy mb-2">
+                First name (optional)
+              </label>
+              <input
+                type="text"
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Enter your first name"
+                className="w-full h-[52px] px-4 text-base rounded-xl border border-border bg-background focus:border-terracotta focus:border-2 transition-all duration-200 outline-none"
+              />
             </div>
-          </div>
 
-          {/* Question 2: Subscription Preference */}
-          <div className="mb-10">
-            <label className="block text-base font-semibold text-foreground mb-1">
-              Would you prefer a subscription option instead?
-            </label>
-            <p className="text-sm text-muted-foreground italic mb-3">
-              Annual monitoring with ongoing risk updates
-            </p>
-            <div className="space-y-3">
-              {subscriptionOptions.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => setSubscriptionPreference(option.value)}
-                  className={cn(
-                    "w-full px-4 py-4 rounded-xl border text-left transition-all duration-200",
-                    "hover:bg-muted/50 hover:-translate-y-0.5",
-                    subscriptionPreference === option.value
-                      ? "border-terracotta border-2 bg-terracotta/5"
-                      : "border-border bg-card"
-                  )}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={cn(
-                      "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors",
-                      subscriptionPreference === option.value
-                        ? "border-terracotta bg-terracotta"
-                        : "border-muted-foreground/40"
-                    )}>
-                      {subscriptionPreference === option.value && (
-                        <div className="w-2 h-2 rounded-full bg-white" />
-                      )}
-                    </div>
-                    <span className="text-foreground">{option.label}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={!isFormValid || isSubmitting}
-            className={cn(
-              "w-full h-14 rounded-full font-semibold text-lg transition-all duration-250",
-              isFormValid && !isSubmitting
-                ? "bg-terracotta text-white hover:bg-terracotta-light hover:-translate-y-1 hover:shadow-lg"
-                : "bg-muted text-muted-foreground cursor-not-allowed"
+            {/* Already Registered Message */}
+            {alreadyRegistered && (
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 text-center">
+                <p className="text-blue-700 text-sm">
+                  You're already on the waitlist! Check your email for details.
+                </p>
+              </div>
             )}
-          >
-            {isSubmitting ? (
-              <span className="flex items-center justify-center gap-2">
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Reserving...
-              </span>
-            ) : (
-              "Reserve My Spot"
-            )}
-          </button>
 
-          {/* Fine print */}
-          <p className="text-center text-[13px] text-muted-foreground mt-4">
+            {/* Submit Error */}
+            {submitError && (
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 text-center">
+                <p className="text-red-700 text-sm">{submitError}</p>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={!isFormValid || isSubmitting}
+              className={`w-full h-14 rounded-full text-lg font-semibold transition-all duration-250 ${
+                isFormValid && !isSubmitting
+                  ? "bg-terracotta text-white hover:-translate-y-1 hover:shadow-xl hover:brightness-105 cursor-pointer"
+                  : alreadyRegistered
+                  ? "bg-blue-100 text-blue-600 cursor-not-allowed"
+                  : "bg-muted text-muted-foreground cursor-not-allowed"
+              }`}
+            >
+              {isSubmitting ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Reserving...
+                </span>
+              ) : alreadyRegistered ? (
+                "Already Registered"
+              ) : (
+                "Reserve My Spot"
+              )}
+            </button>
+          </form>
+
+          {/* Footer Text */}
+          <p className="text-center text-[13px] text-muted-foreground mt-6 leading-relaxed">
+            Launching Q1 2026. Early access pricing for first members.
+            <br />
             By joining, you agree to our{" "}
-            <Link to="/privacy" className="underline hover:text-foreground transition-colors">
+            <a href="#" className="text-foreground/80 hover:underline">
               Privacy Policy
-            </Link>{" "}
+            </a>{" "}
             and{" "}
-            <Link to="/terms" className="underline hover:text-foreground transition-colors">
+            <a href="#" className="text-foreground/80 hover:underline">
               Terms of Service
-            </Link>
+            </a>
           </p>
-        </form>
+        </div>
       </div>
     </div>
   );
