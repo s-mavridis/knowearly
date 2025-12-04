@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      waitlist_signups: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          selected_price: number
+          selected_tier: string
+          subscription_preference: string
+          utm_campaign: string | null
+          utm_source: string | null
+          willingness_to_pay: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          selected_price: number
+          selected_tier: string
+          subscription_preference: string
+          utm_campaign?: string | null
+          utm_source?: string | null
+          willingness_to_pay: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          selected_price?: number
+          selected_tier?: string
+          subscription_preference?: string
+          utm_campaign?: string | null
+          utm_source?: string | null
+          willingness_to_pay?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
