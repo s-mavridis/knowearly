@@ -9,7 +9,9 @@ import {
   ClipboardCheck,
   Activity,
   HeartPulse,
-  RotateCcw
+  RotateCcw,
+  Dna,
+  Hospital
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import resultsBanner1 from "@/assets/results-banner-1.png";
@@ -25,48 +27,43 @@ const Results = () => {
     const highPriority: string[] = [];
     const additional: string[] = [];
     
-    // Age-based risk
-    if (answers["age"] === "65+") {
-      additional.push("Age 65+ (increased cancer risk with age)");
-    } else if (answers["age"] === "55-64") {
-      additional.push("Age 55-64 (moderate age-related risk)");
+    // HIGH PRIORITY: Multiple family members AND early diagnosis
+    if (answers["family-cancer"] === "yes-multiple" && answers["cancer-age"] === "under-50") {
+      highPriority.push("Multiple immediate family members with cancer diagnosed before age 55");
     }
     
-    if (answers["family-cancer"] === "yes-multiple") {
-      highPriority.push("2+ immediate family members with cancer history");
-    } else if (answers["family-cancer"] === "yes-one") {
-      additional.push("Family member with cancer history");
-    }
-    
-    if (answers["cancer-age"] === "under-50") {
-      highPriority.push("Family diagnosis before age 50 (early-onset indicator)");
-    } else if (answers["cancer-age"] === "50-60") {
-      additional.push("Family diagnosis between ages 50-60");
-    }
-    
-    if (answers["cancer-type"] === "breast-ovarian") {
-      highPriority.push("Family history of breast or ovarian cancer (BRCA-associated)");
-    } else if (answers["cancer-type"] === "colorectal") {
-      additional.push("Family history of colorectal cancer");
-    } else if (answers["cancer-type"] === "lung") {
-      additional.push("Family history of lung cancer");
-    } else if (answers["cancer-type"] === "multiple") {
-      highPriority.push("Multiple cancer types in family (hereditary syndrome indicator)");
-    }
-    
+    // HIGH PRIORITY: Known genetic mutation
     if (answers["genetic-testing"] === "yes-positive") {
-      highPriority.push("Known genetic mutation identified in family");
+      highPriority.push("Known genetic mutation (BRCA, Lynch syndrome, or similar)");
     }
     
-    // Smoking history
-    if (answers["smoking-history"] === "current") {
-      highPriority.push("Current smoker (significantly elevated lung cancer risk)");
-    } else if (answers["smoking-history"] === "former") {
-      additional.push("Former smoker (elevated lung cancer risk)");
+    // HIGH PRIORITY: Pancreatic cancer family history
+    if ((answers["family-cancer"] === "yes-one" || answers["family-cancer"] === "yes-multiple") && 
+        answers["cancer-type"] === "pancreatic") {
+      highPriority.push("Family history of pancreatic cancer (no standard screening guidelines exist)");
     }
     
+    // HIGH PRIORITY: Multiple cancer types in family
+    if ((answers["family-cancer"] === "yes-one" || answers["family-cancer"] === "yes-multiple") && 
+        answers["cancer-type"] === "multiple") {
+      highPriority.push("Family history of multiple cancer types");
+    }
+    
+    // ADDITIONAL: Age 45-64
+    if (answers["age"] === "45-54" || answers["age"] === "55-64") {
+      additional.push("Age 45-64 (cancer risk increases with age)");
+    }
+    
+    // ADDITIONAL: One family member with cancer
+    if (answers["family-cancer"] === "yes-one" && 
+        !highPriority.some(f => f.includes("pancreatic")) && 
+        answers["cancer-type"] !== "multiple") {
+      additional.push("1 immediate family member with cancer history");
+    }
+    
+    // ADDITIONAL: No prior screenings
     if (answers["personal-history"] === "no") {
-      additional.push("No prior cancer screenings completed");
+      additional.push("No prior cancer screening completed");
     }
 
     return { highPriority, additional };
@@ -90,83 +87,78 @@ const Results = () => {
     const screeningsList: Array<{
       icon: typeof Activity;
       name: string;
-      type: string;
       description: string;
     }> = [];
 
     const cancerType = answers["cancer-type"];
     const hasFamilyHistory = answers["family-cancer"] === "yes-one" || answers["family-cancer"] === "yes-multiple";
     const hasGeneticMutation = answers["genetic-testing"] === "yes-positive";
-    const isSmoker = answers["smoking-history"] === "current" || answers["smoking-history"] === "former";
-    const age = answers["age"];
+    const geneticUnsure = answers["genetic-testing"] === "unsure";
+    const noScreenings = answers["personal-history"] === "no";
 
-    // Lung cancer screening for smokers/former smokers
-    if (isSmoker || cancerType === "lung" || cancerType === "multiple") {
-      screeningsList.push({
-        icon: Activity,
-        name: "Low-dose CT screening",
-        type: "Lung cancer",
-        description: "Recommended for current/former smokers or those with family history. LDCT can detect lung cancer early when it's most treatable."
-      });
-    }
-
-    // Breast/ovarian cancer → Enhanced breast MRI
-    if (cancerType === "breast-ovarian" || cancerType === "multiple" || hasGeneticMutation) {
+    // Breast or ovarian cancer family history
+    if (cancerType === "breast-ovarian") {
       screeningsList.push({
         icon: HeartPulse,
-        name: "Enhanced breast MRI",
-        type: "Breast cancer",
-        description: "Standard mammograms may miss early cancers in high-risk individuals. MRI screening catches up to 30% more early-stage cancers."
+        name: "Enhanced breast imaging",
+        description: "High-risk individuals may benefit from breast MRI in addition to mammography, often starting before age 40."
       });
     }
 
-    // Colorectal cancer → Early colonoscopy
-    if (cancerType === "colorectal" || cancerType === "multiple" || (age === "45-54" || age === "55-64" || age === "65+")) {
-      const hasColorectalHistory = cancerType === "colorectal" || cancerType === "multiple";
+    // Colorectal cancer family history
+    if (cancerType === "colorectal") {
       screeningsList.push({
         icon: Stethoscope,
-        name: hasColorectalHistory ? "Early colonoscopy" : "Colonoscopy screening",
-        type: "Colorectal cancer",
-        description: hasColorectalHistory 
-          ? "Guidelines recommend starting at 45, but family history may warrant beginning 10 years before your relative's diagnosis age."
-          : "Colonoscopy is recommended for adults 45 and older for colorectal cancer screening."
+        name: "Earlier colonoscopy",
+        description: "Guidelines recommend screening at age 45, but family history may warrant starting at 40 or 10 years before the youngest diagnosis in your family."
       });
     }
 
-    // Prostate cancer → PSA testing
-    if (cancerType === "prostate" || cancerType === "multiple") {
+    // Pancreatic cancer family history
+    if (cancerType === "pancreatic") {
       screeningsList.push({
         icon: Activity,
-        name: "Early PSA screening",
-        type: "Prostate cancer",
-        description: "Men with family history of prostate cancer should discuss earlier PSA testing with their doctor, potentially starting at age 40-45."
+        name: "High-risk pancreatic surveillance",
+        description: "While there's no routine screening, specialized protocols exist for individuals with family history or genetic mutations."
       });
     }
 
-    // General family history with early diagnosis → Genetic counseling
-    if (hasFamilyHistory && answers["cancer-age"] === "under-50") {
+    // Genetic mutation found or unsure
+    if (hasGeneticMutation || geneticUnsure) {
       screeningsList.push({
-        icon: Brain,
+        icon: Dna,
         name: "Genetic counseling",
-        type: "Hereditary risk",
-        description: "Early-onset cancer in your family may indicate hereditary cancer syndromes. Genetic testing can identify specific mutations and guide screening."
+        description: "Helps identify hereditary cancer syndromes and determine appropriate screening protocols for you and your family."
       });
     }
 
-    // If no specific screenings matched but has elevated risk, show general recommendation
-    if (screeningsList.length === 0 && (hasFamilyHistory || isSmoker)) {
+    // Multiple cancer types or no screening history
+    if (cancerType === "multiple" || (hasFamilyHistory && noScreenings)) {
       screeningsList.push({
-        icon: ClipboardCheck,
-        name: "Comprehensive cancer screening",
-        type: "General prevention",
-        description: "Discuss your family history with your healthcare provider to determine appropriate screening schedules based on your specific risk factors."
+        icon: Hospital,
+        name: "Multi-cancer screening consultation",
+        description: "Comprehensive evaluation to determine which screenings are appropriate based on your specific risk factors."
       });
     }
+
+    // Always show personalized plan as last item
+    screeningsList.push({
+      icon: ClipboardCheck,
+      name: "Personalized screening plan",
+      description: "A detailed roadmap of which tests to get, when, and how to access them through insurance or self-pay."
+    });
 
     return screeningsList;
   };
 
   const screenings = getRecommendedScreenings();
+
+  const scrollToPricing = () => {
+    const pricingSection = document.getElementById('pricing-section');
+    if (pricingSection) {
+      pricingSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const pricingTiers = [
     {
@@ -394,13 +386,13 @@ const Results = () => {
             <div className="bg-sand rounded-b-[20px] -mx-8 md:-mx-12 -mb-8 md:-mb-12 mt-8 px-8 md:px-12 py-8">
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Based on established risk factors from{" "}
-                <a href="https://www.cancer.gov" target="_blank" rel="noopener noreferrer" className="text-foreground hover:underline">
+                <span className="text-foreground">
                   National Cancer Institute
-                </a>
+                </span>
                 {" "}and{" "}
-                <a href="https://www.cancer.org" target="_blank" rel="noopener noreferrer" className="text-foreground hover:underline">
+                <span className="text-foreground">
                   American Cancer Society
-                </a>
+                </span>
                 {" "}guidelines.
               </p>
             </div>
@@ -414,36 +406,15 @@ const Results = () => {
             <div className="w-20 h-1 bg-terracotta rounded-full mb-8" />
 
             <div className="space-y-6 text-muted-foreground text-base md:text-lg leading-relaxed max-w-[650px]">
-              {hasElevatedRisk ? (
-                <>
-                  <p>
-                    Current cancer screening guidelines are designed for the general population with average risk. However, your responses indicate you{" "}
-                    <span className="bg-terracotta/10 text-foreground px-2 py-0.5 rounded">
-                      may fall outside standard screening guidelines
-                    </span>
-                    .
-                  </p>
-                  <p>
-                    This means the screenings your doctor typically recommends based on age alone may not be sufficient for someone with your{" "}
-                    <span className="bg-terracotta/10 text-foreground px-2 py-0.5 rounded">
-                      elevated risk
-                    </span>
-                    {" "}profile.
-                  </p>
-                  <p>
-                    Studies show that individuals with similar risk profiles who receive enhanced screening have significantly better outcomes through earlier detection.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p>
-                    Good news — your responses suggest your cancer risk aligns with the general population. This means standard age-appropriate screening guidelines are likely appropriate for you.
-                  </p>
-                  <p>
-                    However, we recommend discussing your complete family history with your healthcare provider, as new information may change your risk profile.
-                  </p>
-                </>
-              )}
+              <p>
+                Based on established risk factors from the National Cancer Institute and American Cancer Society, you have multiple indicators that suggest you may benefit from enhanced or earlier cancer screening.
+              </p>
+              <p>
+                Current screening guidelines are primarily age-based and don't fully account for family history, genetic risk, or cancer types without established screening protocols.
+              </p>
+              <p>
+                This creates gaps where high-risk individuals may not receive appropriate screening until symptoms appear.
+              </p>
             </div>
           </div>
         </div>
@@ -489,19 +460,16 @@ const Results = () => {
               {screenings.map((screening, index) => (
                 <div 
                   key={index}
-                  className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 md:p-8 hover:bg-white/15 transition-all duration-200"
+                  className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 md:p-8"
                 >
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0">
                       <screening.icon className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-xl md:text-2xl font-semibold text-white mb-1">
+                      <h3 className="text-xl md:text-2xl font-semibold text-white mb-3">
                         {screening.name}
                       </h3>
-                      <p className="text-sm text-white/70 font-medium mb-3">
-                        {screening.type}
-                      </p>
                       <p className="text-white/70 leading-relaxed">
                         {screening.description}
                       </p>
@@ -509,6 +477,21 @@ const Results = () => {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Disclaimer text */}
+            <p className="text-white/60 text-sm mt-8 leading-relaxed">
+              These are general categories based on your responses. Your personalized plan will include specific tests, timing, providers, and cost information.
+            </p>
+
+            {/* CTA Button */}
+            <div className="mt-10 text-center">
+              <button
+                onClick={scrollToPricing}
+                className="bg-terracotta hover:bg-terracotta-light text-white font-semibold px-8 py-4 rounded-full transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+              >
+                Get Your Personalized Plan
+              </button>
             </div>
           </div>
           
@@ -532,7 +515,7 @@ const Results = () => {
       </div>
 
       {/* SECTION 4: Service Tiers (Light - Cream background) */}
-      <section className="bg-background py-16 md:py-20 px-6">
+      <section id="pricing-section" className="bg-background py-16 md:py-20 px-6">
         <div className="max-w-[1100px] mx-auto">
           {/* Section header */}
           <div className="text-center mb-12">
@@ -675,9 +658,9 @@ const Results = () => {
               </h4>
               <p className="text-sm text-white/40 leading-relaxed">
                 Your responses are encrypted and stored securely. We never sell your personal health information. All data processing follows HIPAA guidelines and industry best practices for health data security.{" "}
-                <a href="#" className="text-terracotta hover:underline">
+                <span className="text-terracotta hover:underline cursor-pointer">
                   Privacy Policy
-                </a>
+                </span>
               </p>
             </div>
           </div>
