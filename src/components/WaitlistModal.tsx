@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { X, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { track } from "@/lib/analytics";
 
 interface WaitlistModalProps {
   isOpen: boolean;
@@ -81,6 +82,13 @@ const WaitlistModal = ({ isOpen, onClose, tierName, tierPrice }: WaitlistModalPr
       const utmSource = urlParams.get("utm_source");
       const utmCampaign = urlParams.get("utm_campaign");
 
+      track("waitlist_submit_attempt", {
+        email_present: !!email,
+        first_name_present: !!firstName,
+        selected_tier: tierName,
+        selected_price: tierPrice,
+      });
+
       const { error } = await supabase
         .from("waitlist_signups")
         .insert({
@@ -93,6 +101,7 @@ const WaitlistModal = ({ isOpen, onClose, tierName, tierPrice }: WaitlistModalPr
         });
 
       if (error) {
+        track("waitlist_submit_error", { code: error.code, message: error.message });
         if (error.code === "23505") {
           setIsAlreadyRegistered(true);
         } else {
@@ -101,10 +110,16 @@ const WaitlistModal = ({ isOpen, onClose, tierName, tierPrice }: WaitlistModalPr
         return;
       }
 
+      track("waitlist_submit", {
+        selected_tier: tierName,
+        selected_price: tierPrice,
+      });
+
       // Success - close modal and navigate to thank you
       onClose();
       navigate("/thank-you", { state: { firstName: firstName.trim() } });
     } catch (err) {
+      track("waitlist_submit_exception");
       setSubmitError("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);

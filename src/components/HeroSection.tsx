@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import heroBg from "@/assets/hero-bg.png";
+import { track } from "@/lib/analytics";
 const HeroSection = () => {
   return <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background image - flipped horizontally */}
@@ -34,7 +35,12 @@ const HeroSection = () => {
           </p>
 
           <Button variant="cta" size="lg" className="group bg-terracotta hover:bg-terracotta-light" asChild>
-            <Link to="/quiz">
+            <Link
+              to="/quiz"
+              onClick={() => {
+                track("primary_cta_click", { cta: "start_assessment" });
+              }}
+            >
               Start assessment
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>

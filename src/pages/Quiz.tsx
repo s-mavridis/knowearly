@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import QuizProgress from "@/components/quiz/QuizProgress";
@@ -7,11 +7,13 @@ import QuizNavigation from "@/components/quiz/QuizNavigation";
 import QuizVisual from "@/components/quiz/QuizVisual";
 import ConditionalSubQuestions from "@/components/quiz/ConditionalSubQuestions";
 import { quizQuestions } from "@/data/quizQuestions";
+import { initSession, track, trackPageView, saveQuizSnapshot } from "@/lib/analytics";
 
 const Quiz = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const startedAtRef = useRef<number | null>(null);
 
   const currentQuestion = quizQuestions[currentIndex];
   const selectedAnswer = currentQuestion ? answers[currentQuestion.id] || null : null;
@@ -33,6 +35,16 @@ const Quiz = () => {
       });
     }
   }, [hasFamilyHistory, currentQuestion?.id]);
+
+  // Init analytics and mark quiz_start
+  useEffect(() => {
+    initSession();
+    trackPageView("quiz");
+    if (!startedAtRef.current) {
+      startedAtRef.current = Date.now();
+      track("quiz_start");
+    }
+  }, []);
 
   // Determine if user can proceed
   const canProceed = useMemo(() => {
@@ -63,6 +75,14 @@ const Quiz = () => {
 
   const handleNext = useCallback(() => {
     if (isLastQuestion) {
+      const completedAt = Date.now();
+      const startedAt = startedAtRef.current || completedAt;
+      // Persist snapshot locally (no backend yet)
+      saveQuizSnapshot({ answers, startedAt, completedAt });
+      track("quiz_complete", {
+        duration_ms: completedAt - startedAt,
+        num_answers: Object.keys(answers).length,
+      });
       navigate("/results", { state: { answers } });
     } else {
       setCurrentIndex((prev) => prev + 1);

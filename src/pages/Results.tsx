@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { 
   AlertCircle, 
@@ -18,6 +18,10 @@ import { cn } from "@/lib/utils";
 import WaitlistModal from "@/components/WaitlistModal";
 import resultsBanner1 from "@/assets/results-banner-1.png";
 import heroBg from "@/assets/hero-bg.png";
+import { createDwellTracker, initSession, track, trackPageView, type RiskBucket } from "@/lib/analytics";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const Results = () => {
   const location = useLocation();
@@ -87,6 +91,22 @@ const Results = () => {
   
   const riskLevel = getRiskLevel();
   const hasElevatedRisk = riskLevel !== "Standard";
+
+  // Analytics: results_view + dwell (visibility-aware)
+  useEffect(() => {
+    initSession();
+    trackPageView("results");
+    track("results_view", { risk_bucket: riskLevel as RiskBucket });
+    const dwell = createDwellTracker();
+    return () => {
+      const engaged = dwell.stop();
+      track("results_dwell", { engaged_time_ms: engaged, risk_bucket: riskLevel as RiskBucket });
+    };
+  }, [riskLevel]);
+
+  // Local surveys (frontend-only)
+  const [wtp, setWtp] = useState<string>("");
+  const [barrier, setBarrier] = useState<string>("");
 
   // Get recommended screenings based on answers
   const getRecommendedScreenings = () => {
@@ -212,8 +232,10 @@ const Results = () => {
   ];
 
   const handleJoinWaitlist = (tier: string, price: number) => {
+    track("tier_click", { tier, price, risk_bucket: riskLevel as RiskBucket });
     setSelectedTier({ name: tier, price });
     setIsModalOpen(true);
+    track("waitlist_open", { tier, price, risk_bucket: riskLevel as RiskBucket });
   };
 
   return (
@@ -329,6 +351,86 @@ const Results = () => {
         </div>
       </section>
 
+      {/* SECTION 3.7: ZIP entry step (personalization friction) */}
+      <section className="bg-background py-6 px-6">
+        <div className="max-w-[900px] mx-auto bg-card border border-border rounded-[16px] p-6">
+          <h3 className="text-xl font-semibold text-foreground mb-2">Find screening options near you</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Enter your ZIP code to see nearby options and estimated availability.
+          </p>
+          <div className="flex gap-3">
+            <input
+              onFocus={() => track("zip_entry_start")}
+              type="text"
+              inputMode="numeric"
+              maxLength={10}
+              placeholder="ZIP code"
+              className="h-10 px-4 rounded-xl border border-border bg-background text-foreground w-[180px]"
+            />
+            <button
+              onClick={() => track("zip_entry_complete")}
+              className="h-10 px-4 rounded-full bg-terracotta text-white hover:bg-terracotta-light"
+            >
+              Check
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3.6: Advisory choice and AI demo (intent to schedule/adopt automation) */}
+      <section className="bg-background py-6 px-6">
+        <div className="max-w-[900px] mx-auto bg-card border border-border rounded-[16px] p-6">
+          <div className="flex items-center justify-between gap-4 flex-col md:flex-row">
+            <div>
+              <h3 className="text-xl font-semibold text-foreground">Have questions?</h3>
+              <p className="text-sm text-muted-foreground">
+                Choose how you’d like to get tailored advice.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              {/* AI advice demo */}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button
+                    onClick={() => track("advice_choice", { option: "AI" })}
+                    className="h-10 px-4 rounded-full bg-terracotta text-white hover:bg-terracotta-light"
+                  >
+                    AI Advisor (demo)
+                  </button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>AI Advisor Demo</DialogTitle>
+                  </DialogHeader>
+                  <p className="text-sm text-muted-foreground">
+                    This is a quick demo of our AI guidance experience. In the full app, you’ll chat about your risk and get next steps.
+                  </p>
+                  <div className="mt-4 flex gap-3">
+                    <button
+                      onClick={() => track("ai_demo_complete")}
+                      className="h-10 px-4 rounded-full bg-terracotta text-white hover:bg-terracotta-light"
+                    >
+                      Finish demo
+                    </button>
+                    <button className="h-10 px-4 rounded-full bg-muted text-foreground">Close</button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              {/* Human advisor CTA */}
+              <button
+                onClick={() => {
+                  track("advisory_click");
+                }}
+                className="h-10 px-4 rounded-full bg-card text-foreground border border-border"
+              >
+                Human Advisor
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* SECTION 2: Risk Factors Card (Light - Cream background) */}
       <section className="bg-background py-16 md:py-20 px-6">
         <div className="max-w-[800px] mx-auto">
@@ -430,6 +532,121 @@ const Results = () => {
         </div>
       </section>
 
+      {/* SECTION 2.5: Quick Surveys (frontend-only, to validate intent and barriers) */}
+      <section className="bg-background py-10 px-6">
+        <div className="max-w-[800px] mx-auto grid gap-8 md:grid-cols-2">
+          {/* Willingness to Pay */}
+          <div className="bg-card rounded-[16px] border border-border p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
+              Would you pay out of pocket for this service?
+            </h3>
+            <RadioGroup value={wtp} onValueChange={setWtp} className="gap-3">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <RadioGroupItem value="yes_definitely" />
+                <span className="text-sm text-foreground">Yes, definitely</span>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <RadioGroupItem value="yes_probably" />
+                <span className="text-sm text-foreground">Yes, probably</span>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <RadioGroupItem value="unsure" />
+                <span className="text-sm text-foreground">Not sure</span>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <RadioGroupItem value="no" />
+                <span className="text-sm text-foreground">No</span>
+              </label>
+            </RadioGroup>
+            <button
+              disabled={!wtp}
+              onClick={() => {
+                track("survey_wtp", { choice: wtp, risk_bucket: riskLevel as RiskBucket });
+              }}
+              className={cn(
+                "mt-5 h-10 px-4 rounded-full text-sm font-semibold transition-colors",
+                wtp ? "bg-terracotta text-white hover:bg-terracotta-light" : "bg-muted text-muted-foreground cursor-not-allowed"
+              )}
+            >
+              Submit
+            </button>
+          </div>
+
+          {/* Barriers to screening */}
+          <div className="bg-card rounded-[16px] border border-border p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
+              Biggest barrier to getting screened?
+            </h3>
+            <RadioGroup value={barrier} onValueChange={setBarrier} className="gap-3">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <RadioGroupItem value="cost" />
+                <span className="text-sm text-foreground">Cost</span>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <RadioGroupItem value="time" />
+                <span className="text-sm text-foreground">Time / scheduling</span>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <RadioGroupItem value="access" />
+                <span className="text-sm text-foreground">Access to providers</span>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <RadioGroupItem value="confusion" />
+                <span className="text-sm text-foreground">Unsure what to do</span>
+              </label>
+            </RadioGroup>
+            <button
+              disabled={!barrier}
+              onClick={() => {
+                track("barrier_submit", { barrier, risk_bucket: riskLevel as RiskBucket });
+              }}
+              className={cn(
+                "mt-5 h-10 px-4 rounded-full text-sm font-semibold transition-colors",
+                barrier ? "bg-terracotta text-white hover:bg-terracotta-light" : "bg-muted text-muted-foreground cursor-not-allowed"
+              )}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 2.6: EHR Connection Intent */}
+      <section className="bg-background py-6 px-6">
+        <div className="max-w-[800px] mx-auto">
+          <Dialog onOpenChange={(open) => open && track("ehr_explain_open")}>
+            <DialogTrigger asChild>
+              <button className="w-full md:w-auto bg-card border border-border text-foreground px-5 h-11 rounded-full hover:bg-accent transition">
+                Learn about connecting your health records
+              </button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Connect your health records (coming soon)</DialogTitle>
+              </DialogHeader>
+              <p className="text-sm text-muted-foreground">
+                Connecting your electronic health records lets us personalize your screening plan with past tests and results.
+                We use secure, read-only access and never store credentials.
+              </p>
+              <div className="mt-4 flex gap-3">
+                <button
+                  onClick={() => track("ehr_connect_attempt")}
+                  className="bg-terracotta text-white px-4 h-10 rounded-full hover:bg-terracotta-light"
+                >
+                  Try to connect
+                </button>
+                <button
+                  onClick={() => track("ehr_explain_close")}
+                  className="bg-muted text-foreground px-4 h-10 rounded-full"
+                >
+                  Not now
+                </button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </section>
+
       {/* SECTION 3: Recommended Screenings with Premium Image */}
       {screenings.length > 0 && (
         <section className="relative py-16 md:py-20 px-6 overflow-hidden">
@@ -513,6 +730,50 @@ const Results = () => {
           </div>
         </section>
       )}
+
+      {/* SECTION 3.5: Explore Tests (Marketplace intent) */}
+      <section className="bg-background py-12 px-6">
+        <div className="max-w-[900px] mx-auto">
+          <Collapsible
+            onOpenChange={(open) => {
+              if (open) {
+                track("marketplace_view");
+              } else {
+                track("marketplace_close");
+              }
+            }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-display text-2xl text-foreground">Explore screening tests</h3>
+              <CollapsibleTrigger asChild>
+                <button className="bg-card text-foreground border border-border h-10 px-4 rounded-full">
+                  View options
+                </button>
+              </CollapsibleTrigger>
+            </div>
+            <CollapsibleContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  { id: "breast_mri", name: "Breast MRI", desc: "Enhanced imaging for high-risk individuals" },
+                  { id: "colonoscopy", name: "Colonoscopy", desc: "Gold-standard colorectal screening" },
+                  { id: "multi_cancer_early", name: "Multi-cancer early detect", desc: "Blood-based multi-cancer screening" },
+                ].map((t) => (
+                  <div key={t.id} className="bg-card rounded-2xl border border-border p-6">
+                    <div className="text-xl font-semibold text-foreground mb-2">{t.name}</div>
+                    <p className="text-sm text-muted-foreground mb-4">{t.desc}</p>
+                    <button
+                      onClick={() => track("test_click", { test_id: t.id, test_name: t.name })}
+                      className="h-10 px-4 rounded-full bg-terracotta text-white hover:bg-terracotta-light"
+                    >
+                      Learn more
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+      </section>
 
       {/* Divider */}
       <div className="bg-background py-8 px-6">
