@@ -1,7 +1,11 @@
-// Lightweight frontend analytics stored in localStorage (no backend).
+// Frontend analytics with dual persistence:
+// - PRIMARY: Saves to Supabase database (permanent storage)
+// - BACKUP: Also saves to localStorage (offline fallback)
 // - Generates anon_id (persisted) and session_id (per tab session)
 // - Tracks events with timestamp, path, and custom properties
 // - Provides helpers for page views and dwell time measurement
+
+import { supabase } from "@/integrations/supabase/client";
 
 type AnalyticsEvent = {
   id: string;
@@ -63,6 +67,41 @@ export function initSession(): { anonId: string; sessionId: string } {
   return { anonId, sessionId };
 }
 
+/**
+ * Sends analytics event to Supabase database
+ * runs asynchronously so it doesn't slow down the user experience
+ * If it fails, the event is still saved in localStorage as a backup
+ */
+async function sendToDatabase(event: AnalyticsEvent): Promise<void> {
+  try {
+    // Get UTM parameters from current URL (for marketing attribution)
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Insert the event into the analytics_events table
+    const { error } = await supabase.from("analytics_events").insert({
+      anon_id: event.anon_id,
+      session_id: event.session_id,
+      event_name: event.event,
+      page_path: event.page,
+      properties: event.properties || {},
+      utm_source: urlParams.get("utm_source"),
+      utm_campaign: urlParams.get("utm_campaign"),
+      referrer: document.referrer || null,
+    });
+
+    if (error) {
+      // Log error to console for debugging, but don't break user experience
+      console.warn("[analytics] Failed to save to database:", error.message);
+    } else {
+      // Success! Event is now permanently stored
+      console.log("[analytics] ✓ Saved to database:", event.event);
+    }
+  } catch (error) {
+    // Silently fail - analytics should never break the app
+    console.warn("[analytics] Exception sending to database:", error);
+  }
+}
+
 export function track(event: string, properties?: Record<string, unknown>): void {
   try {
     const ev: AnalyticsEvent = {
@@ -74,10 +113,17 @@ export function track(event: string, properties?: Record<string, unknown>): void
       session_id: getSessionId(),
       properties,
     };
+    // STEP 1: Save to localStorage (backup/offline support)
     const raw = localStorage.getItem(EVENTS_KEY);
     const list: AnalyticsEvent[] = raw ? JSON.parse(raw) : [];
     list.push(ev);
     localStorage.setItem(EVENTS_KEY, JSON.stringify(list));
+
+    // STEP 2: Send to Supabase database (permanent storage)
+    // This runs in the background and doesn't block the user
+    sendToDatabase(ev);
+
+    // STEP 3: Log to console for debugging
     // Helpful during validation: visible logs for every event
     // eslint-disable-next-line no-console
     if (console && console.groupCollapsed) {
