@@ -1,9 +1,15 @@
-import { useSearchParams, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
 
 const ThankYou = () => {
-  const [searchParams] = useSearchParams();
-  const firstName = searchParams.get("name") || "";
+  const location = useLocation();
+  const navigate = useNavigate();
+  const firstName = location.state?.firstName || "";
+  const email = location.state?.email || "";
+
+  const handleTakeSurvey = () => {
+    navigate("/survey", { state: { email, firstName } });
+  };
 
   return (
     <div className="min-h-screen bg-cream">
@@ -41,14 +47,12 @@ const ThankYou = () => {
           <p className="text-base text-muted-foreground leading-relaxed mb-6">
             Take our 2-minute survey to help us create the best cancer screening experience.
           </p>
-          <a
-            href="https://forms.gle/your-survey-link"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={handleTakeSurvey}
             className="inline-block bg-terracotta text-white text-base font-semibold px-8 py-3.5 rounded-full hover:-translate-y-1 hover:shadow-lg transition-all duration-250"
           >
             Take Survey
-          </a>
+          </button>
         </div>
 
         {/* Contact Info */}

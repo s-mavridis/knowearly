@@ -95,7 +95,7 @@ const WaitlistModal = ({ isOpen, onClose, tierName, tierPrice, userEmail, userFi
 
       // Success - close modal and navigate to thank you
       onClose();
-      navigate("/thank-you", { state: { firstName: userFirstName } });
+      navigate("/thank-you", { state: { firstName: userFirstName, email: userEmail } });
     } catch (err) {
       track("waitlist_consent_exception");
       setSubmitError("Something went wrong. Please try again.");
