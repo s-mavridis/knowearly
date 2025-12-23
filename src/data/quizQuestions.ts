@@ -46,9 +46,9 @@ export const quizQuestions: Question[] = [
   },
 ];
 
-// Conditional sub-questions for family history
-export const familyHistorySubQuestions = {
-  cancerType: {
+// Conditional sub-questions for family history - now used as separate quiz steps
+export const familyHistorySubQuestions: Question[] = [
+  {
     id: "cancer-type",
     text: "What type of cancer was diagnosed in your family?",
     subtext: "Select the most relevant option",
@@ -62,7 +62,7 @@ export const familyHistorySubQuestions = {
       { id: "multiple", label: "Multiple types" },
     ],
   },
-  cancerAge: {
+  {
     id: "cancer-age",
     text: "At what age was your family member diagnosed?",
     subtext: "If multiple, consider the youngest age at diagnosis",
@@ -73,4 +73,4 @@ export const familyHistorySubQuestions = {
       { id: "unknown", label: "I don't know" },
     ],
   },
-};
+];

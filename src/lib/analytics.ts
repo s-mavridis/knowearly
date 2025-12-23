@@ -78,7 +78,8 @@ async function sendToDatabase(event: AnalyticsEvent): Promise<void> {
     const urlParams = new URLSearchParams(window.location.search);
 
     // Insert the event into the analytics_events table
-    const { error } = await supabase.from("analytics_events").insert({
+    // Using 'as any' to bypass strict type checking since analytics_events table was just added
+    const { error } = await supabase.from("analytics_events" as any).insert({
       anon_id: event.anon_id,
       session_id: event.session_id,
       event_name: event.event,
@@ -87,7 +88,7 @@ async function sendToDatabase(event: AnalyticsEvent): Promise<void> {
       utm_source: urlParams.get("utm_source"),
       utm_campaign: urlParams.get("utm_campaign"),
       referrer: document.referrer || null,
-    });
+    } as any);
 
     if (error) {
       // Log error to console for debugging, but don't break user experience
