@@ -19,7 +19,6 @@ import WaitlistModal from "@/components/WaitlistModal";
 import resultsBanner1 from "@/assets/results-banner-1.png";
 import heroBg from "@/assets/hero-bg.png";
 import { createDwellTracker, initSession, track, trackPageView, type RiskBucket } from "@/lib/analytics";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
@@ -106,9 +105,6 @@ const Results = () => {
     };
   }, [riskLevel]);
 
-  // Local surveys (frontend-only)
-  const [wtp, setWtp] = useState<string>("");
-  const [barrier, setBarrier] = useState<string>("");
 
   // Get recommended screenings based on answers
   const getRecommendedScreenings = () => {
@@ -542,84 +538,6 @@ const Results = () => {
         </div>
       </section>
 
-      {/* SECTION 2.5: Quick Surveys (frontend-only, to validate intent and barriers) */}
-      <section className="bg-background py-10 px-6">
-        <div className="max-w-[800px] mx-auto grid gap-8 md:grid-cols-2">
-          {/* Willingness to Pay */}
-          <div className="bg-card rounded-[16px] border border-border p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">
-              Would you pay out of pocket for this service?
-            </h3>
-            <RadioGroup value={wtp} onValueChange={setWtp} className="gap-3">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <RadioGroupItem value="yes_definitely" />
-                <span className="text-sm text-foreground">Yes, definitely</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <RadioGroupItem value="yes_probably" />
-                <span className="text-sm text-foreground">Yes, probably</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <RadioGroupItem value="unsure" />
-                <span className="text-sm text-foreground">Not sure</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <RadioGroupItem value="no" />
-                <span className="text-sm text-foreground">No</span>
-              </label>
-            </RadioGroup>
-            <button
-              disabled={!wtp}
-              onClick={() => {
-                track("survey_wtp", { choice: wtp, risk_bucket: riskLevel as RiskBucket });
-              }}
-              className={cn(
-                "mt-5 h-10 px-4 rounded-full text-sm font-semibold transition-colors",
-                wtp ? "bg-terracotta text-white hover:bg-terracotta-light" : "bg-muted text-muted-foreground cursor-not-allowed"
-              )}
-            >
-              Submit
-            </button>
-          </div>
-
-          {/* Barriers to screening */}
-          <div className="bg-card rounded-[16px] border border-border p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">
-              Biggest barrier to getting screened?
-            </h3>
-            <RadioGroup value={barrier} onValueChange={setBarrier} className="gap-3">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <RadioGroupItem value="cost" />
-                <span className="text-sm text-foreground">Cost</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <RadioGroupItem value="time" />
-                <span className="text-sm text-foreground">Time / scheduling</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <RadioGroupItem value="access" />
-                <span className="text-sm text-foreground">Access to providers</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <RadioGroupItem value="confusion" />
-                <span className="text-sm text-foreground">Unsure what to do</span>
-              </label>
-            </RadioGroup>
-            <button
-              disabled={!barrier}
-              onClick={() => {
-                track("barrier_submit", { barrier, risk_bucket: riskLevel as RiskBucket });
-              }}
-              className={cn(
-                "mt-5 h-10 px-4 rounded-full text-sm font-semibold transition-colors",
-                barrier ? "bg-terracotta text-white hover:bg-terracotta-light" : "bg-muted text-muted-foreground cursor-not-allowed"
-              )}
-            >
-              Submit
-            </button>
-          </div>
-        </div>
-      </section>
 
       {/* SECTION 2.6: EHR Connection Intent */}
       <section className="bg-background py-6 px-6">
