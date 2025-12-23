@@ -8,6 +8,7 @@ import Quiz from "./pages/Quiz";
 import EmailCapture from "./pages/EmailCapture";
 import Results from "./pages/Results";
 import ThankYou from "./pages/ThankYou";
+import Survey from "./pages/Survey";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/email-capture" element={<EmailCapture />} />
           <Route path="/results" element={<Results />} />
           <Route path="/thank-you" element={<ThankYou />} />
+          <Route path="/survey" element={<Survey />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
