@@ -1,14 +1,27 @@
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
+import { useEffect } from "react";
 
 const ThankYou = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const firstName = location.state?.firstName || "";
-  const email = location.state?.email || "";
+  const email = location.state?.email || sessionStorage.getItem("waitlist_email") || "";
+
+  // Store email in sessionStorage for survey flow
+  useEffect(() => {
+    if (location.state?.email) {
+      sessionStorage.setItem("waitlist_email", location.state.email);
+    }
+    if (location.state?.firstName) {
+      sessionStorage.setItem("waitlist_firstName", location.state.firstName);
+    }
+  }, [location.state]);
 
   const handleTakeSurvey = () => {
-    navigate("/survey", { state: { email, firstName } });
+    const surveyEmail = email || sessionStorage.getItem("waitlist_email") || "";
+    const surveyFirstName = firstName || sessionStorage.getItem("waitlist_firstName") || "";
+    navigate("/survey", { state: { email: surveyEmail, firstName: surveyFirstName } });
   };
 
   return (

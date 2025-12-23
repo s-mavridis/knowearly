@@ -7,8 +7,10 @@ import { initSession, track, trackPageView } from "@/lib/analytics";
 const Survey = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const userEmail = location.state?.email || "";
-  const firstName = location.state?.firstName || "";
+  
+  // Try to get email from state first, then fallback to sessionStorage
+  const userEmail = location.state?.email || sessionStorage.getItem("waitlist_email") || "";
+  const firstName = location.state?.firstName || sessionStorage.getItem("waitlist_firstName") || "";
 
   const [willingnessToPay, setWillingnessToPay] = useState("");
   const [screeningBarrier, setScreeningBarrier] = useState("");
@@ -19,12 +21,7 @@ const Survey = () => {
   useEffect(() => {
     initSession();
     trackPageView("survey");
-    
-    // If no email, redirect to home
-    if (!userEmail) {
-      navigate("/");
-    }
-  }, [userEmail, navigate]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,19 +39,20 @@ const Survey = () => {
         screening_barrier: screeningBarrier,
       });
 
-      // Update the existing waitlist row with survey answers
-      const { error } = await supabase
-        .from("waitlist_signups")
-        .update({
-          willingness_to_pay: willingnessToPay,
-          subscription_preference: screeningBarrier, // Using subscription_preference to store barrier
-        } as any)
-        .eq("email", userEmail);
+      // Only update database if we have an email
+      if (userEmail) {
+        const { error } = await supabase
+          .from("waitlist_signups")
+          .update({
+            willingness_to_pay: willingnessToPay,
+            subscription_preference: screeningBarrier,
+          } as any)
+          .eq("email", userEmail);
 
-      if (error) {
-        track("survey_error", { code: error.code });
-        setSubmitError("Something went wrong. Please try again.");
-        return;
+        if (error) {
+          track("survey_error", { code: error.code });
+          console.warn("Survey update error:", error);
+        }
       }
 
       track("survey_success");
