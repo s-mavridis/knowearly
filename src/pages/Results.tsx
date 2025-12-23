@@ -364,20 +364,20 @@ const Results = () => {
           <p className="text-sm text-muted-foreground mb-4">
             Enter your ZIP code to see nearby options and estimated availability.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col gap-3">
             <input
               onFocus={() => track("zip_entry_start")}
               type="text"
               inputMode="numeric"
               maxLength={10}
               placeholder="ZIP code"
-              className="h-11 px-4 rounded-xl border border-border bg-background text-foreground flex-1 sm:max-w-[180px]"
+              className="h-14 px-5 rounded-full border border-border bg-background text-foreground text-base"
             />
             <Dialog>
               <DialogTrigger asChild>
                 <button
                   onClick={() => track("zip_entry_complete")}
-                  className="h-11 px-6 rounded-full bg-terracotta text-white font-medium hover:bg-terracotta-light transition-colors"
+                  className="h-14 px-6 rounded-full bg-terracotta text-white text-lg font-semibold hover:bg-terracotta-light transition-colors"
                 >
                   Check
                 </button>
@@ -405,13 +405,13 @@ const Results = () => {
                 Choose how you'd like to get tailored advice.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <div className="flex flex-col gap-3 w-full md:w-auto">
               {/* AI Advisor */}
               <Dialog>
                 <DialogTrigger asChild>
                   <button
                     onClick={() => track("advice_choice", { option: "AI" })}
-                    className="h-11 px-5 rounded-full bg-terracotta text-white font-medium hover:bg-terracotta-light transition-colors flex-1 md:flex-none whitespace-nowrap"
+                    className="h-14 px-6 rounded-full bg-terracotta text-white text-lg font-semibold hover:bg-terracotta-light transition-colors"
                   >
                     AI Advisor
                   </button>
@@ -431,7 +431,7 @@ const Results = () => {
                 <DialogTrigger asChild>
                   <button
                     onClick={() => track("advisory_click")}
-                    className="h-11 px-5 rounded-full bg-card text-foreground border border-border font-medium hover:bg-accent transition-colors flex-1 md:flex-none whitespace-nowrap"
+                    className="h-14 px-6 rounded-full bg-card text-foreground text-lg font-semibold border border-border hover:bg-accent transition-colors"
                   >
                     Human Advisor
                   </button>
