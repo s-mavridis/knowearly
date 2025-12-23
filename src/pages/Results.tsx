@@ -27,6 +27,8 @@ const Results = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const answers = location.state?.answers || {};
+  const userEmail = location.state?.email || "";
+  const userFirstName = location.state?.firstName || "";
   
   // Waitlist modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -332,10 +334,18 @@ const Results = () => {
               }
             </p>
 
+            {/* View pricing button */}
+            <button
+              onClick={scrollToPricing}
+              className="mt-6 bg-terracotta hover:bg-terracotta-light text-white font-semibold px-6 py-3 rounded-full transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+            >
+              View Pricing Options
+            </button>
+
             {/* Retake link */}
             <button 
               onClick={() => navigate("/quiz")}
-              className="mt-6 inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm"
+              className="mt-4 inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm"
             >
               <RotateCcw className="w-4 h-4" />
               Retake Assessment
@@ -954,6 +964,8 @@ const Results = () => {
         onClose={() => setIsModalOpen(false)}
         tierName={selectedTier.name}
         tierPrice={selectedTier.price}
+        userEmail={userEmail}
+        userFirstName={userFirstName}
       />
     </div>
   );

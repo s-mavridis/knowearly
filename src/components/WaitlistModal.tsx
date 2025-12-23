@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { X, Loader2 } from "lucide-react";
+import { X, Loader2, FileText, Shield } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { track } from "@/lib/analytics";
@@ -9,22 +9,22 @@ interface WaitlistModalProps {
   onClose: () => void;
   tierName: string;
   tierPrice: number;
+  userEmail: string;
+  userFirstName?: string;
 }
 
-const WaitlistModal = ({ isOpen, onClose, tierName, tierPrice }: WaitlistModalProps) => {
+const WaitlistModal = ({ isOpen, onClose, tierName, tierPrice, userEmail, userFirstName }: WaitlistModalProps) => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
+  const [ehrConsent, setEhrConsent] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [emailError, setEmailError] = useState("");
   const [submitError, setSubmitError] = useState("");
-  const [isAlreadyRegistered, setIsAlreadyRegistered] = useState(false);
-  const emailInputRef = useRef<HTMLInputElement>(null);
+  const ehrCheckboxRef = useRef<HTMLInputElement>(null);
 
-  // Focus email input when modal opens
+  // Focus first checkbox when modal opens
   useEffect(() => {
-    if (isOpen && emailInputRef.current) {
-      setTimeout(() => emailInputRef.current?.focus(), 100);
+    if (isOpen && ehrCheckboxRef.current) {
+      setTimeout(() => ehrCheckboxRef.current?.focus(), 100);
     }
   }, [isOpen]);
 
@@ -51,75 +51,53 @@ const WaitlistModal = ({ isOpen, onClose, tierName, tierPrice }: WaitlistModalPr
     };
   }, [isOpen]);
 
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const handleEmailBlur = () => {
-    if (email && !validateEmail(email)) {
-      setEmailError("Please enter a valid email address");
-    } else {
-      setEmailError("");
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateEmail(email)) {
-      setEmailError("Please enter a valid email address");
+    if (!ehrConsent || !termsAccepted) {
       return;
     }
 
     setIsSubmitting(true);
     setSubmitError("");
-    setIsAlreadyRegistered(false);
 
     try {
-      // Get UTM parameters from URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const utmSource = urlParams.get("utm_source");
-      const utmCampaign = urlParams.get("utm_campaign");
-
-      track("waitlist_submit_attempt", {
-        email_present: !!email,
-        first_name_present: !!firstName,
+      track("waitlist_consent_submit", {
         selected_tier: tierName,
         selected_price: tierPrice,
+        ehr_consent: ehrConsent,
+        terms_accepted: termsAccepted,
       });
 
+      // Update the existing waitlist row with the tier selection and consent
       const { error } = await supabase
         .from("waitlist_signups")
-        .insert({
-          email: email.trim().toLowerCase(),
-          first_name: firstName.trim() || null,
+        .update({
           selected_tier: tierName,
           selected_price: tierPrice,
-          utm_source: utmSource,
-          utm_campaign: utmCampaign,
-        });
+          ehr_consent: ehrConsent,
+          ehr_consent_at: new Date().toISOString(),
+          terms_accepted: termsAccepted,
+          terms_accepted_at: new Date().toISOString(),
+        } as any)
+        .eq("email", userEmail);
 
       if (error) {
-        track("waitlist_submit_error", { code: error.code, message: error.message });
-        if (error.code === "23505") {
-          setIsAlreadyRegistered(true);
-        } else {
-          setSubmitError("Something went wrong. Please try again.");
-        }
+        track("waitlist_consent_error", { code: error.code, message: error.message });
+        setSubmitError("Something went wrong. Please try again.");
         return;
       }
 
-      track("waitlist_submit", {
+      track("waitlist_consent_success", {
         selected_tier: tierName,
         selected_price: tierPrice,
       });
 
       // Success - close modal and navigate to thank you
       onClose();
-      navigate("/thank-you", { state: { firstName: firstName.trim() } });
+      navigate("/thank-you", { state: { firstName: userFirstName } });
     } catch (err) {
-      track("waitlist_submit_exception");
+      track("waitlist_consent_exception");
       setSubmitError("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -127,15 +105,13 @@ const WaitlistModal = ({ isOpen, onClose, tierName, tierPrice }: WaitlistModalPr
   };
 
   const handleClose = () => {
-    setEmail("");
-    setFirstName("");
-    setEmailError("");
+    setEhrConsent(false);
+    setTermsAccepted(false);
     setSubmitError("");
-    setIsAlreadyRegistered(false);
     onClose();
   };
 
-  const isFormValid = email && validateEmail(email) && !isAlreadyRegistered;
+  const isFormValid = ehrConsent && termsAccepted;
 
   if (!isOpen) return null;
 
@@ -167,77 +143,74 @@ const WaitlistModal = ({ isOpen, onClose, tierName, tierPrice }: WaitlistModalPr
           </button>
 
           {/* Content */}
-          <div className="p-8 md:p-12">
+          <div className="p-8 md:p-10">
             {/* Header */}
             <div className="text-center mb-8">
-              <span className="inline-block px-4 py-1.5 text-[11px] tracking-[0.15em] uppercase text-gray-600 border border-gray-300 rounded-full mb-4">
-                Early Access
-              </span>
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-terracotta/10 mb-4">
+                <Shield className="w-8 h-8 text-terracotta" />
+              </div>
               
-              <h2 id="modal-title" className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-                Join the Waitlist
+              <h2 id="modal-title" className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+                Complete Your Reservation
               </h2>
               
               <p className="text-lg text-muted-foreground mb-2">
-                You selected: <span className="font-medium text-foreground">{tierName} - ${tierPrice}</span>
+                <span className="font-medium text-foreground">{tierName}</span> — ${tierPrice}
               </p>
               
               <p className="text-sm text-muted-foreground">
-                Launching Q1 2026 — Early access pricing
+                One final step to reserve your spot
               </p>
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Email field */}
-              <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">
-                  Email address
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* EHR Consent checkbox */}
+              <div className="bg-cream rounded-2xl p-5 border border-border">
+                <label className="flex items-start gap-4 cursor-pointer">
+                  <input
+                    ref={ehrCheckboxRef}
+                    type="checkbox"
+                    checked={ehrConsent}
+                    onChange={(e) => setEhrConsent(e.target.checked)}
+                    className="mt-1 w-5 h-5 rounded border-gray-300 text-terracotta focus:ring-terracotta cursor-pointer"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <FileText className="w-4 h-4 text-terracotta" />
+                      <span className="font-semibold text-foreground">EHR Data Access Consent</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      I consent to ArtemisAI accessing my electronic health records (EHR) to provide personalized cancer screening recommendations. This data will be encrypted and handled in accordance with HIPAA guidelines.
+                    </p>
+                  </div>
                 </label>
-                <input
-                  ref={emailInputRef}
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setEmailError("");
-                    setIsAlreadyRegistered(false);
-                  }}
-                  onBlur={handleEmailBlur}
-                  placeholder="your.email@example.com"
-                  className={`w-full h-[52px] px-4 text-base rounded-xl border transition-colors focus:outline-none ${
-                    emailError 
-                      ? "border-red-500 focus:border-red-500" 
-                      : "border-gray-300 focus:border-terracotta focus:ring-2 focus:ring-terracotta/20"
-                  }`}
-                />
-                {emailError && (
-                  <p className="mt-2 text-sm text-red-500">{emailError}</p>
-                )}
               </div>
 
-              {/* First name field */}
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-semibold text-foreground mb-2">
-                  First name <span className="font-normal text-muted-foreground">(optional)</span>
+              {/* Terms checkbox */}
+              <div className="bg-cream rounded-2xl p-5 border border-border">
+                <label className="flex items-start gap-4 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={termsAccepted}
+                    onChange={(e) => setTermsAccepted(e.target.checked)}
+                    className="mt-1 w-5 h-5 rounded border-gray-300 text-terracotta focus:ring-terracotta cursor-pointer"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Shield className="w-4 h-4 text-terracotta" />
+                      <span className="font-semibold text-foreground">Terms & Conditions</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      I agree to the{" "}
+                      <a href="/terms" className="text-terracotta hover:underline">Terms of Service</a>
+                      {" "}and{" "}
+                      <a href="/privacy" className="text-terracotta hover:underline">Privacy Policy</a>.
+                      I understand that ArtemisAI provides educational guidance and is not a substitute for medical advice.
+                    </p>
+                  </div>
                 </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="Enter your first name"
-                  className="w-full h-[52px] px-4 text-base rounded-xl border border-gray-300 transition-colors focus:outline-none focus:border-terracotta focus:ring-2 focus:ring-terracotta/20"
-                />
               </div>
-
-              {/* Already registered message */}
-              {isAlreadyRegistered && (
-                <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-blue-700">
-                  You're already on the waitlist! Check your email for details.
-                </div>
-              )}
 
               {/* Submit error */}
               {submitError && (
@@ -259,21 +232,16 @@ const WaitlistModal = ({ isOpen, onClose, tierName, tierPrice }: WaitlistModalPr
                 {isSubmitting ? (
                   <span className="flex items-center justify-center gap-2">
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Reserving...
+                    Confirming...
                   </span>
-                ) : isAlreadyRegistered ? (
-                  "Already Registered"
                 ) : (
-                  "Reserve My Spot"
+                  "Confirm & Reserve My Spot"
                 )}
               </button>
 
               {/* Footer text */}
-              <p className="text-center text-[13px] text-muted-foreground leading-relaxed pt-2">
-                Launching Q1 2026. Early access pricing.
-                <br />
-                By joining, you agree to our{" "}
-                <a href="/privacy" className="text-gray-700 hover:underline">Privacy Policy</a>
+              <p className="text-center text-[13px] text-muted-foreground leading-relaxed">
+                Launching Q1 2026. Your data is encrypted and secure.
               </p>
             </form>
           </div>

@@ -17,36 +17,48 @@ export type Database = {
       waitlist_signups: {
         Row: {
           created_at: string
+          ehr_consent: boolean | null
+          ehr_consent_at: string | null
           email: string
           first_name: string | null
           id: string
           selected_price: number
           selected_tier: string
           subscription_preference: string | null
+          terms_accepted: boolean | null
+          terms_accepted_at: string | null
           utm_campaign: string | null
           utm_source: string | null
           willingness_to_pay: string | null
         }
         Insert: {
           created_at?: string
+          ehr_consent?: boolean | null
+          ehr_consent_at?: string | null
           email: string
           first_name?: string | null
           id?: string
           selected_price?: number
           selected_tier?: string
           subscription_preference?: string | null
+          terms_accepted?: boolean | null
+          terms_accepted_at?: string | null
           utm_campaign?: string | null
           utm_source?: string | null
           willingness_to_pay?: string | null
         }
         Update: {
           created_at?: string
+          ehr_consent?: boolean | null
+          ehr_consent_at?: string | null
           email?: string
           first_name?: string | null
           id?: string
           selected_price?: number
           selected_tier?: string
           subscription_preference?: string | null
+          terms_accepted?: boolean | null
+          terms_accepted_at?: string | null
           utm_campaign?: string | null
           utm_source?: string | null
           willingness_to_pay?: string | null
