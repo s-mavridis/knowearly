@@ -358,80 +358,93 @@ const Results = () => {
       </section>
 
       {/* SECTION 3.7: ZIP entry step (personalization friction) */}
-      <section className="bg-background py-6 px-6">
-        <div className="max-w-[900px] mx-auto bg-card border border-border rounded-[16px] p-6">
-          <h3 className="text-xl font-semibold text-foreground mb-2">Find screening options near you</h3>
+      <section className="bg-background py-6 px-4 md:px-6">
+        <div className="max-w-[900px] mx-auto bg-card border border-border rounded-2xl p-5 md:p-6">
+          <h3 className="text-lg md:text-xl font-semibold text-foreground mb-2">Find screening options near you</h3>
           <p className="text-sm text-muted-foreground mb-4">
             Enter your ZIP code to see nearby options and estimated availability.
           </p>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <input
               onFocus={() => track("zip_entry_start")}
               type="text"
               inputMode="numeric"
               maxLength={10}
               placeholder="ZIP code"
-              className="h-10 px-4 rounded-xl border border-border bg-background text-foreground w-[180px]"
+              className="h-11 px-4 rounded-xl border border-border bg-background text-foreground flex-1 sm:max-w-[180px]"
             />
-            <button
-              onClick={() => track("zip_entry_complete")}
-              className="h-10 px-4 rounded-full bg-terracotta text-white hover:bg-terracotta-light"
-            >
-              Check
-            </button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <button
+                  onClick={() => track("zip_entry_complete")}
+                  className="h-11 px-6 rounded-full bg-terracotta text-white font-medium hover:bg-terracotta-light transition-colors"
+                >
+                  Check
+                </button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="text-center">Coming Soon</DialogTitle>
+                </DialogHeader>
+                <p className="text-center text-muted-foreground">
+                  Location-based screening options will be available when we launch in Q1 2026.
+                </p>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </section>
 
-      {/* SECTION 3.6: Advisory choice and AI demo (intent to schedule/adopt automation) */}
-      <section className="bg-background py-6 px-6">
-        <div className="max-w-[900px] mx-auto bg-card border border-border rounded-[16px] p-6">
-          <div className="flex items-center justify-between gap-4 flex-col md:flex-row">
-            <div>
-              <h3 className="text-xl font-semibold text-foreground">Have questions?</h3>
+      {/* SECTION 3.6: Advisory choice */}
+      <section className="bg-background py-6 px-4 md:px-6">
+        <div className="max-w-[900px] mx-auto bg-card border border-border rounded-2xl p-5 md:p-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="text-center md:text-left">
+              <h3 className="text-lg md:text-xl font-semibold text-foreground">Have questions?</h3>
               <p className="text-sm text-muted-foreground">
-                Choose how you’d like to get tailored advice.
+                Choose how you'd like to get tailored advice.
               </p>
             </div>
-            <div className="flex gap-3">
-              {/* AI advice demo */}
+            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+              {/* AI Advisor */}
               <Dialog>
                 <DialogTrigger asChild>
                   <button
                     onClick={() => track("advice_choice", { option: "AI" })}
-                    className="h-10 px-4 rounded-full bg-terracotta text-white hover:bg-terracotta-light"
+                    className="h-11 px-5 rounded-full bg-terracotta text-white font-medium hover:bg-terracotta-light transition-colors flex-1 md:flex-none whitespace-nowrap"
                   >
-                    AI Advisor (demo)
+                    AI Advisor
                   </button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="sm:max-w-md">
                   <DialogHeader>
-                    <DialogTitle>AI Advisor Demo</DialogTitle>
+                    <DialogTitle className="text-center">Coming Soon</DialogTitle>
                   </DialogHeader>
-                  <p className="text-sm text-muted-foreground">
-                    This is a quick demo of our AI guidance experience. In the full app, you’ll chat about your risk and get next steps.
+                  <p className="text-center text-muted-foreground">
+                    Our AI Advisor will be available when we launch in Q1 2026. Get personalized guidance on your screening options.
                   </p>
-                  <div className="mt-4 flex gap-3">
-                    <button
-                      onClick={() => track("ai_demo_complete")}
-                      className="h-10 px-4 rounded-full bg-terracotta text-white hover:bg-terracotta-light"
-                    >
-                      Finish demo
-                    </button>
-                    <button className="h-10 px-4 rounded-full bg-muted text-foreground">Close</button>
-                  </div>
                 </DialogContent>
               </Dialog>
 
-              {/* Human advisor CTA */}
-              <button
-                onClick={() => {
-                  track("advisory_click");
-                }}
-                className="h-10 px-4 rounded-full bg-card text-foreground border border-border"
-              >
-                Human Advisor
-              </button>
+              {/* Human Advisor */}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button
+                    onClick={() => track("advisory_click")}
+                    className="h-11 px-5 rounded-full bg-card text-foreground border border-border font-medium hover:bg-accent transition-colors flex-1 md:flex-none whitespace-nowrap"
+                  >
+                    Human Advisor
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="text-center">Coming Soon</DialogTitle>
+                  </DialogHeader>
+                  <p className="text-center text-muted-foreground">
+                    Expert consultations with genetic counselors will be available when we launch in Q1 2026.
+                  </p>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
@@ -540,36 +553,21 @@ const Results = () => {
 
 
       {/* SECTION 2.6: EHR Connection Intent */}
-      <section className="bg-background py-6 px-6">
+      <section className="bg-background py-6 px-4 md:px-6">
         <div className="max-w-[800px] mx-auto">
           <Dialog onOpenChange={(open) => open && track("ehr_explain_open")}>
             <DialogTrigger asChild>
-              <button className="w-full md:w-auto bg-card border border-border text-foreground px-5 h-11 rounded-full hover:bg-accent transition">
+              <button className="w-full bg-card border border-border text-foreground px-5 h-12 rounded-full hover:bg-accent transition text-sm md:text-base font-medium">
                 Learn about connecting your health records
               </button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle>Connect your health records (coming soon)</DialogTitle>
+                <DialogTitle className="text-center">Coming Soon</DialogTitle>
               </DialogHeader>
-              <p className="text-sm text-muted-foreground">
-                Connecting your electronic health records lets us personalize your screening plan with past tests and results.
-                We use secure, read-only access and never store credentials.
+              <p className="text-center text-muted-foreground">
+                EHR integration will be available when we launch in Q1 2026. Connect your health records to get even more personalized screening recommendations.
               </p>
-              <div className="mt-4 flex gap-3">
-                <button
-                  onClick={() => track("ehr_connect_attempt")}
-                  className="bg-terracotta text-white px-4 h-10 rounded-full hover:bg-terracotta-light"
-                >
-                  Try to connect
-                </button>
-                <button
-                  onClick={() => track("ehr_explain_close")}
-                  className="bg-muted text-foreground px-4 h-10 rounded-full"
-                >
-                  Not now
-                </button>
-              </div>
             </DialogContent>
           </Dialog>
         </div>
@@ -660,7 +658,7 @@ const Results = () => {
       )}
 
       {/* SECTION 3.5: Explore Tests (Marketplace intent) */}
-      <section className="bg-background py-12 px-6">
+      <section className="bg-background py-12 px-4 md:px-6">
         <div className="max-w-[900px] mx-auto">
           <Collapsible
             onOpenChange={(open) => {
@@ -671,10 +669,10 @@ const Results = () => {
               }
             }}
           >
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-display text-2xl text-foreground">Explore screening tests</h3>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+              <h3 className="font-display text-xl md:text-2xl text-foreground">Explore screening tests</h3>
               <CollapsibleTrigger asChild>
-                <button className="bg-card text-foreground border border-border h-10 px-4 rounded-full">
+                <button className="bg-card text-foreground border border-border h-11 px-5 rounded-full font-medium hover:bg-accent transition-colors w-full sm:w-auto">
                   View options
                 </button>
               </CollapsibleTrigger>
